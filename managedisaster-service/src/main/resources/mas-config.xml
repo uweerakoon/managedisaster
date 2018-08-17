@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configure>
+
+	<parameter name = "edu.usu.cs.mas.managedisaster.coalitionstarter" 
+			value = "firestations" 
+			desc = "what is the starting point of initiating coalitions (Best performance agents [agents] or Fire Stations)">
+  </parameter>
+  
+  <parameter name = "edu.usu.cs.mas.managedisaster.coalition.utility" 
+			value = "ATV" 
+			desc = "Use the algorithm to calculate the utility of each coalition: ATV, NECTAR">
+  </parameter>
+  
+  <parameter name = "edu.usu.cs.mas.managedisaster.plot.enable" 
+			value = "false" 
+			desc = "Use the algorithm to calculate the utility of each coalition: ATV, NECTAR">
+  </parameter>
+  
+  <parameter name = "edu.usu.cs.mas.managedisaster.agentid.enable" 
+			value = "true" 
+			desc = "Whether or not display the agent id the simulation">
+  </parameter>
+  
+  <parameter name = "edu.usu.cs.mas.managedisaster.dataculler.enable" 
+			value = "false" 
+			desc = "Whether or not store information agent, coalition and burning building">
+  </parameter>
+
+</configure>
