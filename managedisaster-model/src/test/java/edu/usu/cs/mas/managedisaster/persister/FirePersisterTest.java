@@ -22,7 +22,7 @@ import edu.usu.cs.mas.managedisaster.model.util.HibernateUtilImpl;
 
 public class FirePersisterTest {
   
-  private static final String WALMART = "walmart";
+  private static final String WALMART = "books";
   private static final long START_TIME = 1L;
   
   private HibernateUtil hibernateUtil;
@@ -151,7 +151,7 @@ public class FirePersisterTest {
     assertEquals(ENABLE, fire.isEnable());
   }
   
-  private static final long FIRE_DELAY = 5;
+  private static final long FIRE_DELAY = 0;
   private static final boolean ENABLE = true;
   
   private static final double THRESHOLD = .001;

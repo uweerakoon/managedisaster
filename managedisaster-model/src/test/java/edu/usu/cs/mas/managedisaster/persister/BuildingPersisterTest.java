@@ -21,7 +21,7 @@ import edu.usu.cs.mas.managedisaster.service.ManageDisasterModelSpringConfig;
         loader=AnnotationConfigContextLoader.class)
 public class BuildingPersisterTest {
 
-  private static final String WALMART = "walmart";
+  private static final String WALMART = "books";
   
   @Inject
   private BuildingPersister buildingPersister;

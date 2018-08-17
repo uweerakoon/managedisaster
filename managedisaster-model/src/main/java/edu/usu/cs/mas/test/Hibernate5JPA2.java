@@ -11,9 +11,9 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+//import org.mockito.Mock;
+//import org.mockito.Mockito;
+//import org.mockito.MockitoAnnotations;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -239,15 +239,15 @@ public class Hibernate5JPA2 {
 //    hibernate5JPA2.close();
   }
   
-  @Mock
+//  @Mock
   private SimState simState;
-  @Mock
+//  @Mock
   private Schedule schedule;
   
   public void getFire() {
-    MockitoAnnotations.initMocks(this);
+//    MockitoAnnotations.initMocks(this);
     simState.schedule = schedule;
-    Mockito.when(schedule.getTime()).thenReturn(new Double(2));
+//    Mockito.when(schedule.getTime()).thenReturn(new Double(2));
     ApplicationContext applicationContext = new AnnotationConfigApplicationContext(ManageDisasterModelSpringConfig.class);
     FirePersister firePersister = applicationContext.getBean(FirePersister.class);
     BuildingPersister buildingPersister = applicationContext.getBean(BuildingPersister.class);
