@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+ <session-factory>
+  
+    <property name="connection.url">jdbc:mysql://localhost:3306/managedisaster</property>
+    <property name="connection.username">dbadmin</property>
+    <property name="connection.password">dbadmin</property>
+    <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+    <property name="connection.autocommit">true</property>
+    <property name="dialect">org.hibernate.spatial.dialect.mysql.MySQLSpatialDialect</property> 
+    <!-- <property name="dialect">org.hibernate.dialect.MySQLDialect</property> -->
+    
+    <property name="show_sql">false</property>
+    <property name="format_sql">false</property>
+  
+    <!-- JDBC connection pool (use the built-in) -->
+    <property name="connection.pool_size">12</property>
+    <!-- Create lazy initialization problem -->
+    <property name="current_session_context_class">thread</property>
+    <!-- Hibernate 5 is not supporting auto increment without this -->
+    <!-- <property name="hibernate.id.new_generator_mappings">false</property> -->
+ 
+    <mapping class="edu.usu.cs.mas.managedisaster.entity.AgentEntity" />
+    <mapping class="edu.usu.cs.mas.managedisaster.entity.RoadEntity" />
+    <mapping class="edu.usu.cs.mas.managedisaster.entity.CommunicativeEntity" />
+    <mapping class="edu.usu.cs.mas.managedisaster.entity.BuildingEntity" />
+    <mapping class="edu.usu.cs.mas.managedisaster.entity.IntersectionEntity" />
+    <mapping class="edu.usu.cs.mas.managedisaster.entity.RoadIntersectionEntity"/>
+    <mapping class="edu.usu.cs.mas.managedisaster.entity.FireEntity"/>
+    <mapping class="edu.usu.cs.mas.managedisaster.entity.TweetEntity"/>
+    <mapping class="edu.usu.cs.mas.managedisaster.entity.FireStationEntity"/>
+    <mapping class="edu.usu.cs.mas.managedisaster.entity.CoalitionEntity"/>
+    <mapping class="edu.usu.cs.mas.managedisaster.entity.FireEngineEntity"/>
+    <mapping class="edu.usu.cs.mas.managedisaster.entity.FireTruckEntity"/>
+    <mapping class="edu.usu.cs.mas.managedisaster.entity.AgentStatEntity"/>
+    <mapping class="edu.usu.cs.mas.managedisaster.entity.BurningBuildingStatEntity"/>
+    <mapping class="edu.usu.cs.mas.managedisaster.entity.CoalitionStatEntity"/>
+    
+    <mapping class="edu.usu.cs.mas.managedisaster.entity.TestTableEntity"/>
+ 
+</session-factory>
+</hibernate-configuration>

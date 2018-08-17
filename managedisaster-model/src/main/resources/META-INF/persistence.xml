@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- https://docs.jboss.org/hibernate/orm/5.2/userguide/html_single/Hibernate_User_Guide.html#criteria-typedquery-expression -->
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" 
+						 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  					 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+             http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+  version="2.1">
+
+  <persistence-unit name="PERSISTENCE">
+    <description> Hibernate JPA Configuration for the project of Disaster Management at Utah State University</description>
+    <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+    <properties>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
+      <property name="hibernate.dialect" value="org.hibernate.spatial.dialect.mysql.MySQLSpatialDialect" />
+      <property name="hibernate.connection.autocommit" value="true" />
+      <!-- Minimum number of connections for the built-in Hibernate connection pool. -->
+      <property name="hibernate.connection.initial_pool_size" value="12" />
+      <!-- Create lazy initialization problem -->
+      <property name="hibernate.current_session_context_class" value="thread" />
+      
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/managedisaster?useSSL=false&amp;useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC" />
+      <property name="javax.persistence.jdbc.user" value="dbadmin" />
+      <property name="javax.persistence.jdbc.password" value="dbadmin" />
+      
+      
+      <property name="hibernate.show_sql" value="true" />
+      <property name="hibernate.hbm2ddl.auto" value="update" />
+      
+      <!-- Booleans can be easily used in expressions by declaring HQL query substitutions in Hibernate configuration: -->
+      <property name="hibernate.query.substitutions" value="true=1,false=0" />
+    </properties>
+
+  </persistence-unit>
+
+</persistence>

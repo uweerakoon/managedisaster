@@ -1,0 +1,20 @@
+source add_fire_station_table.sql;
+source add_coalition_table.sql;
+source add_coalition_stat_table.sql;
+source add_agent_table.sql;
+source add_agent_stat_table.sql;
+source add_communicative_table.sql;
+source add_building_table.sql;
+source add_burning_building_stat_table.sql;
+source add_tweet_table.sql;
+source add_road_table.sql;
+source add_intersection_table.sql;
+source add_road_intersection_table.sql;
+source add_fire_table.sql;
+source add_fire_engine_table.sql;
+source add_fire_truck_table.sql;
+source add_coalitoin_building_table.sql;
+source add_agent_util_table.sql;
+source add_agent_coalition_table.sql;
+
+commit;

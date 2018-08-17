@@ -1,0 +1,3 @@
+drop table INTERSECTION;
+
+commit;
