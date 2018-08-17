@@ -1,0 +1,380 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>edu.usu.cs.mas</groupId>
+  <artifactId>managedisaster</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <name>managedisaster</name>
+  <url>http://maven.apache.org</url>
+  
+  <build>
+  
+    <directory>target</directory>
+    <outputDirectory>target/classes</outputDirectory>
+    <finalName>${project.artifactId}-${project.version}</finalName>
+    <testOutputDirectory>target/test-classes</testOutputDirectory>
+    <sourceDirectory>src/main/java</sourceDirectory>
+    <scriptSourceDirectory>src/main/scripts</scriptSourceDirectory>
+    <testSourceDirectory>src/test/java</testSourceDirectory>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+    </resources>
+    <testResources>
+      <testResource>
+        <directory>src/test/resources</directory>
+      </testResource>
+    </testResources>
+    
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>2.4</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <attach>true</attach>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.2</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+        <version>2.18.1</version>
+      </plugin>
+    </plugins>
+  </reporting>
+  
+  <repositories>
+    <repository><!-- Default Maven 3 Central Repository -->
+      <id>central</id>
+      <name>Central Repository</name>
+      <url>http://repo.maven.apache.org/maven2</url>
+      <layout>default</layout>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <!-- GeoTools Repository  -->
+    <!-- <repository> 
+      <id>osgeo</id>
+      <name>Open Source Geospatial Foundation Repository</name>
+      <url>http://download.osgeo.org/webdav/geotools/</url>
+    </repository> -->
+    <repository>
+      <id>OSGEO GeoTools repo</id>
+      <url>http://download.osgeo.org/webdav/geotools</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>Hibernate Spatial repo</id>
+      <url>http://www.hibernatespatial.org/repository</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <!-- add JBOSS repository for easy access to Hibernate libraries -->
+    <repository>
+      <id>JBOSS</id>
+      <url>https://repository.jboss.org/nexus/content/repositories/releases/</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>pentaho-releases</id>
+      <url>http://repository.pentaho.org/artifactory/repo/</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>central</id>
+      <name>Central Repository</name>
+      <url>http://repo.maven.apache.org/maven2</url>
+      <layout>default</layout>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <junit.version>4.12</junit.version> <!-- 4.11 -->
+    <!-- <mason.version>14.0</mason.version> -->
+    <!-- <mason.version>18.0</mason.version> -->
+    <mason.version>2.0-SNAPSHOT</mason.version>
+    <commons-collections4.version>4.1</commons-collections4.version>
+    <commons-csv.version>1.5</commons-csv.version> <!-- 1.1 -->
+    <dozer.version>5.5.1</dozer.version>
+    <gnujaxp.version>1.0.0</gnujaxp.version>
+    <gt-shapefile.version>13-RC1</gt-shapefile.version>
+    <gt-swing.version>13-RC1</gt-swing.version>
+    <guava.version>23.0</guava.version> <!-- 18.0 -->
+    <hamcrest-all.version>1.3</hamcrest-all.version>
+    <hibernate-commons-annotations.version>5.0.1.Final</hibernate-commons-annotations.version> <!-- 4.0.3.Final -->
+    <hibernate-core.version>5.2.12.Final</hibernate-core.version>
+    <hibernate-entitymanager.version>5.2.12.Final</hibernate-entitymanager.version> <!-- 4.3.10.Final -->
+    <hibernate-jpa-2.0-api.version>1.0.1.Final</hibernate-jpa-2.0-api.version>
+    <hibernate-spatial.version>5.2.12.Final</hibernate-spatial.version><!-- 4.3 -->
+    <hibernate-validator.version>6.0.7.Final</hibernate-validator.version> <!-- 5.1.3.Final -->
+    <javax.inject.version>1</javax.inject.version>
+    <jboss-logging.version>3.3.1.Final</jboss-logging.version> <!-- 3.3.0.Final -->
+    <jdom2.version>2.0.6</jdom2.version>
+    <jfreechart.version>1.0.19</jfreechart.version> 
+    <joda-time.version>2.9.9</joda-time.version> <!-- 2.9.1 -->
+    <log4j.version>1.2.17</log4j.version>
+    <mysql-connector-java.version>6.0.6</mysql-connector-java.version> <!-- 5.1.10 -->
+    <mockito-all.version>1.10.19</mockito-all.version> <!-- 1.9.5 -->
+    <pojomatic.version>2.0.1</pojomatic.version>
+    <slf4j-api.version>1.7.25</slf4j-api.version> <!-- 1.6.4 -->
+    <slf4j-log4j12.version>1.7.25</slf4j-log4j12.version> <!-- 1.7.12 -->
+    <spring.version>5.0.2.RELEASE</spring.version> <!-- 4.1.6.RELEASE -->
+    <spring-beans.version>${spring.version}</spring-beans.version> 
+    <spring-context.version>${spring.version}</spring-context.version>
+    <spring-core.version>${spring.version}</spring-core.version>
+    <spring-test.version>${spring.version}</spring-test.version>
+    <twitter4j-core.version>4.0.6</twitter4j-core.version> <!-- 4.0.4 -->
+    <validation-api.version>2.0.0.Final</validation-api.version> <!-- 1.1.0.Final -->
+  </properties>
+
+  <dependencies>
+    
+    <!-- <dependency>
+      <groupId>edu.usu.cs.mas</groupId>
+      <artifactId>managedisaster-common</artifactId>
+      <version>${project.version}</version>
+    </dependency> -->
+    
+    <dependency>
+	    <groupId>org.jdom</groupId>
+	    <artifactId>jdom2</artifactId>
+	    <version>${jdom2.version}</version>
+		</dependency>
+    
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>edu.gmu.cs</groupId>
+      <artifactId>mason</artifactId>
+      <version>${mason.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>${log4j.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.hibernate.validator</groupId>
+      <artifactId>hibernate-validator</artifactId>
+      <version>${hibernate-validator.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.hibernate.common</groupId>
+      <artifactId>hibernate-commons-annotations</artifactId>
+      <version>${hibernate-commons-annotations.version}</version>
+    </dependency>
+    
+    <dependency>
+		    <groupId>org.hibernate</groupId>
+		    <artifactId>hibernate-core</artifactId>
+		    <version>${hibernate-core.version}</version>
+		</dependency>
+    
+    <dependency>
+      <groupId>org.hibernate.javax.persistence</groupId>
+      <artifactId>hibernate-jpa-2.0-api</artifactId>
+      <version>${hibernate-jpa-2.0-api.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-entitymanager</artifactId>
+      <version>${hibernate-entitymanager.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>javax.validation</groupId>
+      <artifactId>validation-api</artifactId>
+      <version>${validation-api.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j-api.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.jboss.logging</groupId>
+      <artifactId>jboss-logging</artifactId>
+      <version>${jboss-logging.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <version>${slf4j-log4j12.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>${mysql-connector-java.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.pojomatic</groupId>
+      <artifactId>pojomatic</artifactId>
+      <version>${pojomatic.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>net.sf.dozer</groupId>
+      <artifactId>dozer</artifactId>
+      <version>${dozer.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+      <version>${spring-core.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>${spring-context.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-beans</artifactId>
+      <version>${spring-beans.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+      <version>${javax.inject.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <version>${spring-test.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>${guava.version}</version>
+    </dependency>
+    
+    <!-- Hibernate Spatial for mysql. This will include Hibernate Spatial Core and JTS, drawing buildings -->
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-spatial</artifactId>
+      <version>${hibernate-spatial.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <version>${mockito-all.version}</version>
+      <scope>test</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-all</artifactId>
+      <version>${hamcrest-all.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-csv</artifactId>
+      <version>${commons-csv.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.jfree</groupId>
+      <artifactId>jfreechart</artifactId>
+      <version>${jfreechart.version}</version>
+    </dependency>
+    
+     <!-- <dependency> If we uncomment this, then dozer mapping is not working 
+      <groupId>gnujaxp</groupId>
+      <artifactId>gnujaxp</artifactId>
+      <version>${gnujaxp.version}</version>
+    </dependency>  -->
+    
+    <dependency>
+      <groupId>org.twitter4j</groupId>
+      <artifactId>twitter4j-core</artifactId>
+      <version>${twitter4j-core.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>joda-time</groupId>
+      <artifactId>joda-time</artifactId>
+      <version>${joda-time.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-collections4</artifactId>
+      <version>${commons-collections4.version}</version>
+    </dependency>
+        
+  </dependencies>
+  
+  <modules>
+    <module>managedisaster-service</module>
+    <module>managedisaster-model</module>
+    <module>managedisaster-common</module>
+  </modules>
+
+</project>
