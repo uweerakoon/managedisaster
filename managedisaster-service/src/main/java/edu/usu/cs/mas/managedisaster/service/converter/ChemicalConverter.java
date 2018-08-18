@@ -5,7 +5,6 @@ import org.dozer.DozerConverter;
 
 import edu.usu.cs.mas.managedisaster.common.Chemical;
 
-@SuppressWarnings("unused")
 public class ChemicalConverter extends DozerConverter<Chemical, String>{
   
   public ChemicalConverter() {

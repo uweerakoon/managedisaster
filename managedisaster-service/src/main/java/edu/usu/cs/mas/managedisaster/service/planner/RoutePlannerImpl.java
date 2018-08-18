@@ -64,7 +64,7 @@ public class RoutePlannerImpl implements RoutePlanner{
   @Inject
   private RoadCanvas roadCanvas;
   @Inject
-  private ForestCanvas buildingCanvas;
+  private ForestCanvas forestCanvas;
 
   private Map<Long, Route> routePlans;
 
@@ -75,13 +75,13 @@ public class RoutePlannerImpl implements RoutePlanner{
     IntersectionPersister intersectionPersister,
     RoadPersister roadPersister,
     RoadCanvas roadCanvas,
-    ForestCanvas buildingCanvas){ 
+    ForestCanvas forestCanvas){ 
 
     this.roadIntersectionPersister = roadIntersectionPersister;
     this.intersectionPersister = intersectionPersister;
     this.roadPersister = roadPersister;
     this.roadCanvas = roadCanvas;
-    this.buildingCanvas = buildingCanvas;
+    this.forestCanvas = forestCanvas;
   }
 
   @Override
@@ -129,7 +129,7 @@ public class RoutePlannerImpl implements RoutePlanner{
   }
 
   @Override
-  public MutableInt2D findClosestRoadCoordinate(MutableInt2D fireHotSpot, ForestEntity fireBuilding){
+  public MutableInt2D findClosestRoadCoordinate(MutableInt2D fireHotSpot, ForestEntity fireForest){
     int targetX = fireHotSpot.x;
     int targetY = fireHotSpot.y;
     if(roadCanvas.isRoadCoordinate(targetX, targetY)){
@@ -174,7 +174,7 @@ public class RoutePlannerImpl implements RoutePlanner{
 
     DistanceLocation closeRoadCoordinationToFire = null;
     for(DistanceLocation tempDistanceLoc : distanceToRoadCoordinate) {
-      boolean isTargetCovered = isTargetCovered(fireHotSpot, tempDistanceLoc.getLocation(), fireBuilding);
+      boolean isTargetCovered = isTargetCovered(fireHotSpot, tempDistanceLoc.getLocation(), fireForest);
       if(!isTargetCovered) {
         closeRoadCoordinationToFire = tempDistanceLoc;
         break;
@@ -595,21 +595,21 @@ public class RoutePlannerImpl implements RoutePlanner{
   }
 
 
-  private boolean isTargetCovered(MutableInt2D targetLocation, MutableInt2D selectedLocation, ForestEntity fireBuilding) {
+  private boolean isTargetCovered(MutableInt2D targetLocation, MutableInt2D selectedLocation, ForestEntity fireForest) {
     boolean isXConstant = targetLocation.x == selectedLocation.x;
     boolean isYTargetFar = targetLocation.y > selectedLocation.y;
     boolean isXTargetFar = targetLocation.x > selectedLocation.x;
     int constant = isXConstant ? targetLocation.x : targetLocation.y;
 
     int initValue = isXConstant
-        ? (isYTargetFar ? selectedLocation.y : fireBuilding.getMaxY())
-            : (isXTargetFar ? selectedLocation.x : fireBuilding.getMaxX());
+        ? (isYTargetFar ? selectedLocation.y : fireForest.getMaxY())
+            : (isXTargetFar ? selectedLocation.x : fireForest.getMaxX());
         int maximumValue = isXConstant
-            ? (isYTargetFar ? fireBuilding.getMinY() : selectedLocation.y)
-                : (isXTargetFar ? fireBuilding.getMinX() : selectedLocation.x);
+            ? (isYTargetFar ? fireForest.getMinY() : selectedLocation.y)
+                : (isXTargetFar ? fireForest.getMinX() : selectedLocation.x);
             for(int incre = initValue; incre <= maximumValue; incre++) {
-              boolean isOtherBuilding = isXConstant ? buildingCanvas.isForestCoordinate(constant, incre) : buildingCanvas.isForestCoordinate(incre, constant);
-              if(isOtherBuilding) {
+              boolean isOtherForest = isXConstant ? forestCanvas.isForestCoordinate(constant, incre) : forestCanvas.isForestCoordinate(incre, constant);
+              if(isOtherForest) {
                 return true;
               }
             }

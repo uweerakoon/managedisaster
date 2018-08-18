@@ -71,7 +71,7 @@ public class Simulator extends SimState{
 
   private FireCanvas fireCanvas;
   private PositioningCanvas positioningCanvas;
-  private ForestCanvas buildingCanvas;
+  private ForestCanvas forestCanvas;
   private RoadCanvas roadCanvas;
   private FireStationCanvas fireStationCanvas;
 
@@ -97,7 +97,7 @@ public class Simulator extends SimState{
 
   private ApplicationContext applicationContext;
 
-  public IntGrid2D buildingsGrid;
+  public IntGrid2D forestsGrid;
   public IntGrid2D roadGrid;
   public IntGrid2D fireStationGrid;
   public DoubleGrid2D currentFireGrid;
@@ -124,7 +124,7 @@ public class Simulator extends SimState{
     fireEngineCollection = applicationContext.getBean(FireEngineCollection.class);
     fireTruckCollection = applicationContext.getBean(FireTruckCollection.class);
     positioningCanvas = applicationContext.getBean(PositioningCanvas.class);
-    buildingCanvas = applicationContext.getBean(ForestCanvas.class);
+    forestCanvas = applicationContext.getBean(ForestCanvas.class);
     roadCanvas = applicationContext.getBean(RoadCanvas.class);
     fireStationCanvas = applicationContext.getBean(FireStationCanvas.class);
     agentPersister = applicationContext.getBean(AgentPersister.class);
@@ -157,9 +157,9 @@ public class Simulator extends SimState{
     communicationHandler.addAllToCommunicationNetwork();
     communicationHandler.addCommunicationLinks();
 
-    buildingsGrid = new IntGrid2D(GRID_WIDTH, GRID_HEIGHT,0);
-    buildingCanvas.setForestsGrid(buildingsGrid);
-    buildingCanvas.drawForests();
+    forestsGrid = new IntGrid2D(GRID_WIDTH, GRID_HEIGHT,0);
+    forestCanvas.setForestsGrid(forestsGrid);
+    forestCanvas.drawForests();
 
     roadGrid = new IntGrid2D(GRID_WIDTH, GRID_HEIGHT,0);
     roadCanvas.setRoadGrid(roadGrid);

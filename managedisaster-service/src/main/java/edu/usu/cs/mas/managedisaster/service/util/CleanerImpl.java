@@ -34,13 +34,13 @@ public class CleanerImpl implements Cleaner {
   @Inject
   private AgentStatPersister agentStatPersister;
   @Inject
-  private BurningForestStatPersister burningBuildingStatPersister;
+  private BurningForestStatPersister burningForestStatPersister;
   @Inject
   private CoalitionStatPersister coalitionStatPersister;
   @Inject
   private CoalitionPersister coalitionPersister;
   @Inject
-  private CoalitionForestPersister coalitionBuildingPersister;
+  private CoalitionForestPersister coalitionForestPersister;
   @Inject
   private AgentUtilityPersister agentUtilityPersister;
   @Inject
@@ -60,9 +60,9 @@ public class CleanerImpl implements Cleaner {
   public void initialize() {
     LOGGER.info("Clearning the Statistics Tables");
     agentStatPersister.cleanup();
-    burningBuildingStatPersister.cleanup();
+    burningForestStatPersister.cleanup();
     coalitionStatPersister.cleanup();
-    coalitionBuildingPersister.cleanup();
+    coalitionForestPersister.cleanup();
     agentCoalitionPersister.cleanup();
     agentUtilityPersister.cleanup();
     agentPersister.cleanup();

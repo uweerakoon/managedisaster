@@ -20,5 +20,5 @@ public interface RoutePlanner {
   
   public Route createRouteToReachFireStation(AgentPlayer agent);
   
-  public MutableInt2D findClosestRoadCoordinate(MutableInt2D fireHotSpot, ForestEntity fireBuilding);
+  public MutableInt2D findClosestRoadCoordinate(MutableInt2D fireHotSpot, ForestEntity fireForest);
 }

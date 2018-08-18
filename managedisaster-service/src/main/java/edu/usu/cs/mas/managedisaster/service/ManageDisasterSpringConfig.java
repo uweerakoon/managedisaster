@@ -79,7 +79,7 @@ public class ManageDisasterSpringConfig {
 
   @Bean
   @Scope(BeanDefinition.SCOPE_SINGLETON)
-  public ForestCanvas buildingCanvas(){
+  public ForestCanvas forestCanvas(){
     return new ForestCanvasImpl();
   }
 
@@ -217,7 +217,7 @@ public class ManageDisasterSpringConfig {
 
   @Bean
   @Scope(BeanDefinition.SCOPE_SINGLETON)
-  public BurningForestChart burningBuildingChart() {
+  public BurningForestChart burningForestChart() {
     return new BurningForestChartImpl();
   }
 

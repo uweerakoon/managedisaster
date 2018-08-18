@@ -72,10 +72,10 @@ public class AgentPlayer implements Steppable {
   private MovementHandler movementHandler;
   private PositioningCanvas positioningCanvas;
   private FirePersister firePersister;
-  private ForestPersister buildingPersister;
+  private ForestPersister forestPersister;
   private FireStationPersister fireStationPersister;
   private FireStationCanvas fireStationCanvas;
-  private ForestCanvas buildingCanvas;
+  private ForestCanvas forestCanvas;
   private RoutePlanner routePlanner;
   private Extinguisher extinguisher;
   private Config config;
@@ -90,15 +90,15 @@ public class AgentPlayer implements Steppable {
   }
 
   public AgentPlayer(AgentModel agentModel, MovementHandler movementHandler, PositioningCanvas positioningCanvas, FirePersister firePersister,
-    RoutePlanner routePlanner, Extinguisher extinguisher, ForestPersister buildingPersister, ForestCanvas buildingCanvas) {
+    RoutePlanner routePlanner, Extinguisher extinguisher, ForestPersister forestPersister, ForestCanvas forestCanvas) {
     setupAgent(agentModel);
     this.movementHandler = movementHandler;
     this.positioningCanvas = positioningCanvas;
     this.firePersister = firePersister;
     this.routePlanner = routePlanner;
     this.extinguisher = extinguisher;
-    this.buildingPersister = buildingPersister;
-    this.buildingCanvas = buildingCanvas;
+    this.forestPersister = forestPersister;
+    this.forestCanvas = forestCanvas;
   }
 
   private void setupAgent(AgentModel agentModel) {
@@ -115,8 +115,8 @@ public class AgentPlayer implements Steppable {
     firePersister = applicationContext.getBean(FirePersister.class);
     routePlanner = applicationContext.getBean(RoutePlanner.class);
     extinguisher = applicationContext.getBean(Extinguisher.class);
-    buildingPersister = applicationContext.getBean(ForestPersister.class);
-    buildingCanvas = applicationContext.getBean(ForestCanvas.class);
+    forestPersister = applicationContext.getBean(ForestPersister.class);
+    forestCanvas = applicationContext.getBean(ForestCanvas.class);
     fireStationPersister = applicationContext.getBean(FireStationPersister.class);
     fireStationCanvas = applicationContext.getBean(FireStationCanvas.class);
     config = applicationContext.getBean(Config.class);
@@ -259,13 +259,13 @@ public class AgentPlayer implements Steppable {
   }
   
   private void burn(FireEntity fire) {
-    int buildingId = buildingCanvas.getForestId(fire.getX(), fire.getY());
-    if(buildingId == 0) {
-      LOGGER.error("Cannot find the building id for a given fire. Agent: "+this+" fire: "+fire);
+    int forestId = forestCanvas.getForestId(fire.getX(), fire.getY());
+    if(forestId == 0) {
+      LOGGER.error("Cannot find the forest id for a given fire. Agent: "+this+" fire: "+fire);
     }
-    ForestEntity burningBuilding = buildingPersister.getForest(Long.valueOf(buildingId));
-    fire.setBurningForest(burningBuilding);
-    burningBuilding.addFire(fire);
+    ForestEntity burningForest = forestPersister.getForest(Long.valueOf(forestId));
+    fire.setBurningForest(burningForest);
+    burningForest.addFire(fire);
   }
 
   private void move() {
@@ -552,7 +552,7 @@ public class AgentPlayer implements Steppable {
       setAgentFromTtoET();
       return;
     }
-    LOGGER.info("Agent travel to the buring to building after forming the coalition. "
+    LOGGER.info("Agent travel to the buring to forest after forming the coalition. "
         + "FC (Forming Coalition) -> T (Travel). Agent id: "+getId()+" @ "+getCurrentLocation());
   }
   
@@ -575,7 +575,7 @@ public class AgentPlayer implements Steppable {
     targetLocation = new MutableInt2D(fireStationEntity.getRoadX(), fireStationEntity.getRoadY());
     // setup the route by reusing the code
     routePlanner.createRouteToReachFireStation(this);
-    LOGGER.info("Agent wait at the burning building searching for a fire. After "
+    LOGGER.info("Agent wait at the burning forest searching for a fire. After "
         +MAX_SEARCH_TIME_AT_INCIDENT+" time, the agent decided to go back to the its own fire station to "
           + "refill its tank. S (Searching) -> TFS (Traveling to Fire Station). "
           + "Agent id: "+getId()+" @ "+getCurrentLocation());

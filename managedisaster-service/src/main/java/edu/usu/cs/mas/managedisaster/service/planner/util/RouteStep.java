@@ -4,7 +4,6 @@ import org.pojomatic.Pojomatic;
 import org.pojomatic.annotations.AutoProperty;
 
 import edu.usu.cs.mas.managedisaster.common.RoadOrientation;
-import sim.util.MutableDouble2D;
 import sim.util.MutableInt2D;
 
 @AutoProperty

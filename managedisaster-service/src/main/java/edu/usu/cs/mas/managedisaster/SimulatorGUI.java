@@ -37,7 +37,7 @@ public class SimulatorGUI extends GUIState{
   
   private TransportationLayout transportationLayout;
   
-  private ForestCanvas buildingCanvas;
+  private ForestCanvas forestCanvas;
   private RoadCanvas roadCanvas;
   private FireStationCanvas fireStationCanvas;
   private FireCanvas fireCanvas;
@@ -49,7 +49,7 @@ public class SimulatorGUI extends GUIState{
   public Display2D display;
   public JFrame displayFrame;
   
-  FastValueLabeledGridPortrayal2D buildingsPortrayal = new FastValueLabeledGridPortrayal2D("Building Portrayal", true);
+  FastValueLabeledGridPortrayal2D forestsPortrayal = new FastValueLabeledGridPortrayal2D("Forest Portrayal", true);
   FastValueGridPortrayal2D roadPortrayal = new FastValueGridPortrayal2D("Road Portrayal");
   FastValueLabeledGridPortrayal2D fireStationPortrayal = new FastValueLabeledGridPortrayal2D("Fire Station Portrayal");
   FastValueGridPortrayal2D firePortrayal = new FastValueGridPortrayal2D("Fire Portrayal");
@@ -57,7 +57,7 @@ public class SimulatorGUI extends GUIState{
   
   Color ash = new Color(189,189,189,255);
   Color brown = new Color(128,64,64,255);
-  //TODO - RGB for white is 255,255,255; but once we change the color plate we cannot see any building or roads
+  //TODO - RGB for white is 255,255,255; but once we change the color plate we cannot see any forest or roads
   Color white = new Color(0,0,0,0);
   Color black = Color.black;
   Color red = Color.red;
@@ -74,7 +74,7 @@ public class SimulatorGUI extends GUIState{
   
   private void setupBeans() {
   	transportationLayout = applicationContext.getBean(TransportationLayout.class);
-    buildingCanvas = applicationContext.getBean(ForestCanvas.class);
+    forestCanvas = applicationContext.getBean(ForestCanvas.class);
     roadCanvas = applicationContext.getBean(RoadCanvas.class);
     fireStationCanvas = applicationContext.getBean(FireStationCanvas.class);
     fireCanvas = applicationContext.getBean(FireCanvas.class);
@@ -112,8 +112,8 @@ public class SimulatorGUI extends GUIState{
     Simulator simulator = (Simulator) state;
     transportationLayout.setPositioningCanvas(simulator.getPositioningCanvas().getPositions());
     
-    buildingsPortrayal.setField(simulator.buildingsGrid);
-    buildingsPortrayal.setMap(new SimpleColorMap(0, 1, white, brown));
+    forestsPortrayal.setField(simulator.forestsGrid);
+    forestsPortrayal.setMap(new SimpleColorMap(0, 1, white, brown));
     
     roadPortrayal.setField(simulator.roadGrid);
     roadPortrayal.setMap(new SimpleColorMap(0, 1, white, ash));
@@ -126,7 +126,7 @@ public class SimulatorGUI extends GUIState{
     smokePortrayal.setField(simulator.currentSmokeGrid);
     smokePortrayal.setMap(new SimpleColorMap(5, 500, new Color(255, 255, 255, 0), Color.BLACK));
     
-    buildingCanvas.setForestsPortrayal(buildingsPortrayal);
+    forestCanvas.setForestsPortrayal(forestsPortrayal);
     roadCanvas.setRoadPortrayal(roadPortrayal);
     fireStationCanvas.setFireStationPortrayal(fireStationPortrayal);
     fireCanvas.setFirePortrayal(firePortrayal);
@@ -147,7 +147,7 @@ public class SimulatorGUI extends GUIState{
     displayFrame.setVisible(true);
     displayFrame.setTitle("Disaster Management System - Utah State University");
     
-    display.attach(buildingsPortrayal, "Buildings");
+    display.attach(forestsPortrayal, "Forests");
     display.attach(roadPortrayal, "Roads");
     display.attach(fireStationPortrayal, "Fire Stations");
     display.attach(smokePortrayal, "Smoke");

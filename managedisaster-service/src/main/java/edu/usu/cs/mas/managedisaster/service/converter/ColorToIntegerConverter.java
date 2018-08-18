@@ -4,7 +4,6 @@ import java.awt.Color;
 
 import org.dozer.DozerConverter;
 
-@SuppressWarnings("unused")
 public class ColorToIntegerConverter extends DozerConverter<Color, Integer>{
   
   public ColorToIntegerConverter(){
