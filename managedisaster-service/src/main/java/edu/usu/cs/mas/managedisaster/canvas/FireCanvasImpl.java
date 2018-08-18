@@ -82,9 +82,9 @@ public class FireCanvasImpl implements FireCanvas {
   }
   
   @Override
-  public boolean isForestBurning(ForestEntity building) {
-    int minX = building.getMinX(), maxX = building.getMaxX();
-    int minY = building.getMinY(), maxY = building.getMaxY();
+  public boolean isForestBurning(ForestEntity forest) {
+    int minX = forest.getMinX(), maxX = forest.getMaxX();
+    int minY = forest.getMinY(), maxY = forest.getMaxY();
     
     for(int i = minX; i <= maxX; i++) {
       for(int j = minY; j <= maxY; j++) {

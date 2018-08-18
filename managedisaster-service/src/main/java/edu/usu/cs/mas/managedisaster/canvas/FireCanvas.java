@@ -28,5 +28,5 @@ public interface FireCanvas {
   
   public void setNewSmokeGrid(DoubleGrid2D newSmokeGrid);
   
-  public boolean isForestBurning(ForestEntity building);
+  public boolean isForestBurning(ForestEntity forest);
 }

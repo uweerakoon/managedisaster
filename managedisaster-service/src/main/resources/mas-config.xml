@@ -23,7 +23,7 @@
   
   <parameter name = "edu.usu.cs.mas.managedisaster.dataculler.enable" 
 			value = "false" 
-			desc = "Whether or not store information agent, coalition and burning building">
+			desc = "Whether or not store information agent, coalition and burning forest">
   </parameter>
 
 </configure>

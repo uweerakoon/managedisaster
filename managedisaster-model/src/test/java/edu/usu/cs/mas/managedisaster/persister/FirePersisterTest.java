@@ -27,7 +27,7 @@ public class FirePersisterTest {
   
   private HibernateUtil hibernateUtil;
   private FirePersisterImpl firePersister;
-  private ForestPersisterImpl buildingPersister;
+  private ForestPersisterImpl forestPersister;
   
   @Mock
   private SimState simState;
@@ -37,7 +37,7 @@ public class FirePersisterTest {
   public FirePersisterTest() {
     hibernateUtil = new HibernateUtilImpl();
     firePersister = new FirePersisterImpl(hibernateUtil);
-    buildingPersister = new ForestPersisterImpl(hibernateUtil);
+    forestPersister = new ForestPersisterImpl(hibernateUtil);
     MockitoAnnotations.initMocks(this);
   }
 
@@ -56,8 +56,8 @@ public class FirePersisterTest {
 
   @Test
   public void testGenerateMildFire() {
-    ForestEntity building = buildingPersister.getForest(WALMART);
-    Message message = new Message().withForest(building).withMessageType(MessageType.FIRE)
+    ForestEntity forest = forestPersister.getForest(WALMART);
+    Message message = new Message().withForest(forest).withMessageType(MessageType.FIRE)
                         .withSeverity(Severity.MILD);
     simState.schedule = schedule;
     firePersister.setSimState(simState);
@@ -68,8 +68,8 @@ public class FirePersisterTest {
   
   @Test
   public void testGenerateNormalFire() {
-    ForestEntity building = buildingPersister.getForest(WALMART);
-    Message message = new Message().withForest(building).withMessageType(MessageType.FIRE).withSeverity(Severity.NORMAL);
+    ForestEntity forest = forestPersister.getForest(WALMART);
+    Message message = new Message().withForest(forest).withMessageType(MessageType.FIRE).withSeverity(Severity.NORMAL);
     simState.schedule = schedule;
     firePersister.setSimState(simState);
     FireEntity fire = firePersister.generateFire(message);
@@ -79,8 +79,8 @@ public class FirePersisterTest {
   
   @Test
   public void testGenerateSevereFire() {
-    ForestEntity building = buildingPersister.getForest(WALMART);
-    Message message = new Message().withForest(building).withMessageType(MessageType.FIRE).withSeverity(Severity.SEVERE);
+    ForestEntity forest = forestPersister.getForest(WALMART);
+    Message message = new Message().withForest(forest).withMessageType(MessageType.FIRE).withSeverity(Severity.SEVERE);
     simState.schedule = schedule;
     firePersister.setSimState(simState);
     FireEntity fire = firePersister.generateFire(message);

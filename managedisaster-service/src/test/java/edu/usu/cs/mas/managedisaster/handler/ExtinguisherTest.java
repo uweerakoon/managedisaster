@@ -34,7 +34,7 @@ public class ExtinguisherTest extends TestUtil{
   private static final int SQUIRT_PRESSURE = 10;
   private static final double LONG_CHEMICAL_AMT = 49.95;
   
-  private static final int INIT_BUIDING_SIZE = 1, INIT_BUILDING_NO_POINTS = 1, INIT_BUIDLING_X = 1, INIT_BUILDING_Y = 1;
+  private static final int INIT_FOREST_SIZE = 1, INIT_FOREST_NO_POINTS = 1, INIT_FOREST_X = 1, INIT_FOREST_Y = 1;
   
   private static final int W = 3;
   private static final int L = 3;
@@ -50,33 +50,33 @@ public class ExtinguisherTest extends TestUtil{
   private DoubleGrid2D currentSmokeGrid = new DoubleGrid2D(W,L,0);
   private DoubleGrid2D newSmokeGrid = new DoubleGrid2D(W,L, 0);
   
-  private IntGrid2D buildingGrid = new IntGrid2D(W,L,0);
+  private IntGrid2D forestGrid = new IntGrid2D(W,L,0);
   
   @Mock
   private FireCanvas fireCanvas;
   @Mock
-  private ForestCanvas buildingCanvas;
+  private ForestCanvas forestCanvas;
   
   private ExtinguisherImpl extinguisher;
   
   @Before
   public void setup() {
     initMocks(this);
-    extinguisher = new ExtinguisherImpl(fireCanvas, buildingCanvas, currentWaterGrid, newWaterGrid);
+    extinguisher = new ExtinguisherImpl(fireCanvas, forestCanvas, currentWaterGrid, newWaterGrid);
     when(fireCanvas.getCurrentFireGrid()).thenReturn(currentFireGrid);
     when(fireCanvas.getNewFireGrid()).thenReturn(newFireGrid);
     when(fireCanvas.getCurrentSmokeGrid()).thenReturn(currentSmokeGrid);
     when(fireCanvas.getNewSmokeGrid()).thenReturn(newSmokeGrid);
-    when(buildingCanvas.getForestsGrid()).thenReturn(buildingGrid);
+    when(forestCanvas.getForestsGrid()).thenReturn(forestGrid);
   }
 
   @Test
   public void testInitiateValueMaximumChemical() {
     AgentPlayer agent = getAgent(null).withX(AGENT_COORDINATE.x).withY(AGENT_COORDINATE.y).withSquirtPressure(SQUIRT_PRESSURE);
     double initChemicalAmt = agent.getChemicalAmount();
-    FireEntity fire = createFire(INIT_BUIDING_SIZE, INIT_BUILDING_NO_POINTS, INIT_BUIDLING_X, INIT_BUILDING_Y).withX(FIRE_COORDINATE.x).withY(FIRE_COORDINATE.y);
+    FireEntity fire = createFire(INIT_FOREST_SIZE, INIT_FOREST_NO_POINTS, INIT_FOREST_X, INIT_FOREST_Y).withX(FIRE_COORDINATE.x).withY(FIRE_COORDINATE.y);
 
-    buildingGrid.field[FIRE_COORDINATE.x][FIRE_COORDINATE.y] = INIT_VALUE;
+    forestGrid.field[FIRE_COORDINATE.x][FIRE_COORDINATE.y] = INIT_VALUE;
     currentFireGrid.field[FIRE_COORDINATE.x][FIRE_COORDINATE.y] = INIT_VALUE;
     currentSmokeGrid.field[FIRE_COORDINATE.x][FIRE_COORDINATE.y] = INIT_VALUE;
     
@@ -91,9 +91,9 @@ public class ExtinguisherTest extends TestUtil{
   public void testInitiateValueMaximumFire() {
     AgentPlayer agent = getAgent(null).withX(AGENT_COORDINATE.x).withY(AGENT_COORDINATE.y).withSquirtPressure(SQUIRT_PRESSURE);
     double initChemicalAmt = agent.getChemicalAmount();
-    FireEntity fire = createFire(INIT_BUIDING_SIZE, INIT_BUILDING_NO_POINTS, INIT_BUIDLING_X, INIT_BUILDING_Y).withX(FIRE_COORDINATE.x).withY(FIRE_COORDINATE.y);
+    FireEntity fire = createFire(INIT_FOREST_SIZE, INIT_FOREST_NO_POINTS, INIT_FOREST_X, INIT_FOREST_Y).withX(FIRE_COORDINATE.x).withY(FIRE_COORDINATE.y);
 
-    buildingGrid.field[FIRE_COORDINATE.x][FIRE_COORDINATE.y] = INIT_VALUE;
+    forestGrid.field[FIRE_COORDINATE.x][FIRE_COORDINATE.y] = INIT_VALUE;
     currentFireGrid.field[FIRE_COORDINATE.x][FIRE_COORDINATE.y] = 
         agent.getSquirtPressure() 
         * (1 - Chemical.WATER.getEvaporationRate())
@@ -111,9 +111,9 @@ public class ExtinguisherTest extends TestUtil{
   public void testInitiateValueMaximumSmoke() {
     AgentPlayer agent = getAgent(null).withX(AGENT_COORDINATE.x).withY(AGENT_COORDINATE.y).withSquirtPressure(SQUIRT_PRESSURE);
     double initChemicalAmt = agent.getChemicalAmount();
-    FireEntity fire = createFire(INIT_BUIDING_SIZE, INIT_BUILDING_NO_POINTS, INIT_BUIDLING_X, INIT_BUILDING_Y).withX(FIRE_COORDINATE.x).withY(FIRE_COORDINATE.y);
+    FireEntity fire = createFire(INIT_FOREST_SIZE, INIT_FOREST_NO_POINTS, INIT_FOREST_X, INIT_FOREST_Y).withX(FIRE_COORDINATE.x).withY(FIRE_COORDINATE.y);
 
-    buildingGrid.field[FIRE_COORDINATE.x][FIRE_COORDINATE.y] = INIT_VALUE;
+    forestGrid.field[FIRE_COORDINATE.x][FIRE_COORDINATE.y] = INIT_VALUE;
     currentFireGrid.field[FIRE_COORDINATE.x][FIRE_COORDINATE.y] = INIT_VALUE;
     currentSmokeGrid.field[FIRE_COORDINATE.x][FIRE_COORDINATE.y] = 
         agent.getSquirtPressure() 
@@ -131,12 +131,12 @@ public class ExtinguisherTest extends TestUtil{
   public void testShortVicinity() {
     AgentPlayer agent = getAgent(null).withX(AGENT_COORDINATE.x).withY(AGENT_COORDINATE.y).withSquirtPressure(SQUIRT_PRESSURE)
         .withMinimumFireProximity(3L);
-    FireEntity fire = createFire(INIT_BUIDING_SIZE, INIT_BUILDING_NO_POINTS, INIT_BUIDLING_X, INIT_BUILDING_Y).withX(LONG_FIRE_COORDINATE.x).withY(LONG_FIRE_COORDINATE.y);
+    FireEntity fire = createFire(INIT_FOREST_SIZE, INIT_FOREST_NO_POINTS, INIT_FOREST_X, INIT_FOREST_Y).withX(LONG_FIRE_COORDINATE.x).withY(LONG_FIRE_COORDINATE.y);
     
     setupLongGrids();
     
-    buildingGrid.field[LONG_FIRE_COORDINATE.x][LONG_FIRE_COORDINATE.y] = INIT_VALUE;
-    buildingGrid.field[LONG_FIRE_COORDINATE.x - 2][LONG_FIRE_COORDINATE.y - 2] = INIT_VALUE;
+    forestGrid.field[LONG_FIRE_COORDINATE.x][LONG_FIRE_COORDINATE.y] = INIT_VALUE;
+    forestGrid.field[LONG_FIRE_COORDINATE.x - 2][LONG_FIRE_COORDINATE.y - 2] = INIT_VALUE;
     currentFireGrid.field[LONG_FIRE_COORDINATE.x][LONG_FIRE_COORDINATE.y] = INIT_VALUE;
     currentSmokeGrid.field[LONG_FIRE_COORDINATE.x][LONG_FIRE_COORDINATE.y] = INIT_VALUE;
     
@@ -153,19 +153,19 @@ public class ExtinguisherTest extends TestUtil{
   @Test(expected = IllegalArgumentException.class)
   public void testNoChemicalAmountTest() {
     AgentPlayer agent = getAgent(null).withX(AGENT_COORDINATE.x).withY(AGENT_COORDINATE.y).withChemicalAmount(0.0);
-    FireEntity fire = createFire(INIT_BUIDING_SIZE, INIT_BUILDING_NO_POINTS, INIT_BUIDLING_X, INIT_BUILDING_Y).withX(FIRE_COORDINATE.x).withY(FIRE_COORDINATE.y);
+    FireEntity fire = createFire(INIT_FOREST_SIZE, INIT_FOREST_NO_POINTS, INIT_FOREST_X, INIT_FOREST_Y).withX(FIRE_COORDINATE.x).withY(FIRE_COORDINATE.y);
     extinguisher.extinguish(fire, agent);
   }
   
   @Test(expected = NullPointerException.class)
   public void testNoChemicalTest() {
     AgentPlayer agent = getAgent(null).withX(AGENT_COORDINATE.x).withY(AGENT_COORDINATE.y).withChemical(null);
-    FireEntity fire = createFire(INIT_BUIDING_SIZE, INIT_BUILDING_NO_POINTS, INIT_BUIDLING_X, INIT_BUILDING_Y).withX(FIRE_COORDINATE.x).withY(FIRE_COORDINATE.y);
+    FireEntity fire = createFire(INIT_FOREST_SIZE, INIT_FOREST_NO_POINTS, INIT_FOREST_X, INIT_FOREST_Y).withX(FIRE_COORDINATE.x).withY(FIRE_COORDINATE.y);
     extinguisher.extinguish(fire, agent);
   }
   
   @Test(expected = NullPointerException.class)
-  public void testNoBuildingTest() {
+  public void testNoFireTest() {
     AgentPlayer agent = getAgent(null).withX(AGENT_COORDINATE.x).withY(AGENT_COORDINATE.y).withChemical(null);
     FireEntity fire = getFire();
     extinguisher.extinguish(fire, agent);
@@ -175,11 +175,11 @@ public class ExtinguisherTest extends TestUtil{
   public void testExtinguish1Iteration() {
     AgentPlayer agent = getAgent(null).withX(AGENT_COORDINATE.x).withY(AGENT_COORDINATE.y).withSquirtPressure(SQUIRT_PRESSURE);
     double initChemicalAmt = agent.getChemicalAmount();
-    FireEntity fire = createFire(INIT_BUIDING_SIZE, INIT_BUILDING_NO_POINTS, INIT_BUIDLING_X, INIT_BUILDING_Y).withX(FIRE_COORDINATE.x).withY(FIRE_COORDINATE.y);
+    FireEntity fire = createFire(INIT_FOREST_SIZE, INIT_FOREST_NO_POINTS, INIT_FOREST_X, INIT_FOREST_Y).withX(FIRE_COORDINATE.x).withY(FIRE_COORDINATE.y);
 
     agent.withWaterImpactCenter(FIRE_COORDINATE).withWaterImpactRadius(STARTING_RADIUS);
     
-    buildingGrid.field[FIRE_COORDINATE.x][FIRE_COORDINATE.y] = INIT_VALUE;
+    forestGrid.field[FIRE_COORDINATE.x][FIRE_COORDINATE.y] = INIT_VALUE;
     currentFireGrid.field[FIRE_COORDINATE.x][FIRE_COORDINATE.y] = INIT_VALUE;
     currentSmokeGrid.field[FIRE_COORDINATE.x][FIRE_COORDINATE.y] = INIT_VALUE;
     currentWaterGrid.field[FIRE_COORDINATE.x][FIRE_COORDINATE.y] = INIT_VALUE;
@@ -246,7 +246,7 @@ public class ExtinguisherTest extends TestUtil{
   private void setupGrids() {
     for(int i = INIT_VALUE; i < 4; i++) {
       for(int j = INIT_VALUE; j < 4; j++) {
-        buildingGrid.field[i][j] = INIT_VALUE;
+        forestGrid.field[i][j] = INIT_VALUE;
       }
     }
     
@@ -269,13 +269,13 @@ public class ExtinguisherTest extends TestUtil{
     currentSmokeGrid = new DoubleGrid2D(LW,LL,0);
     newSmokeGrid = new DoubleGrid2D(LW,LL, 0);
     
-    buildingGrid = new IntGrid2D(LW,LL,0);
+    forestGrid = new IntGrid2D(LW,LL,0);
     
     when(fireCanvas.getCurrentFireGrid()).thenReturn(currentFireGrid);
     when(fireCanvas.getNewFireGrid()).thenReturn(newFireGrid);
     when(fireCanvas.getCurrentSmokeGrid()).thenReturn(currentSmokeGrid);
     when(fireCanvas.getNewSmokeGrid()).thenReturn(newSmokeGrid);
-    when(buildingCanvas.getForestsGrid()).thenReturn(buildingGrid);
+    when(forestCanvas.getForestsGrid()).thenReturn(forestGrid);
     
     extinguisher.setCurrentWaterGrid(currentWaterGrid);
     extinguisher.setNewWaterGrid(newWaterGrid);

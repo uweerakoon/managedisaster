@@ -27,7 +27,7 @@
     <mapping class="edu.usu.cs.mas.managedisaster.entity.AgentEntity" />
     <mapping class="edu.usu.cs.mas.managedisaster.entity.RoadEntity" />
     <mapping class="edu.usu.cs.mas.managedisaster.entity.CommunicativeEntity" />
-    <mapping class="edu.usu.cs.mas.managedisaster.entity.BuildingEntity" />
+    <mapping class="edu.usu.cs.mas.managedisaster.entity.ForestEntity" />
     <mapping class="edu.usu.cs.mas.managedisaster.entity.IntersectionEntity" />
     <mapping class="edu.usu.cs.mas.managedisaster.entity.RoadIntersectionEntity"/>
     <mapping class="edu.usu.cs.mas.managedisaster.entity.FireEntity"/>
@@ -37,7 +37,7 @@
     <mapping class="edu.usu.cs.mas.managedisaster.entity.FireEngineEntity"/>
     <mapping class="edu.usu.cs.mas.managedisaster.entity.FireTruckEntity"/>
     <mapping class="edu.usu.cs.mas.managedisaster.entity.AgentStatEntity"/>
-    <mapping class="edu.usu.cs.mas.managedisaster.entity.BurningBuildingStatEntity"/>
+    <mapping class="edu.usu.cs.mas.managedisaster.entity.BurningForestStatEntity"/>
     <mapping class="edu.usu.cs.mas.managedisaster.entity.CoalitionStatEntity"/>
     
     <mapping class="edu.usu.cs.mas.managedisaster.entity.TestTableEntity"/>

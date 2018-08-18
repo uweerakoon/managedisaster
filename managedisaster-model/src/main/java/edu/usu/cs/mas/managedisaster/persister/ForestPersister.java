@@ -6,8 +6,8 @@ import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
 
 public interface ForestPersister {
   /**
-   * Fetch all the buildings
-   * @return list of all buildings
+   * Fetch all the forests
+   * @return list of all forests
    */
   public List<ForestEntity> getAllForests();
   

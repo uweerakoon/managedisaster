@@ -44,7 +44,7 @@ public class FireDiffuserTest extends TestUtil{
   private DoubleGrid2D newFireGrid;
   private DoubleGrid2D currentSmokeGrid;
   private DoubleGrid2D newSmokeGrid;
-  private IntGrid2D buildingGrid;
+  private IntGrid2D forestGrid;
   private FireEntity fire;
   
   @Mock
@@ -52,18 +52,18 @@ public class FireDiffuserTest extends TestUtil{
   @Mock
   private FireCanvas fireCanvas;
   @Mock
-  private ForestPersister buildingPersister;
+  private ForestPersister forestPersister;
   @Mock
   private MersenneTwisterFast random;
   @Mock
-  private ForestCanvas buildingCanvas;
+  private ForestCanvas forestCanvas;
   
   private FireDiffuser fireDiffuser;
   
   @Before
   public void setup(){
     initMocks(this);
-    fireDiffuser = new FireDiffuser(fireGridCsvPrinter, fireCanvas, firePersister, buildingPersister, random, buildingCanvas);
+    fireDiffuser = new FireDiffuser(fireGridCsvPrinter, fireCanvas, firePersister, forestPersister, random, forestCanvas);
     fire = getFire();
     currentFireGrid = new DoubleGrid2D(WIDTH, LENGTH, 0);
     newFireGrid = new DoubleGrid2D(WIDTH, LENGTH, 0);
@@ -75,7 +75,7 @@ public class FireDiffuserTest extends TestUtil{
     when(fireCanvas.getCurrentSmokeGrid()).thenReturn(currentSmokeGrid);
     when(fireCanvas.getNewSmokeGrid()).thenReturn(newSmokeGrid);
     when(firePersister.getActiveFires()).thenReturn(Arrays.asList(fire));
-    when(buildingPersister.getForest(0L)).thenReturn(getBuilding());
+    when(forestPersister.getForest(0L)).thenReturn(getForest());
   }
   
   @Test
@@ -94,16 +94,16 @@ public class FireDiffuserTest extends TestUtil{
   
   @Test
   public void testDiffuseFireNonZeroRadius() {
-    ForestEntity building = getBuilding();
-    buildingGrid = new IntGrid2D(WIDTH, LENGTH, 0);
-    fire.setBurningForest(building);
+    ForestEntity forest = getForest();
+    forestGrid = new IntGrid2D(WIDTH, LENGTH, 0);
+    fire.setBurningForest(forest);
     fire.setFireRadius(1);
-    when(buildingCanvas.getForestsGrid()).thenReturn(buildingGrid);
+    when(forestCanvas.getForestsGrid()).thenReturn(forestGrid);
     when(random.nextBoolean(anyDouble())).thenReturn(true);
     when(random.nextDouble()).thenReturn(0.9);
     when(random.nextBoolean(anyDouble())).thenReturn(true);
     currentFireGrid.field[HOTSPOTX][HOTSPOTY] = 2.5;
-    buildingGrid.field[HOTSPOTX][HOTSPOTY] = 1;
+    forestGrid.field[HOTSPOTX][HOTSPOTY] = 1;
     currentSmokeGrid.field[HOTSPOTX][HOTSPOTY] = 1.0;
     
     fireDiffuser.diffuseFire();
@@ -116,9 +116,9 @@ public class FireDiffuserTest extends TestUtil{
   }
   
   @Test
-  public void testDiffuseSmokeBuildingBurning() {
-    ForestEntity building = getBuilding();
-    fire.setBurningForest(building);
+  public void testDiffuseSmokeForestBurning() {
+    ForestEntity forest = getForest();
+    fire.setBurningForest(forest);
     currentFireGrid.field[HOTSPOTX][HOTSPOTY] = 2.5;
     when(random.nextBoolean(anyDouble())).thenReturn(true);
     fireDiffuser.diffuseFire();
@@ -127,9 +127,9 @@ public class FireDiffuserTest extends TestUtil{
   }
 
 //  @Test
-  public void testCsvHeadersFireBuildingBurning() {
-    ForestEntity building = getBuilding();
-    fire.setBurningForest(building);
+  public void testCsvHeadersFireForestBurning() {
+    ForestEntity forest = getForest();
+    fire.setBurningForest(forest);
     fireDiffuser.setStoreData(true);
     fireDiffuser.diffuseFire();
     fireGridCsvPrinter.closeFile();
@@ -142,9 +142,9 @@ public class FireDiffuserTest extends TestUtil{
   }
   
 //  @Test
-  public void testCsvRecordsFireBuildingBurning() {
-    ForestEntity building = getBuilding();
-    fire.setBurningForest(building);
+  public void testCsvRecordsFireForestBurning() {
+    ForestEntity forest = getForest();
+    fire.setBurningForest(forest);
     fireDiffuser.setStoreData(true);
     fireGridCsvPrinter.printRemaining();
     currentFireGrid.field[HOTSPOTX][HOTSPOTY] = 2.5;

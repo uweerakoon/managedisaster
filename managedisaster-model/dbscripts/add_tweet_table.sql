@@ -17,7 +17,7 @@ constraint TWEET_MSG_TYPE_CK check (MESSAGE_TYPE in ('FIRE', 'AGENT'))
 comment 'Store the tweets that agents post in the twitter',
 ENGINE=INNODB;
 
-insert into TWEET(SEVERITY, MESSAGE_TYPE, BUILDING_ID, TWEET_TIME, POSTED)
+insert into TWEET(SEVERITY, MESSAGE_TYPE, FOREST_ID, TWEET_TIME, POSTED)
 value ('MILD','FIRE',4, 120, 0)
 ;
 

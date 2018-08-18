@@ -54,7 +54,7 @@ public class CoalitionFormationTest {
 		List<AgentPlayer> agentPlayers = new ArrayList<AgentPlayer>();
 		for(AgentModel agentModel: agentModels){
       AgentPlayer agentPlayer = new AgentPlayer(agentModel, null/*movementHandler*/, null/*positioningCanvas*/, null/*firePersister*/, 
-          null/*routePlanner*/, null/*extinguisher*/, null/*buildingPersister*/, null/*buildingCanvas*/);
+          null/*routePlanner*/, null/*extinguisher*/, null/*forestPersister*/, null/*forestCanvas*/);
       agentSociety.addAgentPlayer(agentPlayer);
       agentPlayers.add(agentPlayer);
 		}

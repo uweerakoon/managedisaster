@@ -42,7 +42,7 @@ public class AgentPlayerTest extends TestUtil {
   
   private static final MutableInt2D FIRE_COORDINATE = new MutableInt2D(1,1);
   private static final MutableInt2D AGENT_COORDINATE = new MutableInt2D(0,1);
-  private static final int INIT_BUIDING_SIZE = 1, INIT_BUILDING_NO_POINTS = 1, INIT_BUIDLING_X = 1, INIT_BUILDING_Y = 1;
+  private static final int INIT_FOREST_SIZE = 1, INIT_FOREST_NO_POINTS = 1, INIT_FOREST_X = 1, INIT_FOREST_Y = 1;
   
   private DoubleGrid2D currentWaterGrid = new DoubleGrid2D(W,L,0);
   private DoubleGrid2D newWaterGrid = new DoubleGrid2D(W,L, 0);
@@ -53,12 +53,12 @@ public class AgentPlayerTest extends TestUtil {
   private DoubleGrid2D currentSmokeGrid = new DoubleGrid2D(W,L,0);
   private DoubleGrid2D newSmokeGrid = new DoubleGrid2D(W,L, 0);
   
-  private IntGrid2D buildingGrid = new IntGrid2D(W,L,0);
+  private IntGrid2D forestGrid = new IntGrid2D(W,L,0);
   
   @Mock
   private FireCanvas fireCanvas;
   @Mock
-  private ForestCanvas buildingCanvas;
+  private ForestCanvas forestCanvas;
   @Mock
   private TweetPersister tweetPersister;
   @Mock
@@ -66,7 +66,7 @@ public class AgentPlayerTest extends TestUtil {
   @Mock
   private FirePersister firePersister;
   @Mock
-  private ForestPersister buildingPersister;
+  private ForestPersister forestPersister;
 
   private ExtinguisherImpl extinguisher;
   private AgentModel agentModel;
@@ -76,12 +76,12 @@ public class AgentPlayerTest extends TestUtil {
   @Before
   public void setup() {
     initMocks(this);
-    extinguisher = new ExtinguisherImpl(fireCanvas, buildingCanvas, currentWaterGrid, newWaterGrid);
+    extinguisher = new ExtinguisherImpl(fireCanvas, forestCanvas, currentWaterGrid, newWaterGrid);
     when(fireCanvas.getCurrentFireGrid()).thenReturn(currentFireGrid);
     when(fireCanvas.getNewFireGrid()).thenReturn(newFireGrid);
     when(fireCanvas.getCurrentSmokeGrid()).thenReturn(currentSmokeGrid);
     when(fireCanvas.getNewSmokeGrid()).thenReturn(newSmokeGrid);
-    when(buildingCanvas.getForestsGrid()).thenReturn(buildingGrid);
+    when(forestCanvas.getForestsGrid()).thenReturn(forestGrid);
     when(fireCanvas.isForestBurning(any(ForestEntity.class))).thenReturn(true);
   }
 
@@ -89,15 +89,15 @@ public class AgentPlayerTest extends TestUtil {
   @Test
   public void testAgentExtinguishFireAndMoveToSearch() {
     agentModel = new AgentModel().withStatus(AgentStatus.EXECUTING_TASKS);
-    fire = createFire(INIT_BUIDING_SIZE, INIT_BUILDING_NO_POINTS, INIT_BUIDLING_X, INIT_BUILDING_Y).withX(FIRE_COORDINATE.x).withY(FIRE_COORDINATE.y);
+    fire = createFire(INIT_FOREST_SIZE, INIT_FOREST_NO_POINTS, INIT_FOREST_X, INIT_FOREST_Y).withX(FIRE_COORDINATE.x).withY(FIRE_COORDINATE.y);
     agentModel.withFire(fire);
     agentPlayer = new AgentPlayer(agentModel, null/*movementHandler*/, null/*positioningCanvas*/, null/*firePersister*/, 
-                    null/*routePlanner*/, extinguisher, buildingPersister, buildingCanvas);
+                    null/*routePlanner*/, extinguisher, forestPersister, forestCanvas);
     agentPlayer.withX(AGENT_COORDINATE.x).withY(AGENT_COORDINATE.y).withSquirtPressure(SQUIRT_PRESSURE);
     agentPlayer = getAgent(agentPlayer);
     double initChemicalAmt = agentPlayer.getChemicalAmount();
     
-    buildingGrid.field[FIRE_COORDINATE.x][FIRE_COORDINATE.y] = INIT_VALUE;
+    forestGrid.field[FIRE_COORDINATE.x][FIRE_COORDINATE.y] = INIT_VALUE;
     currentFireGrid.field[FIRE_COORDINATE.x][FIRE_COORDINATE.y] = INIT_VALUE;
     currentSmokeGrid.field[FIRE_COORDINATE.x][FIRE_COORDINATE.y] = INIT_VALUE;
     
@@ -123,15 +123,15 @@ public class AgentPlayerTest extends TestUtil {
   @Test
   public void testExhaustedAgentAndMoveToGetMoreChemical() {
     agentModel = new AgentModel().withStatus(AgentStatus.EXECUTING_TASKS);
-    fire = createFire(INIT_BUIDING_SIZE, INIT_BUILDING_NO_POINTS, INIT_BUIDLING_X, INIT_BUILDING_Y).withX(FIRE_COORDINATE.x).withY(FIRE_COORDINATE.y);
+    fire = createFire(INIT_FOREST_SIZE, INIT_FOREST_NO_POINTS, INIT_FOREST_X, INIT_FOREST_Y).withX(FIRE_COORDINATE.x).withY(FIRE_COORDINATE.y);
     agentModel.withFire(fire);
     agentPlayer = new AgentPlayer(agentModel, null/*movementHandler*/, null/*positioningCanvas*/, null/*firePersister*/, 
-                    null/*routePlanner*/, extinguisher, buildingPersister, buildingCanvas);
+                    null/*routePlanner*/, extinguisher, forestPersister, forestCanvas);
     agentPlayer.withX(AGENT_COORDINATE.x).withY(AGENT_COORDINATE.y).withSquirtPressure(SQUIRT_PRESSURE);
     agentPlayer = getAgent(agentPlayer);
     agentPlayer.setChemicalAmount((double)INIT_VALUE);
     
-    buildingGrid.field[FIRE_COORDINATE.x][FIRE_COORDINATE.y] = INIT_VALUE;
+    forestGrid.field[FIRE_COORDINATE.x][FIRE_COORDINATE.y] = INIT_VALUE;
     currentFireGrid.field[FIRE_COORDINATE.x][FIRE_COORDINATE.y] = HIGH_VALUE;
     currentSmokeGrid.field[FIRE_COORDINATE.x][FIRE_COORDINATE.y] = HIGH_VALUE;
     

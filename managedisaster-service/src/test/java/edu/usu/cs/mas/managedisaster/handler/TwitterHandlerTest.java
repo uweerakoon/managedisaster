@@ -40,7 +40,7 @@ public class TwitterHandlerTest {
   private static Twitter twitter;
   private static User user;
   
-  private static ForestPersister buildingPersister; 
+  private static ForestPersister forestPersister; 
  
   @Mock
   private TweetPersister tweetPersister;
@@ -59,7 +59,7 @@ public class TwitterHandlerTest {
     catch(Exception e) {
       e.printStackTrace();
     }
-    buildingPersister = new ForestPersisterImpl(new HibernateUtilImpl());
+    forestPersister = new ForestPersisterImpl(new HibernateUtilImpl());
   }
   
   @Before
@@ -72,7 +72,7 @@ public class TwitterHandlerTest {
   @Test
   public void testPostAndReadTweet() throws Exception{
     Message message = new Message().withMessageType(MessageType.FIRE).withSeverity(Severity.MILD).withForest(new ForestEntity().withName(WALMART));
-    twitterHandler = new TwitterHandlerImpl(buildingPersister, tweetPersister, twitter, user, latestTweetId, currentDate);
+    twitterHandler = new TwitterHandlerImpl(forestPersister, tweetPersister, twitter, user, latestTweetId, currentDate);
     AgentModel agentModel = new AgentModel().withId(1L);
     AgentPlayer agent = new AgentPlayer().withAgentModel(agentModel);
     TweetEntity tweet = getTweetEntity();
@@ -102,16 +102,16 @@ public class TwitterHandlerTest {
   }
   
   private TweetEntity getTweetEntity() {
-    ForestEntity building = getBuildingEntity();
+    ForestEntity forest = getForestEntity();
     TweetEntity entity = new TweetEntity()
                           .withId(1L)
                           .withMessageType(MessageType.FIRE)
                           .withSeverity(Severity.MILD)
-                          .withForest(building);
+                          .withForest(forest);
     return entity;
   }
   
-  private ForestEntity getBuildingEntity() {
+  private ForestEntity getForestEntity() {
     ForestEntity entity = new ForestEntity().withName(WALMART);
     return entity;
   }

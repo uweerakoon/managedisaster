@@ -19,22 +19,22 @@ import edu.usu.cs.mas.managedisaster.service.ManageDisasterModelSpringConfig;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=ManageDisasterModelSpringConfig.class, 
         loader=AnnotationConfigContextLoader.class)
-public class BuildingPersisterTest {
+public class ForestPersisterTest {
 
-  private static final String WALMART = "books";
+  private static final String PINES = "pines";
   
   @Inject
-  private ForestPersister buildingPersister;
+  private ForestPersister forestPersister;
   @Test
-  public void testGetAllBuildings() {
-    List<ForestEntity> buildingEntities = buildingPersister.getAllForests();
-    assertTrue(!buildingEntities.isEmpty());
+  public void testGetAllForests() {
+    List<ForestEntity> forestEntities = forestPersister.getAllForests();
+    assertTrue(!forestEntities.isEmpty());
   }
   
   @Test
   public void testGetByName() {
-    ForestEntity building = buildingPersister.getForest(WALMART);
-    assertEquals(WALMART, building.getName());
+    ForestEntity forest = forestPersister.getForest(PINES);
+    assertEquals(PINES, forest.getName());
   }
 
 }

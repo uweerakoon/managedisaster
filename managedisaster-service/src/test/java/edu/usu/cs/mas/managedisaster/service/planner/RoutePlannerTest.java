@@ -37,7 +37,7 @@ public class RoutePlannerTest extends TestUtil{
   private static IntGrid2D roadGrid = new IntGrid2D(100, 100);
   
   @Mock
-  private static ForestCanvas buildingCanvas;
+  private static ForestCanvas forestCanvas;
   
   @BeforeClass
   public static void setup(){
@@ -48,7 +48,7 @@ public class RoutePlannerTest extends TestUtil{
     RoadCanvas roadCanvas = new RoadCanvasImpl(roadPersister);
     roadCanvas.setRoadGrid(roadGrid);
     roadCanvas.drawRoads();
-    routePlanner = new RoutePlannerImpl(roadIntersectionPersister, intersectionPersister, roadPersister, roadCanvas, buildingCanvas);
+    routePlanner = new RoutePlannerImpl(roadIntersectionPersister, intersectionPersister, roadPersister, roadCanvas, forestCanvas);
   }
   
   @Test
@@ -62,8 +62,8 @@ public class RoutePlannerTest extends TestUtil{
   public void testCreateRoute() {
     AgentPlayer agent = getAgent(null);
     FireEntity fire = getFire();
-    ForestEntity building = getBuilding();
-    fire.setBurningForest(building);
+    ForestEntity forest = getForest();
+    fire.setBurningForest(forest);
     agent.getAgentModel().setFire(fire);
     roadGrid.field[50][50] = 1;
     Route route = routePlanner.createRoute(agent);

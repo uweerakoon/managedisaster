@@ -6,7 +6,7 @@ SHAPE polygon NOT NULL,
 COORDINATES varchar(255) comment 'Help to understand the location coordinates of the forest',
 LABEL_X int comment 'X Coordinate of the named label',
 LABEL_Y int comment 'Y Coordinate of the named label',
-constraint BUILDING_PK primary key (ID)
+constraint FOREST_PK primary key (ID)
 )
 comment 'Store data for the forest',
 ENGINE=InnoDB;

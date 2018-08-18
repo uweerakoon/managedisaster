@@ -36,7 +36,7 @@ public class TestUtil {
         .withIncrementProbability(0.1);
   }
   
-  public ForestEntity getBuilding() {
+  public ForestEntity getForest() {
     GeometricShapeFactory gsf = new GeometricShapeFactory();
     gsf.setSize(6);
     gsf.setNumPoints(6);
@@ -56,16 +56,16 @@ public class TestUtil {
   }
   
   public FireEntity createFire(int size, int numPoints, int baseX, int baseY) {
-    ForestEntity building = getBuilding();
+    ForestEntity forest = getForest();
     GeometricShapeFactory gsf = new GeometricShapeFactory();
     gsf.setSize(size);
     gsf.setNumPoints(numPoints);
     gsf.setBase(new Coordinate(baseX,baseY));
     Polygon rectangle = gsf.createRectangle();
-    building.withShape(rectangle);
+    forest.withShape(rectangle);
 
     FireEntity fire = getFire();
-    fire.setBurningForest(building);
+    fire.setBurningForest(forest);
     
     return fire;
   }
