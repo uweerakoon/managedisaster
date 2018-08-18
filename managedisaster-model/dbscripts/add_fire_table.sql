@@ -24,12 +24,12 @@ ENABLE boolean not null comment 'Specifies whether the fire is paticipated in th
 ACTIVE boolean default true not null comment 'Specifies whether the fire is subjected to participate in the simulation: 0 - false and 1 - true',
 ORIGINATOR varchar(10) not null comment 'The origination of the information: PERSON, SYSTEM',
 SEVERITY varchar(10) comment 'The severity of the fire: SEVERE, NORMAL, MILD',
-BUILDING_ID int comment 'Building (Burning) id. ref: Building',
+FOREST_ID int comment 'Forest (Burning) id. ref: Forest',
 COALITION_ID int comment 'Coalition id. ref: Coalition',
 TIME datetime default current_timestamp on update current_timestamp comment 'Time stamp of the record created or updated',
 constraint FIRE_PK primary key (ID),
 constraint FIRE_ORIG_CK check (ORIGINATOR in ('PERSON','SYSTEM')),
-constraint FIRE_BUILD_FK foreign key (BUILDING_ID) references BUILDING(ID),
+constraint FIRE_FOREST_FK foreign key (FOREST_ID) references FOREST(ID),
 constraint FIRE_COAL_FK foreign key (COALITION_ID) references COALITION(ID)
 )
 comment 'Store the fire information',
