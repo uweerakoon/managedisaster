@@ -22,7 +22,7 @@ import edu.usu.cs.mas.managedisaster.model.util.HibernateUtilImpl;
 
 public class FirePersisterTest {
   
-  private static final String WALMART = "books";
+  private static final String WALMART = "pines";
   private static final long START_TIME = 1L;
   
   private HibernateUtil hibernateUtil;
