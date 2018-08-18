@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 
-import edu.usu.cs.mas.managedisaster.canvas.BuildingCanvas;
+import edu.usu.cs.mas.managedisaster.canvas.ForestCanvas;
 import edu.usu.cs.mas.managedisaster.canvas.FireCanvas;
 import edu.usu.cs.mas.managedisaster.collection.AgentSociety;
 import edu.usu.cs.mas.managedisaster.common.Chemical;
@@ -35,7 +35,7 @@ public class CoalitionCalculatorImpl implements CoalitionCalculator {
   @Inject
   private FireCanvas fireCanvas;
   @Inject
-  private BuildingCanvas buildingCanvas;
+  private ForestCanvas buildingCanvas;
   @Inject
   private AgentSociety agentSociety;
   @Inject
@@ -61,7 +61,7 @@ public class CoalitionCalculatorImpl implements CoalitionCalculator {
       double[][] smoke = fireCanvas.getCurrentSmokeGrid().field;
       for(int i = minX; i <= maxX; i++) {
         for(int j= minY; j <= maxY; j++) {
-          if(!buildingCanvas.isBuildingCoordinate(i, j)) {
+          if(!buildingCanvas.isForestCoordinate(i, j)) {
             continue;
           }
           fireAmount += fire[i][j];

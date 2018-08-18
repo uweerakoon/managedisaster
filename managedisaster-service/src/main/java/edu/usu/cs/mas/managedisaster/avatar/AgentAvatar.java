@@ -132,7 +132,7 @@ public class AgentAvatar extends OvalPortrayal2D{
 		return agentPlayer.getAgentModel().getFire();
 	}
 	
-	public ForestEntity getBuilding() {
+	public ForestEntity getForest() {
 		FireEntity fire = agentPlayer.getAgentModel().getFire();
 		return fire == null ? null : fire.getBurningForest();
 	}

@@ -11,7 +11,7 @@ import sim.util.MutableInt2D;
 import com.google.common.base.Preconditions;
 
 import edu.usu.cs.mas.managedisaster.Simulator;
-import edu.usu.cs.mas.managedisaster.canvas.BuildingCanvas;
+import edu.usu.cs.mas.managedisaster.canvas.ForestCanvas;
 import edu.usu.cs.mas.managedisaster.canvas.FireCanvas;
 import edu.usu.cs.mas.managedisaster.common.Chemical;
 import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
@@ -33,11 +33,11 @@ public class ExtinguisherImpl implements Extinguisher {
   @Inject
   private FireCanvas fireCanvas;
   @Inject
-  private BuildingCanvas buildingCanvas;
+  private ForestCanvas buildingCanvas;
   
   public ExtinguisherImpl() { }
   
-  public ExtinguisherImpl(FireCanvas fireCanvas, BuildingCanvas buildingCanvas, 
+  public ExtinguisherImpl(FireCanvas fireCanvas, ForestCanvas buildingCanvas, 
       DoubleGrid2D currentWaterGrid, DoubleGrid2D newWaterGrid) {
     this.fireCanvas = fireCanvas;
     this.buildingCanvas = buildingCanvas;
@@ -131,7 +131,7 @@ public class ExtinguisherImpl implements Extinguisher {
     int startX, endX;
     
     double[][] currentWaterGridField = currentWaterGrid.field;
-    int[][] buildingGridField = buildingCanvas.getBuildingsGrid().field;
+    int[][] buildingGridField = buildingCanvas.getForestsGrid().field;
     
     double[] previousWaterXAxis, currentWaterXAxis, nextWaterXAxis = null;
     int[] previousBuildingXAxis, currentBuildingXAxis, nextBuildingXAxis = null;
@@ -297,7 +297,7 @@ public class ExtinguisherImpl implements Extinguisher {
       newWaterImpactCenter = new MutableInt2D((int)waterImpactCenter.x, (int)waterImpactCenter.y);
     }
     
-    if(buildingCanvas.getBuildingsGrid().field[newWaterImpactCenter.x][newWaterImpactCenter.y] == 0) {
+    if(buildingCanvas.getForestsGrid().field[newWaterImpactCenter.x][newWaterImpactCenter.y] == 0) {
       LOGGER.fatal("The agent is not close to the buring building. Agent: "+agent+" Fire: "+fire);
       throw new ManageDisasterServiceException("The agent is not close to the buring building. Agent: "+agent+" Fire: "+fire);
     }

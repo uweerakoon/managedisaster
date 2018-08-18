@@ -12,7 +12,7 @@ import org.mockito.Mock;
 import sim.field.grid.DoubleGrid2D;
 import sim.field.grid.IntGrid2D;
 import sim.util.MutableInt2D;
-import edu.usu.cs.mas.managedisaster.canvas.BuildingCanvas;
+import edu.usu.cs.mas.managedisaster.canvas.ForestCanvas;
 import edu.usu.cs.mas.managedisaster.canvas.FireCanvas;
 import edu.usu.cs.mas.managedisaster.common.Chemical;
 import edu.usu.cs.mas.managedisaster.entity.FireEntity;
@@ -55,7 +55,7 @@ public class ExtinguisherTest extends TestUtil{
   @Mock
   private FireCanvas fireCanvas;
   @Mock
-  private BuildingCanvas buildingCanvas;
+  private ForestCanvas buildingCanvas;
   
   private ExtinguisherImpl extinguisher;
   
@@ -67,7 +67,7 @@ public class ExtinguisherTest extends TestUtil{
     when(fireCanvas.getNewFireGrid()).thenReturn(newFireGrid);
     when(fireCanvas.getCurrentSmokeGrid()).thenReturn(currentSmokeGrid);
     when(fireCanvas.getNewSmokeGrid()).thenReturn(newSmokeGrid);
-    when(buildingCanvas.getBuildingsGrid()).thenReturn(buildingGrid);
+    when(buildingCanvas.getForestsGrid()).thenReturn(buildingGrid);
   }
 
   @Test
@@ -275,7 +275,7 @@ public class ExtinguisherTest extends TestUtil{
     when(fireCanvas.getNewFireGrid()).thenReturn(newFireGrid);
     when(fireCanvas.getCurrentSmokeGrid()).thenReturn(currentSmokeGrid);
     when(fireCanvas.getNewSmokeGrid()).thenReturn(newSmokeGrid);
-    when(buildingCanvas.getBuildingsGrid()).thenReturn(buildingGrid);
+    when(buildingCanvas.getForestsGrid()).thenReturn(buildingGrid);
     
     extinguisher.setCurrentWaterGrid(currentWaterGrid);
     extinguisher.setNewWaterGrid(newWaterGrid);

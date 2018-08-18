@@ -22,6 +22,7 @@ public class FastValueLabeledGridPortrayal2D extends FastValueGridPortrayal2D {
 		super(valueName, immutableField);
 	}
 	
+	@Override
 	public void draw(Object object, Graphics2D graphics, DrawInfo2D info) {
 		super.draw(object, graphics, info);
 		final Grid2D field = (Grid2D)this.field;

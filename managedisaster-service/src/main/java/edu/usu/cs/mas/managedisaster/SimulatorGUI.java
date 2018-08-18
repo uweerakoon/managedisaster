@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import edu.usu.cs.mas.managedisaster.canvas.BuildingCanvas;
+import edu.usu.cs.mas.managedisaster.canvas.ForestCanvas;
 import edu.usu.cs.mas.managedisaster.canvas.FireCanvas;
 import edu.usu.cs.mas.managedisaster.canvas.FireStationCanvas;
 import edu.usu.cs.mas.managedisaster.canvas.RoadCanvas;
@@ -37,7 +37,7 @@ public class SimulatorGUI extends GUIState{
   
   private TransportationLayout transportationLayout;
   
-  private BuildingCanvas buildingCanvas;
+  private ForestCanvas buildingCanvas;
   private RoadCanvas roadCanvas;
   private FireStationCanvas fireStationCanvas;
   private FireCanvas fireCanvas;
@@ -74,7 +74,7 @@ public class SimulatorGUI extends GUIState{
   
   private void setupBeans() {
   	transportationLayout = applicationContext.getBean(TransportationLayout.class);
-    buildingCanvas = applicationContext.getBean(BuildingCanvas.class);
+    buildingCanvas = applicationContext.getBean(ForestCanvas.class);
     roadCanvas = applicationContext.getBean(RoadCanvas.class);
     fireStationCanvas = applicationContext.getBean(FireStationCanvas.class);
     fireCanvas = applicationContext.getBean(FireCanvas.class);
@@ -126,7 +126,7 @@ public class SimulatorGUI extends GUIState{
     smokePortrayal.setField(simulator.currentSmokeGrid);
     smokePortrayal.setMap(new SimpleColorMap(5, 500, new Color(255, 255, 255, 0), Color.BLACK));
     
-    buildingCanvas.setBuildingsPortrayal(buildingsPortrayal);
+    buildingCanvas.setForestsPortrayal(buildingsPortrayal);
     roadCanvas.setRoadPortrayal(roadPortrayal);
     fireStationCanvas.setFireStationPortrayal(fireStationPortrayal);
     fireCanvas.setFirePortrayal(firePortrayal);

@@ -6,7 +6,7 @@ import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import edu.usu.cs.mas.managedisaster.canvas.BuildingCanvas;
+import edu.usu.cs.mas.managedisaster.canvas.ForestCanvas;
 import edu.usu.cs.mas.managedisaster.canvas.FireCanvas;
 import edu.usu.cs.mas.managedisaster.canvas.FireStationCanvas;
 import edu.usu.cs.mas.managedisaster.canvas.PositioningCanvas;
@@ -71,7 +71,7 @@ public class Simulator extends SimState{
 
   private FireCanvas fireCanvas;
   private PositioningCanvas positioningCanvas;
-  private BuildingCanvas buildingCanvas;
+  private ForestCanvas buildingCanvas;
   private RoadCanvas roadCanvas;
   private FireStationCanvas fireStationCanvas;
 
@@ -124,7 +124,7 @@ public class Simulator extends SimState{
     fireEngineCollection = applicationContext.getBean(FireEngineCollection.class);
     fireTruckCollection = applicationContext.getBean(FireTruckCollection.class);
     positioningCanvas = applicationContext.getBean(PositioningCanvas.class);
-    buildingCanvas = applicationContext.getBean(BuildingCanvas.class);
+    buildingCanvas = applicationContext.getBean(ForestCanvas.class);
     roadCanvas = applicationContext.getBean(RoadCanvas.class);
     fireStationCanvas = applicationContext.getBean(FireStationCanvas.class);
     agentPersister = applicationContext.getBean(AgentPersister.class);
@@ -158,8 +158,8 @@ public class Simulator extends SimState{
     communicationHandler.addCommunicationLinks();
 
     buildingsGrid = new IntGrid2D(GRID_WIDTH, GRID_HEIGHT,0);
-    buildingCanvas.setBuildingsGrid(buildingsGrid);
-    buildingCanvas.drawBuildings();
+    buildingCanvas.setForestsGrid(buildingsGrid);
+    buildingCanvas.drawForests();
 
     roadGrid = new IntGrid2D(GRID_WIDTH, GRID_HEIGHT,0);
     roadCanvas.setRoadGrid(roadGrid);

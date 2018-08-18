@@ -21,7 +21,7 @@ import org.mockito.Mock;
 import sim.field.grid.DoubleGrid2D;
 import sim.field.grid.IntGrid2D;
 import ec.util.MersenneTwisterFast;
-import edu.usu.cs.mas.managedisaster.canvas.BuildingCanvas;
+import edu.usu.cs.mas.managedisaster.canvas.ForestCanvas;
 import edu.usu.cs.mas.managedisaster.canvas.FireCanvas;
 import edu.usu.cs.mas.managedisaster.csv.FireGridCsvPrinter;
 import edu.usu.cs.mas.managedisaster.csv.FireGridCsvPrinterImpl;
@@ -56,7 +56,7 @@ public class FireDiffuserTest extends TestUtil{
   @Mock
   private MersenneTwisterFast random;
   @Mock
-  private BuildingCanvas buildingCanvas;
+  private ForestCanvas buildingCanvas;
   
   private FireDiffuser fireDiffuser;
   
@@ -98,7 +98,7 @@ public class FireDiffuserTest extends TestUtil{
     buildingGrid = new IntGrid2D(WIDTH, LENGTH, 0);
     fire.setBurningForest(building);
     fire.setFireRadius(1);
-    when(buildingCanvas.getBuildingsGrid()).thenReturn(buildingGrid);
+    when(buildingCanvas.getForestsGrid()).thenReturn(buildingGrid);
     when(random.nextBoolean(anyDouble())).thenReturn(true);
     when(random.nextDouble()).thenReturn(0.9);
     when(random.nextBoolean(anyDouble())).thenReturn(true);

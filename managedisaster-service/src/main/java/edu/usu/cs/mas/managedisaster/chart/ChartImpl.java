@@ -14,7 +14,7 @@ public class ChartImpl implements Chart {
 	@Inject
 	private AgentChart agentChart;
 	@Inject
-	private BurningBuildingChart burningBuildingChart;
+	private BurningForestChart burningForestChart;
 	@Inject
 	private CoalitionChart coalitionChart;
 	@Inject
@@ -27,8 +27,8 @@ public class ChartImpl implements Chart {
 		}
 		LOGGER.info("Creating agent plots");
 		agentChart.createPlots();
-		LOGGER.info("Creating Burning Building plots");
-		burningBuildingChart.createPlots();
+		LOGGER.info("Creating Burning Forest plots");
+		burningForestChart.createPlots();
 		LOGGER.info("Creating Coalition plots");
 		coalitionChart.createPlots();
 	}

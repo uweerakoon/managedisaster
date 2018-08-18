@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 import edu.usu.cs.mas.managedisaster.Simulator;
-import edu.usu.cs.mas.managedisaster.canvas.BuildingCanvas;
+import edu.usu.cs.mas.managedisaster.canvas.ForestCanvas;
 import edu.usu.cs.mas.managedisaster.canvas.FireCanvas;
 import edu.usu.cs.mas.managedisaster.common.AgentStatus;
 import edu.usu.cs.mas.managedisaster.common.Chemical;
@@ -58,7 +58,7 @@ public class AgentPlayerTest extends TestUtil {
   @Mock
   private FireCanvas fireCanvas;
   @Mock
-  private BuildingCanvas buildingCanvas;
+  private ForestCanvas buildingCanvas;
   @Mock
   private TweetPersister tweetPersister;
   @Mock
@@ -81,7 +81,7 @@ public class AgentPlayerTest extends TestUtil {
     when(fireCanvas.getNewFireGrid()).thenReturn(newFireGrid);
     when(fireCanvas.getCurrentSmokeGrid()).thenReturn(currentSmokeGrid);
     when(fireCanvas.getNewSmokeGrid()).thenReturn(newSmokeGrid);
-    when(buildingCanvas.getBuildingsGrid()).thenReturn(buildingGrid);
+    when(buildingCanvas.getForestsGrid()).thenReturn(buildingGrid);
     when(fireCanvas.isBuildingBurning(any(ForestEntity.class))).thenReturn(true);
   }
 

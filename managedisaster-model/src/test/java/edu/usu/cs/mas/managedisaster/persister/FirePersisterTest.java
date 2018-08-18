@@ -151,7 +151,7 @@ public class FirePersisterTest {
     assertEquals(ENABLE, fire.isEnable());
   }
   
-  private static final long FIRE_DELAY = 0;
+  private static final long FIRE_DELAY = 5;
   private static final boolean ENABLE = true;
   
   private static final double THRESHOLD = .001;

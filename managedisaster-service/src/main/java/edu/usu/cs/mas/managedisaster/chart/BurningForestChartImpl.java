@@ -28,25 +28,25 @@ import ec.util.MersenneTwisterFast;
 import edu.usu.cs.mas.managedisaster.entity.BurningForestStatEntity;
 import edu.usu.cs.mas.managedisaster.persister.BurningForestStatPersister;
 
-public class BurningBuildingChartImpl extends JFrame implements BurningBuildingChart {
+public class BurningForestChartImpl extends JFrame implements BurningForestChart {
 
 	private static final long serialVersionUID = -3345673479227944405L;
 	private static final MersenneTwisterFast RANDOM = new MersenneTwisterFast(100);
 	private static final String FOLDER_NAME = "/opt/managedisaster/report/";
-	private static final String BURNING_BUILDING_STATUS_PLOT = "burningbuildingstatusplot_"+new Date()+".png";
+	private static final String BURNING_FOREST_STATUS_PLOT = "burningforeststatusplot_"+new Date()+".png";
 	
 	private static final Font TITLE_FONT = new Font("Serif", java.awt.Font.BOLD, 18);
-	private static final String PLOT_HEADER = "Burning Building Vs Time";
+	private static final String PLOT_HEADER = "Burning Forest Vs Time";
 	
 	private static final String X_AXIS_NAME = "Time";
-	private static final String Y_AXIS_NAME = "Burning Building Status";
+	private static final String Y_AXIS_NAME = "Burning Forest Status";
 	private static final PlotOrientation ORIENTATION = PlotOrientation.VERTICAL;
 	private static final boolean IS_LEGENDS = true;
 	private static final boolean IS_TOOLTIP = true;
 	private static final boolean IS_URL = false;
 	
 	@Inject
-	private BurningForestStatPersister burningBuildingStatPersister;
+	private BurningForestStatPersister burningForestStatPersister;
 	
 	private JFreeChart linePlot;
 	private Map<Long, XYSeries> firePlotMap = new HashMap<>();
@@ -55,7 +55,7 @@ public class BurningBuildingChartImpl extends JFrame implements BurningBuildingC
 	private XYSeriesCollection dataset = new XYSeriesCollection();
 	private File plotFile;
 	
-//	@Override
+	@Override
 	public void createPlots() {
 		boolean hasPlots = addXYSeriesData();
 		if(!hasPlots) {
@@ -66,29 +66,29 @@ public class BurningBuildingChartImpl extends JFrame implements BurningBuildingC
 	}
 	
 	private boolean addXYSeriesData() {
-		List<BurningForestStatEntity> buildingStats = burningBuildingStatPersister.getAllBurningForestStats();
-		if(CollectionUtils.isEmpty(buildingStats)) {
+		List<BurningForestStatEntity> forestStats = burningForestStatPersister.getAllBurningForestStats();
+		if(CollectionUtils.isEmpty(forestStats)) {
 			return false;
 		}
-		for(BurningForestStatEntity buildingStat : buildingStats) {
-			long buildingId = buildingStat.getForest().getId();
+		for(BurningForestStatEntity forestStat : forestStats) {
+			long forestId = forestStat.getForest().getId();
 			XYSeries firePlot = null, smokePlot = null, waterPlot = null;
-			if(firePlotMap.containsKey(buildingId)) {
-				firePlot = firePlotMap.get(buildingId);
-				smokePlot = smokePlotMap.get(buildingId);
-				waterPlot = waterPlotMap.get(buildingId);
+			if(firePlotMap.containsKey(forestId)) {
+				firePlot = firePlotMap.get(forestId);
+				smokePlot = smokePlotMap.get(forestId);
+				waterPlot = waterPlotMap.get(forestId);
 			}
 			else {
-				firePlot = new XYSeries("Building Fire. ID: "+buildingId);
-				firePlotMap.put(buildingId, firePlot);
-				smokePlot = new XYSeries("Building Smoke. ID: "+buildingId);
-				smokePlotMap.put(buildingId, smokePlot);
-				waterPlot = new XYSeries("Building Water. ID: "+buildingId);
-				waterPlotMap.put(buildingId, waterPlot);
+				firePlot = new XYSeries("Forest Fire. ID: "+forestId);
+				firePlotMap.put(forestId, firePlot);
+				smokePlot = new XYSeries("Forest Smoke. ID: "+forestId);
+				smokePlotMap.put(forestId, smokePlot);
+				waterPlot = new XYSeries("Forest Water. ID: "+forestId);
+				waterPlotMap.put(forestId, waterPlot);
 			}
-			firePlot.add(buildingStat.getTime(), buildingStat.getFireAmount());
-			smokePlot.add(buildingStat.getTime(), buildingStat.getSmokeAmount());
-			waterPlot.add(buildingStat.getTime(), buildingStat.getWaterAmount());
+			firePlot.add(forestStat.getTime(), forestStat.getFireAmount());
+			smokePlot.add(forestStat.getTime(), forestStat.getSmokeAmount());
+			waterPlot.add(forestStat.getTime(), forestStat.getWaterAmount());
 		}
 		return true;
 	}
@@ -136,7 +136,7 @@ public class BurningBuildingChartImpl extends JFrame implements BurningBuildingC
     linePlot.setTitle(new TextTitle(PLOT_HEADER, TITLE_FONT ));
     
     try {
-    	plotFile = new File(FOLDER_NAME+BURNING_BUILDING_STATUS_PLOT);
+    	plotFile = new File(FOLDER_NAME+BURNING_FOREST_STATUS_PLOT);
     	ChartUtilities.saveChartAsPNG(plotFile, linePlot, Chart.WIDTH, Chart.HEIGHT);
     }
     catch(Exception e) {

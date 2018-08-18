@@ -18,7 +18,7 @@ import org.pojomatic.annotations.Property;
 
 import com.google.common.annotations.VisibleForTesting;
 
-import edu.usu.cs.mas.managedisaster.canvas.BuildingCanvas;
+import edu.usu.cs.mas.managedisaster.canvas.ForestCanvas;
 import edu.usu.cs.mas.managedisaster.canvas.RoadCanvas;
 import edu.usu.cs.mas.managedisaster.common.AgentMove;
 import edu.usu.cs.mas.managedisaster.common.RoadOrientation;
@@ -64,7 +64,7 @@ public class RoutePlannerImpl implements RoutePlanner{
   @Inject
   private RoadCanvas roadCanvas;
   @Inject
-  private BuildingCanvas buildingCanvas;
+  private ForestCanvas buildingCanvas;
 
   private Map<Long, Route> routePlans;
 
@@ -75,7 +75,7 @@ public class RoutePlannerImpl implements RoutePlanner{
     IntersectionPersister intersectionPersister,
     RoadPersister roadPersister,
     RoadCanvas roadCanvas,
-    BuildingCanvas buildingCanvas){ 
+    ForestCanvas buildingCanvas){ 
 
     this.roadIntersectionPersister = roadIntersectionPersister;
     this.intersectionPersister = intersectionPersister;
@@ -608,7 +608,7 @@ public class RoutePlannerImpl implements RoutePlanner{
             ? (isYTargetFar ? fireBuilding.getMinY() : selectedLocation.y)
                 : (isXTargetFar ? fireBuilding.getMinX() : selectedLocation.x);
             for(int incre = initValue; incre <= maximumValue; incre++) {
-              boolean isOtherBuilding = isXConstant ? buildingCanvas.isBuildingCoordinate(constant, incre) : buildingCanvas.isBuildingCoordinate(incre, constant);
+              boolean isOtherBuilding = isXConstant ? buildingCanvas.isForestCoordinate(constant, incre) : buildingCanvas.isForestCoordinate(incre, constant);
               if(isOtherBuilding) {
                 return true;
               }

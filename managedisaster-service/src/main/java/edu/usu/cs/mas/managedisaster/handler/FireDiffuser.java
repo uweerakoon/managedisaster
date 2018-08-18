@@ -9,7 +9,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 
 import ec.util.MersenneTwisterFast;
-import edu.usu.cs.mas.managedisaster.canvas.BuildingCanvas;
+import edu.usu.cs.mas.managedisaster.canvas.ForestCanvas;
 import edu.usu.cs.mas.managedisaster.canvas.FireCanvas;
 import edu.usu.cs.mas.managedisaster.csv.FireGridCsvPrinter;
 import edu.usu.cs.mas.managedisaster.csv.FireGridState;
@@ -33,7 +33,7 @@ public class FireDiffuser implements Steppable {
   @Inject
   private FireCanvas fireCanvas;
   @Inject
-  private BuildingCanvas buildingCanvas; 
+  private ForestCanvas buildingCanvas; 
   @Inject
   private FirePersister firePersister;
   @Inject
@@ -48,7 +48,7 @@ public class FireDiffuser implements Steppable {
   public FireDiffuser(FireGridCsvPrinter fireGridCsvPrinter, 
     FireCanvas fireCanvas, FirePersister firePersister,
     ForestPersister buildingPersister, MersenneTwisterFast random,
-    BuildingCanvas buildingCanvas) {
+    ForestCanvas buildingCanvas) {
     this();
     this.fireGridCsvPrinter = fireGridCsvPrinter;
     this.fireCanvas = fireCanvas;
@@ -106,7 +106,7 @@ public class FireDiffuser implements Steppable {
     int minY = burningBuilding.getMinY();
     int maxY = burningBuilding.getMaxY();
 
-    int[][] buildingField = buildingCanvas.getBuildingsGrid().field;
+    int[][] buildingField = buildingCanvas.getForestsGrid().field;
     double[][] currentSmokeGridField = fireCanvas.getCurrentSmokeGrid().field;
     double[][] newSmokeGridField = fireCanvas.getNewSmokeGrid().field;
 
@@ -199,7 +199,7 @@ public class FireDiffuser implements Steppable {
     double[][] currentFireGridField = fireCanvas.getCurrentFireGrid().field;
     double[][] newFireGridField = fireCanvas.getNewFireGrid().field;
     double[][] currentSmokeField = fireCanvas.getCurrentSmokeGrid().field;
-    int[][] buildingField = buildingCanvas.getBuildingsGrid().field;
+    int[][] buildingField = buildingCanvas.getForestsGrid().field;
 
     for(int x = minX; x < maxX; x++) {
       for(int y = minY; y < maxY; y++) {
@@ -333,7 +333,7 @@ public class FireDiffuser implements Steppable {
   }
 
   private void setupBurningBuilding(FireEntity fire) {
-    int buildingId = buildingCanvas.getBuildingId(fire.getX(), fire.getY());
+    int buildingId = buildingCanvas.getForestId(fire.getX(), fire.getY());
     ForestEntity burningBuilding = buildingPersister.getForest(Long.valueOf(buildingId));
     fire.setBurningForest(burningBuilding);
     burningBuilding.addFire(fire);

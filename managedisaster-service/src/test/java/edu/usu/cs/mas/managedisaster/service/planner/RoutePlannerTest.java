@@ -11,7 +11,7 @@ import org.mockito.Mock;
 
 import sim.field.grid.IntGrid2D;
 import sim.util.MutableInt2D;
-import edu.usu.cs.mas.managedisaster.canvas.BuildingCanvas;
+import edu.usu.cs.mas.managedisaster.canvas.ForestCanvas;
 import edu.usu.cs.mas.managedisaster.canvas.RoadCanvas;
 import edu.usu.cs.mas.managedisaster.canvas.RoadCanvasImpl;
 import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
@@ -37,7 +37,7 @@ public class RoutePlannerTest extends TestUtil{
   private static IntGrid2D roadGrid = new IntGrid2D(100, 100);
   
   @Mock
-  private static BuildingCanvas buildingCanvas;
+  private static ForestCanvas buildingCanvas;
   
   @BeforeClass
   public static void setup(){

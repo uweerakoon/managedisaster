@@ -10,7 +10,7 @@ import org.springframework.context.ApplicationContext;
 
 import ec.util.MersenneTwisterFast;
 import edu.usu.cs.mas.managedisaster.avatar.AgentAvatar;
-import edu.usu.cs.mas.managedisaster.canvas.BuildingCanvas;
+import edu.usu.cs.mas.managedisaster.canvas.ForestCanvas;
 import edu.usu.cs.mas.managedisaster.canvas.FireStationCanvas;
 import edu.usu.cs.mas.managedisaster.canvas.PositioningCanvas;
 import edu.usu.cs.mas.managedisaster.common.AgentMove;
@@ -75,7 +75,7 @@ public class AgentPlayer implements Steppable {
   private ForestPersister buildingPersister;
   private FireStationPersister fireStationPersister;
   private FireStationCanvas fireStationCanvas;
-  private BuildingCanvas buildingCanvas;
+  private ForestCanvas buildingCanvas;
   private RoutePlanner routePlanner;
   private Extinguisher extinguisher;
   private Config config;
@@ -90,7 +90,7 @@ public class AgentPlayer implements Steppable {
   }
 
   public AgentPlayer(AgentModel agentModel, MovementHandler movementHandler, PositioningCanvas positioningCanvas, FirePersister firePersister,
-    RoutePlanner routePlanner, Extinguisher extinguisher, ForestPersister buildingPersister, BuildingCanvas buildingCanvas) {
+    RoutePlanner routePlanner, Extinguisher extinguisher, ForestPersister buildingPersister, ForestCanvas buildingCanvas) {
     setupAgent(agentModel);
     this.movementHandler = movementHandler;
     this.positioningCanvas = positioningCanvas;
@@ -116,7 +116,7 @@ public class AgentPlayer implements Steppable {
     routePlanner = applicationContext.getBean(RoutePlanner.class);
     extinguisher = applicationContext.getBean(Extinguisher.class);
     buildingPersister = applicationContext.getBean(ForestPersister.class);
-    buildingCanvas = applicationContext.getBean(BuildingCanvas.class);
+    buildingCanvas = applicationContext.getBean(ForestCanvas.class);
     fireStationPersister = applicationContext.getBean(FireStationPersister.class);
     fireStationCanvas = applicationContext.getBean(FireStationCanvas.class);
     config = applicationContext.getBean(Config.class);
@@ -259,7 +259,7 @@ public class AgentPlayer implements Steppable {
   }
   
   private void burn(FireEntity fire) {
-    int buildingId = buildingCanvas.getBuildingId(fire.getX(), fire.getY());
+    int buildingId = buildingCanvas.getForestId(fire.getX(), fire.getY());
     if(buildingId == 0) {
       LOGGER.error("Cannot find the building id for a given fire. Agent: "+this+" fire: "+fire);
     }

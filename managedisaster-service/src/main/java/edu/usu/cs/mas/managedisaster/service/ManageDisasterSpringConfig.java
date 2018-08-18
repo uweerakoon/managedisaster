@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
-import edu.usu.cs.mas.managedisaster.canvas.BuildingCanvas;
-import edu.usu.cs.mas.managedisaster.canvas.BuildingCanvasImpl;
+import edu.usu.cs.mas.managedisaster.canvas.ForestCanvas;
+import edu.usu.cs.mas.managedisaster.canvas.ForestCanvasImpl;
 import edu.usu.cs.mas.managedisaster.canvas.FireCanvas;
 import edu.usu.cs.mas.managedisaster.canvas.FireCanvasImpl;
 import edu.usu.cs.mas.managedisaster.canvas.FireStationCanvas;
@@ -19,8 +19,8 @@ import edu.usu.cs.mas.managedisaster.canvas.RoadCanvas;
 import edu.usu.cs.mas.managedisaster.canvas.RoadCanvasImpl;
 import edu.usu.cs.mas.managedisaster.chart.AgentChart;
 import edu.usu.cs.mas.managedisaster.chart.AgentChartImpl;
-import edu.usu.cs.mas.managedisaster.chart.BurningBuildingChart;
-import edu.usu.cs.mas.managedisaster.chart.BurningBuildingChartImpl;
+import edu.usu.cs.mas.managedisaster.chart.BurningForestChart;
+import edu.usu.cs.mas.managedisaster.chart.BurningForestChartImpl;
 import edu.usu.cs.mas.managedisaster.chart.Chart;
 import edu.usu.cs.mas.managedisaster.chart.ChartImpl;
 import edu.usu.cs.mas.managedisaster.chart.CoalitionChart;
@@ -79,8 +79,8 @@ public class ManageDisasterSpringConfig {
 
   @Bean
   @Scope(BeanDefinition.SCOPE_SINGLETON)
-  public BuildingCanvas buildingCanvas(){
-    return new BuildingCanvasImpl();
+  public ForestCanvas buildingCanvas(){
+    return new ForestCanvasImpl();
   }
 
   @Bean
@@ -217,8 +217,8 @@ public class ManageDisasterSpringConfig {
 
   @Bean
   @Scope(BeanDefinition.SCOPE_SINGLETON)
-  public BurningBuildingChart burningBuildingChart() {
-    return new BurningBuildingChartImpl();
+  public BurningForestChart burningBuildingChart() {
+    return new BurningForestChartImpl();
   }
 
   @Bean

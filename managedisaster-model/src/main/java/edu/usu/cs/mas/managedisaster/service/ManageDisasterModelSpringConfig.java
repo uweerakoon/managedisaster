@@ -75,7 +75,7 @@ public class ManageDisasterModelSpringConfig {
 
   @Bean
   @Scope(BeanDefinition.SCOPE_SINGLETON)
-  public ForestPersister buildingPersister(){
+  public ForestPersister forestPersister(){
     return new ForestPersisterImpl();
   }
 
@@ -135,7 +135,7 @@ public class ManageDisasterModelSpringConfig {
 
   @Bean
   @Scope(BeanDefinition.SCOPE_SINGLETON)
-  public BurningForestStatPersister burningBuildingStatPersister() {
+  public BurningForestStatPersister burningForestStatPersister() {
     return new BurningForestStatPersisterImpl();
   }
 
@@ -147,7 +147,7 @@ public class ManageDisasterModelSpringConfig {
 
   @Bean
   @Scope(BeanDefinition.SCOPE_SINGLETON)
-  public CoalitionForestPersister coalitionBuildingPersister() {
+  public CoalitionForestPersister coalitionForestPersister() {
     return new CoalitionForestPersisterImpl();
   }
 
