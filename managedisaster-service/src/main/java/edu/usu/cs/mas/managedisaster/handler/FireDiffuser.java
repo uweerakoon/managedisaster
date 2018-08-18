@@ -33,11 +33,11 @@ public class FireDiffuser implements Steppable {
   @Inject
   private FireCanvas fireCanvas;
   @Inject
-  private ForestCanvas buildingCanvas; 
+  private ForestCanvas forestCanvas; 
   @Inject
   private FirePersister firePersister;
   @Inject
-  private ForestPersister buildingPersister;
+  private ForestPersister forestPersister;
   @Inject
   private FireGridCsvPrinter fireGridCsvPrinter;
 
@@ -47,15 +47,15 @@ public class FireDiffuser implements Steppable {
 
   public FireDiffuser(FireGridCsvPrinter fireGridCsvPrinter, 
     FireCanvas fireCanvas, FirePersister firePersister,
-    ForestPersister buildingPersister, MersenneTwisterFast random,
-    ForestCanvas buildingCanvas) {
+    ForestPersister forestPersister, MersenneTwisterFast random,
+    ForestCanvas forestCanvas) {
     this();
     this.fireGridCsvPrinter = fireGridCsvPrinter;
     this.fireCanvas = fireCanvas;
     this.firePersister = firePersister;
-    this.buildingPersister = buildingPersister;
+    this.forestPersister = forestPersister;
     this.random = random;
-    this.buildingCanvas = buildingCanvas;
+    this.forestCanvas = forestCanvas;
   }
 
   @Override
@@ -79,7 +79,7 @@ public class FireDiffuser implements Steppable {
       fire.setCurrentFireValue(0.0);
       fire.setCurrentSmokeValue(0.0);
       if(fire.getBurningForest() == null) {
-        setupBurningBuilding(fire);
+        setupBurningForest(fire);
       }
 
       handleSmoke(fire);
@@ -96,17 +96,17 @@ public class FireDiffuser implements Steppable {
       fire.setSmokeRadius(1);
       return;
     }
-    smokeBuilding(fire);
+    smokeForest(fire);
   }
 
-  private void smokeBuilding(FireEntity fire) {
-    ForestEntity burningBuilding = fire.getBurningForest();
-    int minX = burningBuilding.getMinX();
-    int maxX = burningBuilding.getMaxX();
-    int minY = burningBuilding.getMinY();
-    int maxY = burningBuilding.getMaxY();
+  private void smokeForest(FireEntity fire) {
+    ForestEntity burningForest = fire.getBurningForest();
+    int minX = burningForest.getMinX();
+    int maxX = burningForest.getMaxX();
+    int minY = burningForest.getMinY();
+    int maxY = burningForest.getMaxY();
 
-    int[][] buildingField = buildingCanvas.getForestsGrid().field;
+    int[][] forestField = forestCanvas.getForestsGrid().field;
     double[][] currentSmokeGridField = fireCanvas.getCurrentSmokeGrid().field;
     double[][] newSmokeGridField = fireCanvas.getNewSmokeGrid().field;
 
@@ -114,9 +114,9 @@ public class FireDiffuser implements Steppable {
     double[] currentSmokeXAxis = currentSmokeGridField[minX];
     double[] nextSmokeXAxis;
 
-    int[] previousBuildingXAxis = buildingField[minX];
-    int[] currentBuildingXAxis = buildingField[minX];
-    int[] nextBuildingXAxis;
+    int[] previousForestXAxis = forestField[minX];
+    int[] currentForestXAxis = forestField[minX];
+    int[] nextForestXAxis;
 
     double[] put;
 
@@ -124,13 +124,13 @@ public class FireDiffuser implements Steppable {
 
     for(int x = minX; x < maxX; x++) {
       nextSmokeXAxis = x + 1 < maxX ? currentSmokeGridField[x+1] : currentSmokeXAxis; 
-      nextBuildingXAxis = x + 1 < maxX ? buildingField[x+1] : currentBuildingXAxis;
+      nextForestXAxis = x + 1 < maxX ? forestField[x+1] : currentForestXAxis;
 
       put = newSmokeGridField[x];
       int yMinus1 = minY;
 
       for(int y = minY; y < maxY; y++) {
-        if(currentBuildingXAxis[y] == 0) {
+        if(currentForestXAxis[y] == 0) {
           yMinus1 = y;
           continue;
         }
@@ -138,16 +138,16 @@ public class FireDiffuser implements Steppable {
         double average = 0.0;
         double currentValue = currentSmokeXAxis[y];
 
-        if(currentBuildingXAxis[yMinus1] == 0 || currentSmokeXAxis[yMinus1] == 0.0) { // x, y-1
+        if(currentForestXAxis[yMinus1] == 0 || currentSmokeXAxis[yMinus1] == 0.0) { // x, y-1
           average += currentValue;
         }
-        if(currentBuildingXAxis[yPlus1] == 0 || currentSmokeXAxis[yPlus1] == 0.0) { // x, y+1
+        if(currentForestXAxis[yPlus1] == 0 || currentSmokeXAxis[yPlus1] == 0.0) { // x, y+1
           average += currentValue;
         }
-        if(previousBuildingXAxis[y] == 0 || previousSmokeXAxis[y] == 0.0) { // x-1, y
+        if(previousForestXAxis[y] == 0 || previousSmokeXAxis[y] == 0.0) { // x-1, y
           average += currentValue;
         }
-        if(nextBuildingXAxis[y] == 0 || nextSmokeXAxis[y] == 0.0) { // x+1, y
+        if(nextForestXAxis[y] == 0 || nextSmokeXAxis[y] == 0.0) { // x+1, y
           average += currentValue;
         }
 
@@ -167,17 +167,17 @@ public class FireDiffuser implements Steppable {
       previousSmokeXAxis = currentSmokeXAxis;
       currentSmokeXAxis = nextSmokeXAxis;
 
-      previousBuildingXAxis = currentBuildingXAxis;
-      currentBuildingXAxis = nextBuildingXAxis;
+      previousForestXAxis = currentForestXAxis;
+      currentForestXAxis = nextForestXAxis;
     }
-    burningBuilding.setCurrentSmoke(totalSmoke);
+    burningForest.setCurrentSmoke(totalSmoke);
     fire.setCurrentSmokeValue(totalSmoke);
   }
 
 
   private void handleFire(FireEntity fire) {
     if(fire.getFireRadius() > 0) {
-      burnBuilding(fire);
+      burnForest(fire);
     }
     else {
       boolean setupFire = setupFire(fire);
@@ -188,23 +188,23 @@ public class FireDiffuser implements Steppable {
     }
   }
 
-  private void burnBuilding(FireEntity fire) {
-    ForestEntity burningBuilding = fire.getBurningForest();
-    int minX = burningBuilding.getMinX();
-    int maxX = burningBuilding.getMaxX();
-    int minY = burningBuilding.getMinY();
-    int maxY = burningBuilding.getMaxY();
+  private void burnForest(FireEntity fire) {
+    ForestEntity burningForest = fire.getBurningForest();
+    int minX = burningForest.getMinX();
+    int maxX = burningForest.getMaxX();
+    int minY = burningForest.getMinY();
+    int maxY = burningForest.getMaxY();
     double fireSpreadProbability = fire.getFireSpreadProbability();
 
     double[][] currentFireGridField = fireCanvas.getCurrentFireGrid().field;
     double[][] newFireGridField = fireCanvas.getNewFireGrid().field;
     double[][] currentSmokeField = fireCanvas.getCurrentSmokeGrid().field;
-    int[][] buildingField = buildingCanvas.getForestsGrid().field;
+    int[][] forestField = forestCanvas.getForestsGrid().field;
 
     for(int x = minX; x < maxX; x++) {
       for(int y = minY; y < maxY; y++) {
 
-        if(buildingField[x][y] == 0 
+        if(forestField[x][y] == 0 
             || currentFireGridField[x][y] == 0 
             || currentSmokeField[x][y] == 0.0) { // no smoke no fire
           continue;
@@ -215,28 +215,28 @@ public class FireDiffuser implements Steppable {
         double currentFire = currentFireGridField[x][y];
 
         if(x > minX) { // left
-          if(buildingField[x-1][y] == 1 && random.nextBoolean(fireSpreadProbability)) {
+          if(forestField[x-1][y] == 1 && random.nextBoolean(fireSpreadProbability)) {
             formFire(currentFire, x-1, y, fire);
             increaseSmoke(x-1, y, fire);
           }
         }
 
         if(y > minY) { // above
-          if(buildingField[x][y-1] == 1 && random.nextBoolean(fireSpreadProbability)) {
+          if(forestField[x][y-1] == 1 && random.nextBoolean(fireSpreadProbability)) {
             formFire(currentFire, x, y-1, fire);
             increaseSmoke(x, y-1, fire);
           }
         }
 
         if(x < maxX) { // right
-          if(buildingField[x+1][y] == 1 && random.nextBoolean(fireSpreadProbability)) {
+          if(forestField[x+1][y] == 1 && random.nextBoolean(fireSpreadProbability)) {
             formFire(currentFire, x+1, y, fire);
             increaseSmoke(x+1, y, fire);
           }
         }
 
         if(y < maxY) { // below
-          if(buildingField[x][y+1] == 1 && random.nextBoolean(fireSpreadProbability)) {
+          if(forestField[x][y+1] == 1 && random.nextBoolean(fireSpreadProbability)) {
             formFire(currentFire, x, y+1, fire);
             increaseSmoke(x, y+1, fire);
           }
@@ -332,11 +332,11 @@ public class FireDiffuser implements Steppable {
     fire.setCurrentSmokeValue(initValue);
   }
 
-  private void setupBurningBuilding(FireEntity fire) {
-    int buildingId = buildingCanvas.getForestId(fire.getX(), fire.getY());
-    ForestEntity burningBuilding = buildingPersister.getForest(Long.valueOf(buildingId));
-    fire.setBurningForest(burningBuilding);
-    burningBuilding.addFire(fire);
+  private void setupBurningForest(FireEntity fire) {
+    int forestId = forestCanvas.getForestId(fire.getX(), fire.getY());
+    ForestEntity forest = forestPersister.getForest(Long.valueOf(forestId));
+    fire.setBurningForest(forest);
+    forest.addFire(fire);
   }
 
   private void printCsvHeaders(FireEntity fire) {

@@ -82,7 +82,7 @@ public class AgentPlayerTest extends TestUtil {
     when(fireCanvas.getCurrentSmokeGrid()).thenReturn(currentSmokeGrid);
     when(fireCanvas.getNewSmokeGrid()).thenReturn(newSmokeGrid);
     when(buildingCanvas.getForestsGrid()).thenReturn(buildingGrid);
-    when(fireCanvas.isBuildingBurning(any(ForestEntity.class))).thenReturn(true);
+    when(fireCanvas.isForestBurning(any(ForestEntity.class))).thenReturn(true);
   }
 
   @Ignore // Need to set this up once agent player is coded correctly
@@ -109,7 +109,7 @@ public class AgentPlayerTest extends TestUtil {
     assertTrue(agentPlayer.getChemicalAmount() < initChemicalAmt);
     
     // done working with fire
-    when(fireCanvas.isBuildingBurning(any(ForestEntity.class))).thenReturn(false);
+    when(fireCanvas.isForestBurning(any(ForestEntity.class))).thenReturn(false);
     agentPlayer.step(simulator);
     
     assertNull(agentModel.getFire());

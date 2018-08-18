@@ -9,13 +9,13 @@ import edu.usu.cs.mas.managedisaster.player.AgentPlayer;
 
 public interface CoalitionCleaner {
   
-  public void cancelUnwantedCoalBuildForBuildings(List<CoalitionForestEntity> allocatedCoalBuilds);
+  public void cancelUnwantedCoalForestForForests(List<CoalitionForestEntity> allocatedCoalForests);
   
-  public void cancelUnwantedCoalBuildForCoalitions(List<CoalitionForestEntity> allocatedCoalBuilds);
+  public void cancelUnwantedCoalForestForCoalitions(List<CoalitionForestEntity> allocatedCoalForests);
   
   public Set<AgentPlayer> cancelUnwantedCoalitions();
   
-  public void cancelSingleBuildingOtherCoalitions(List<CoalitionForestEntity> allocatedCoalBuilds);
+  public void cancelSingleForestOtherCoalitions(List<CoalitionForestEntity> allocatedCoalForests);
   
   public void clearAgent(List<AgentEntity> allocatedAgents);
   

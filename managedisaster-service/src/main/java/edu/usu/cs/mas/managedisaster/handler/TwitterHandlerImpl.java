@@ -2,9 +2,7 @@ package edu.usu.cs.mas.managedisaster.handler;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -19,11 +17,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-import twitter4j.Status;
-import twitter4j.Twitter;
-import twitter4j.TwitterFactory;
-import twitter4j.User;
-
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 
@@ -33,10 +26,12 @@ import edu.usu.cs.mas.managedisaster.exception.ManageDisasterServiceException;
 import edu.usu.cs.mas.managedisaster.message.Message;
 import edu.usu.cs.mas.managedisaster.message.MessageType;
 import edu.usu.cs.mas.managedisaster.message.Severity;
-import edu.usu.cs.mas.managedisaster.persister.AgentPersister;
 import edu.usu.cs.mas.managedisaster.persister.ForestPersister;
 import edu.usu.cs.mas.managedisaster.persister.TweetPersister;
-import edu.usu.cs.mas.managedisaster.player.AgentPlayer;
+import twitter4j.Status;
+import twitter4j.Twitter;
+import twitter4j.TwitterFactory;
+import twitter4j.User;
 
 public class TwitterHandlerImpl implements TwitterHandler {
   private static final Logger LOGGER = Logger.getLogger(TwitterHandlerImpl.class);
@@ -52,7 +47,7 @@ public class TwitterHandlerImpl implements TwitterHandler {
   private static long timeReadTweet = 0;
 
   @Inject
-  private ForestPersister buildingPersister; 
+  private ForestPersister forestPersister; 
   @Inject
   private TweetPersister tweetPersister;
 
@@ -78,10 +73,10 @@ public class TwitterHandlerImpl implements TwitterHandler {
     }
   }
 
-  public TwitterHandlerImpl(ForestPersister buildingPersister, TweetPersister tweetPersister, 
+  public TwitterHandlerImpl(ForestPersister forestPersister, TweetPersister tweetPersister, 
     Twitter twitter, User user, long latestTweetId, Date currentDate) {
     this();
-    this.buildingPersister = buildingPersister;
+    this.forestPersister = forestPersister;
     this.tweetPersister = tweetPersister;
     this.twitter = twitter;
     this.user = user;
@@ -298,9 +293,9 @@ public class TwitterHandlerImpl implements TwitterHandler {
     Preconditions.checkNotNull(tweet,"Tweeting message is null");
     Preconditions.checkNotNull(tweet.getMessageType(), "Message type is null");
     Preconditions.checkNotNull(tweet.getSeverity(), "Severity is null");
-    Preconditions.checkNotNull(tweet.getForest(), "Building is null");
+    Preconditions.checkNotNull(tweet.getForest(), "Forest is null");
     if(StringUtils.isEmpty(tweet.getForest().getName())) {
-      throw new ManageDisasterServiceException("The building has no name");
+      throw new ManageDisasterServiceException("The Forest has no name");
     }
   }
 
@@ -343,11 +338,11 @@ public class TwitterHandlerImpl implements TwitterHandler {
     }
     message.setSeverity(severity);
 
-    ForestEntity building = buildingPersister.getForest(tweetText.split("at ")[1]);
-    if(building == null){
+    ForestEntity forest = forestPersister.getForest(tweetText.split("at ")[1]);
+    if(forest == null){
       return null;
     }
-    message.setForest(building);
+    message.setForest(forest);
 
     Long tweetId = getTweetId(tweetText);
     if(tweetId != null) {

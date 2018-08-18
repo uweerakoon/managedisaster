@@ -33,23 +33,23 @@ public class ExtinguisherImpl implements Extinguisher {
   @Inject
   private FireCanvas fireCanvas;
   @Inject
-  private ForestCanvas buildingCanvas;
+  private ForestCanvas forestCanvas;
   
   public ExtinguisherImpl() { }
   
-  public ExtinguisherImpl(FireCanvas fireCanvas, ForestCanvas buildingCanvas, 
+  public ExtinguisherImpl(FireCanvas fireCanvas, ForestCanvas forestCanvas, 
       DoubleGrid2D currentWaterGrid, DoubleGrid2D newWaterGrid) {
     this.fireCanvas = fireCanvas;
-    this.buildingCanvas = buildingCanvas;
+    this.forestCanvas = forestCanvas;
     this.currentWaterGrid = currentWaterGrid;
     this.newWaterGrid = newWaterGrid;
   }
   
   @Override
   public void extinguish(FireEntity fire, AgentPlayer agent) {
-    ForestEntity building = fire.getBurningForest();
+    ForestEntity forest = fire.getBurningForest();
     
-    checkInitValues(agent, building);
+    checkInitValues(agent, forest);
     
     initNewValues();
     
@@ -70,7 +70,7 @@ public class ExtinguisherImpl implements Extinguisher {
         }
       }
       else { 
-        fight(building, agent, fire);
+        fight(forest, agent, fire);
         agent.setWaterImpactRadius(agent.getWaterImpactRadius() + INCREMENTAL_RADIUS_VALUE);
       }
       
@@ -87,12 +87,12 @@ public class ExtinguisherImpl implements Extinguisher {
     if(fire.isExtinguished()) {
       return true;
     }
-    ForestEntity building = fire.getBurningForest();
-    boolean isBuildingBurning = fireCanvas.isBuildingBurning(building);
-    if(!isBuildingBurning) {
+    ForestEntity forest = fire.getBurningForest();
+    boolean isForestBurning = fireCanvas.isForestBurning(forest);
+    if(!isForestBurning) {
       fire.setExtinguished(true);
     }
-    return !isBuildingBurning;
+    return !isForestBurning;
   }
   
   @Override
@@ -106,8 +106,8 @@ public class ExtinguisherImpl implements Extinguisher {
     agent.setFire(null);
   }
 
-  private void checkInitValues(AgentPlayer agent, ForestEntity building) {
-    Preconditions.checkNotNull(building, "Buring building cannot be null");
+  private void checkInitValues(AgentPlayer agent, ForestEntity forest) {
+    Preconditions.checkNotNull(forest, "Buring forest cannot be null");
     Preconditions.checkNotNull(agent.getChemical(), "Agent has not chemical type to use");
     Preconditions.checkArgument(agent.getChemicalAmount() > 0, "Agent has not chemical amount to use");
   }
@@ -124,17 +124,17 @@ public class ExtinguisherImpl implements Extinguisher {
     currentWaterGrid.setTo(newWaterGrid);
   }
   
-  private void fight(ForestEntity building, AgentPlayer agent, FireEntity fire) {
-    int minX = building.getMinX(), maxX = building.getMaxX();
-    int minY = building.getMinY(), maxY = building.getMaxY();
+  private void fight(ForestEntity forest, AgentPlayer agent, FireEntity fire) {
+    int minX = forest.getMinX(), maxX = forest.getMaxX();
+    int minY = forest.getMinY(), maxY = forest.getMaxY();
     
     int startX, endX;
     
     double[][] currentWaterGridField = currentWaterGrid.field;
-    int[][] buildingGridField = buildingCanvas.getForestsGrid().field;
+    int[][] forestGridField = forestCanvas.getForestsGrid().field;
     
     double[] previousWaterXAxis, currentWaterXAxis, nextWaterXAxis = null;
-    int[] previousBuildingXAxis, currentBuildingXAxis, nextBuildingXAxis = null;
+    int[] previousForestXAxis, currentForestXAxis, nextForestXAxis = null;
     
     startX = agent.getWaterImpactCenter().x - agent.getWaterImpactRadius();
     if(startX < minX) {
@@ -148,19 +148,19 @@ public class ExtinguisherImpl implements Extinguisher {
     
     previousWaterXAxis = currentWaterGridField[startX];
     currentWaterXAxis = currentWaterGridField[startX];
-    previousBuildingXAxis = buildingGridField[startX];
-    currentBuildingXAxis = buildingGridField[startX];
+    previousForestXAxis = forestGridField[startX];
+    currentForestXAxis = forestGridField[startX];
     
-    diffuseWaterInBuilding(agent, startX, endX, minY, maxY, fire,
-      previousBuildingXAxis, currentBuildingXAxis, nextBuildingXAxis, 
+    diffuseWaterInForest(agent, startX, endX, minY, maxY, fire,
+      previousForestXAxis, currentForestXAxis, nextForestXAxis, 
       previousWaterXAxis, currentWaterXAxis, nextWaterXAxis, 
-      buildingGridField, currentWaterGridField);
+      forestGridField, currentWaterGridField);
   }
   
-  private void diffuseWaterInBuilding(AgentPlayer agent, int startX, int endX, int minY, int maxY, FireEntity fire, 
-      int[] previousBuildingXAxis, int[] currentBuildingXAxis, int[] nextBuildingXAxis,
+  private void diffuseWaterInForest(AgentPlayer agent, int startX, int endX, int minY, int maxY, FireEntity fire, 
+      int[] previousForestXAxis, int[] currentForestXAxis, int[] nextForestXAxis,
       double[] previousWaterXAxis, double[] currentWaterXAxis, double[] nextWaterXAxis, 
-      int[][] buildingGridField, double[][] currentWaterGridField) {
+      int[][] forestGridField, double[][] currentWaterGridField) {
     
     Chemical chemical = agent.getChemical();
     double chemicalEvaporationRate = chemical.getEvaporationRate();
@@ -170,7 +170,7 @@ public class ExtinguisherImpl implements Extinguisher {
     
     for(int x = startX; x <= endX; x++) {
       int xPlus1 = x + 1 < endX ? x + 1 : endX;
-      nextBuildingXAxis = buildingGridField[xPlus1];
+      nextForestXAxis = forestGridField[xPlus1];
       nextWaterXAxis = currentWaterGridField[xPlus1];
       int yMinus1 = minY;
       
@@ -178,7 +178,7 @@ public class ExtinguisherImpl implements Extinguisher {
         if(availableChemicalAmt <= 0) {
           return;
         }
-        if(currentBuildingXAxis[y] == 0) {
+        if(currentForestXAxis[y] == 0) {
           yMinus1 = y;
           continue;
         }
@@ -189,7 +189,7 @@ public class ExtinguisherImpl implements Extinguisher {
         if(currentWaterXAxis[y] > 0) {
           average = calculateAverage(y, yMinus1, yPlus1, 
                       previousWaterXAxis, currentWaterXAxis, nextWaterXAxis, 
-                      previousBuildingXAxis, currentBuildingXAxis, nextBuildingXAxis);
+                      previousForestXAxis, currentForestXAxis, nextForestXAxis);
         }
 
         average = (average + previousWaterXAxis[y]
@@ -220,8 +220,8 @@ public class ExtinguisherImpl implements Extinguisher {
       previousWaterXAxis = currentWaterXAxis;
       currentWaterXAxis = nextWaterXAxis;
       
-      previousBuildingXAxis = currentBuildingXAxis;
-      currentBuildingXAxis = nextBuildingXAxis;
+      previousForestXAxis = currentForestXAxis;
+      currentForestXAxis = nextForestXAxis;
     }
     
     if(availableChemicalAmt > 0) {
@@ -231,20 +231,20 @@ public class ExtinguisherImpl implements Extinguisher {
   
   private double calculateAverage(int y, int yMinus1, int yPlus1, 
       double[] previousWaterXAxis, double[] currentWaterXAxis, double[] nextWaterXAxis, 
-      int[] previousBuildingXAxis, int[] currentBuildingXAxis, int[] nextBuildingXAxis) {
+      int[] previousForestXAxis, int[] currentForestXAxis, int[] nextForestXAxis) {
     double average = 0.0;
     double currentValue = currentWaterXAxis[y];
     
-    if(currentBuildingXAxis[yMinus1] == 0 || currentWaterXAxis[yMinus1] == 0.0) { // x, y-1
+    if(currentForestXAxis[yMinus1] == 0 || currentWaterXAxis[yMinus1] == 0.0) { // x, y-1
       average += currentValue;
     }
-    if(currentBuildingXAxis[yPlus1] == 0 || currentWaterXAxis[yPlus1] == 0.0) { // x, y+1
+    if(currentForestXAxis[yPlus1] == 0 || currentWaterXAxis[yPlus1] == 0.0) { // x, y+1
       average += currentValue;
     }
-    if(previousBuildingXAxis[y] == 0 || previousWaterXAxis[y] == 0.0) { // x-1, y
+    if(previousForestXAxis[y] == 0 || previousWaterXAxis[y] == 0.0) { // x-1, y
       average += currentValue;
     }
-    if(nextBuildingXAxis[y] == 0 || nextWaterXAxis[y] == 0.0) { // x+1, y
+    if(nextForestXAxis[y] == 0 || nextWaterXAxis[y] == 0.0) { // x+1, y
       average += currentValue;
     }
     
@@ -297,9 +297,9 @@ public class ExtinguisherImpl implements Extinguisher {
       newWaterImpactCenter = new MutableInt2D((int)waterImpactCenter.x, (int)waterImpactCenter.y);
     }
     
-    if(buildingCanvas.getForestsGrid().field[newWaterImpactCenter.x][newWaterImpactCenter.y] == 0) {
-      LOGGER.fatal("The agent is not close to the buring building. Agent: "+agent+" Fire: "+fire);
-      throw new ManageDisasterServiceException("The agent is not close to the buring building. Agent: "+agent+" Fire: "+fire);
+    if(forestCanvas.getForestsGrid().field[newWaterImpactCenter.x][newWaterImpactCenter.y] == 0) {
+      LOGGER.fatal("The agent is not close to the buring forest. Agent: "+agent+" Fire: "+fire);
+      throw new ManageDisasterServiceException("The agent is not close to the buring forest. Agent: "+agent+" Fire: "+fire);
     }
     
     return newWaterImpactCenter;

@@ -31,11 +31,11 @@ public class CoalitionCalculatorImpl implements CoalitionCalculator {
   private static final String UTILITY_ALGORITHM = "edu.usu.cs.mas.managedisaster.coalition.utility";
 
   @Inject
-  private CoalitionForestPersister coalitionBuildingPersister;
+  private CoalitionForestPersister coalitionForestPersister;
   @Inject
   private FireCanvas fireCanvas;
   @Inject
-  private ForestCanvas buildingCanvas;
+  private ForestCanvas forestCanvas;
   @Inject
   private AgentSociety agentSociety;
   @Inject
@@ -48,29 +48,29 @@ public class CoalitionCalculatorImpl implements CoalitionCalculator {
   @Override
   public double getFireAndSmokeAmount(CoalitionEntity coalition) {
     double fireAmount = 0.0;
-    List<ForestEntity> buildings = coalitionBuildingPersister.getForests(coalition);
-    if(CollectionUtils.isEmpty(buildings)) {
+    List<ForestEntity> forests = coalitionForestPersister.getForests(coalition);
+    if(CollectionUtils.isEmpty(forests)) {
       return 0.0;
     }
-    for(ForestEntity building : buildings) {
-      int minX = building.getMinX();
-      int maxX = building.getMaxX();
-      int minY = building.getMinY();
-      int maxY = building.getMaxY();
+    for(ForestEntity forest : forests) {
+      int minX = forest.getMinX();
+      int maxX = forest.getMaxX();
+      int minY = forest.getMinY();
+      int maxY = forest.getMaxY();
       double[][] fire = fireCanvas.getCurrentFireGrid().field;
       double[][] smoke = fireCanvas.getCurrentSmokeGrid().field;
       for(int i = minX; i <= maxX; i++) {
         for(int j= minY; j <= maxY; j++) {
-          if(!buildingCanvas.isForestCoordinate(i, j)) {
+          if(!forestCanvas.isForestCoordinate(i, j)) {
             continue;
           }
           fireAmount += fire[i][j];
           fireAmount += smoke[i][j];
         }
       }
-      CoalitionForestEntity coalBuild = coalitionBuildingPersister.getCoalitionForest(coalition, building);
-      coalBuild.setTaskAmount(fireAmount);
-      coalitionBuildingPersister.save(coalBuild);
+      CoalitionForestEntity coalForest = coalitionForestPersister.getCoalitionForest(coalition, forest);
+      coalForest.setTaskAmount(fireAmount);
+      coalitionForestPersister.save(coalForest);
     }
     return fireAmount;
   }
@@ -89,10 +89,10 @@ public class CoalitionCalculatorImpl implements CoalitionCalculator {
       double chemicalAmount = player.getChemicalAmount();
       waterAmount += (chemicalAmount * chemicalCoefficient);
     }
-    List<CoalitionForestEntity> coalBuilds = coalitionBuildingPersister.getCoalitionForests(coalition);
-    for(CoalitionForestEntity coalBuild : coalBuilds) {
-      coalBuild.setResourceAmount(waterAmount);
-      coalitionBuildingPersister.save(coalBuild);
+    List<CoalitionForestEntity> coalForests = coalitionForestPersister.getCoalitionForests(coalition);
+    for(CoalitionForestEntity coalForest : coalForests) {
+      coalForest.setResourceAmount(waterAmount);
+      coalitionForestPersister.save(coalForest);
     }
     return waterAmount;
   }
@@ -104,10 +104,10 @@ public class CoalitionCalculatorImpl implements CoalitionCalculator {
     for(CoalitionEntity enabledCoalition : feasibleCoalitions) {
       calculateUtility(enabledCoalition);
     }
-    // 2. Calculate utility for all feasible coal-build pairs
-    List<CoalitionForestEntity> feabileCoalBuilds = coalitionBuildingPersister.getFeasibleCoalForests();
-    for(CoalitionForestEntity feabileCoalBuild : feabileCoalBuilds) {
-      calculateUtility(feabileCoalBuild);
+    // 2. Calculate utility for all feasible coal-forest pairs
+    List<CoalitionForestEntity> feabileCoalForests = coalitionForestPersister.getFeasibleCoalForests();
+    for(CoalitionForestEntity feabileCoalForest : feabileCoalForests) {
+      calculateUtility(feabileCoalForest);
     }
   }
 
@@ -128,12 +128,12 @@ public class CoalitionCalculatorImpl implements CoalitionCalculator {
     return utility;
   }
   
-  private void calculateUtility(CoalitionForestEntity coalBuildEntity) {
+  private void calculateUtility(CoalitionForestEntity coalForestEntity) {
     String algorithm = config.getString(UTILITY_ALGORITHM);
     UtilityAlgorithm utilityAlgorithm = UtilityAlgorithm.valueOf(algorithm);
     switch(utilityAlgorithm) {
       case ATV :
-        setupATVUtility(coalBuildEntity);
+        setupATVUtility(coalForestEntity);
         break;
       case NECTAR:
         
@@ -149,46 +149,46 @@ public class CoalitionCalculatorImpl implements CoalitionCalculator {
   }
 
   private void setupATVUtility(CoalitionEntity coalition) {
-    // Calculate utility for feasible coalition's feasible coal-build pairs
-    List<ForestEntity> buildings = coalitionBuildingPersister.getForests(coalition);
-    for(ForestEntity building : buildings) {
-      CoalitionForestEntity coalBuildEntity = coalitionBuildingPersister.getFeasibleCoalForests(coalition, building);
-      if(coalBuildEntity == null) {
-        LOGGER.error("Not feasible coal-build pair for feasible coalition: "+coalition.getId());
+    // Calculate utility for feasible coalition's feasible coal-forest pairs
+    List<ForestEntity> forests = coalitionForestPersister.getForests(coalition);
+    for(ForestEntity forest : forests) {
+      CoalitionForestEntity coalForestEntity = coalitionForestPersister.getFeasibleCoalForests(coalition, forest);
+      if(coalForestEntity == null) {
+        LOGGER.error("Not feasible coal-forest pair for feasible coalition: "+coalition.getId());
         continue;
       }
-      MutableInt2D fireLocation = new MutableInt2D(building.getFires().get(0).getX(), building.getFires().get(0).getY());
-      MutableInt2D closeRoadCoordination = routePlanner.findClosestRoadCoordinate(fireLocation, building);
+      MutableInt2D fireLocation = new MutableInt2D(forest.getFires().get(0).getX(), forest.getFires().get(0).getY());
+      MutableInt2D closeRoadCoordination = routePlanner.findClosestRoadCoordinate(fireLocation, forest);
       // 1. Calculate the distance
       int distance = Math.abs(closeRoadCoordination.x - coalition.getX()) + Math.abs(closeRoadCoordination.y - coalition.getY());
-      double utility = coalBuildEntity.getResourceAmount() - coalBuildEntity.getTaskAmount() - distance;
-      coalBuildEntity
+      double utility = coalForestEntity.getResourceAmount() - coalForestEntity.getTaskAmount() - distance;
+      coalForestEntity
           .withUtility(utility)
           .withAlgorithm(UtilityAlgorithm.ATV)
           .withStatus(CoalitionForestStatus.UTILIZED);
-      coalitionBuildingPersister.save(coalBuildEntity);
+      coalitionForestPersister.save(coalForestEntity);
     }
   }
   
-  private void setupATVUtility(CoalitionForestEntity coalBuildEntity) {
-    CoalitionEntity coalition = coalBuildEntity.getCoalition();
-    ForestEntity building = coalBuildEntity.getForest();
+  private void setupATVUtility(CoalitionForestEntity coalForestEntity) {
+    CoalitionEntity coalition = coalForestEntity.getCoalition();
+    ForestEntity forest = coalForestEntity.getForest();
     FireStationEntity fireStation = coalition.getFireStation();
     
     int fsX = fireStation.getRoadX();
     int fsY = fireStation.getRoadY();
       
-    double buildX = (building.getMaxX() - building.getMinX()) / 2;
-    double buildY = (building.getMaxY() - building.getMinY()) / 2;
+    double forestX = (forest.getMaxX() - forest.getMinX()) / 2;
+    double forestY = (forest.getMaxY() - forest.getMinY()) / 2;
     // 1. Calculate the distance
-    double distance = Math.sqrt(((buildX - fsX) * (buildX - fsX)) + ((buildY - fsY) * (buildY - fsY)));
-    double utility = coalBuildEntity.getResourceAmount() - coalBuildEntity.getTaskAmount() - distance;
+    double distance = Math.sqrt(((forestX - fsX) * (forestX - fsX)) + ((forestY - fsY) * (forestY - fsY)));
+    double utility = coalForestEntity.getResourceAmount() - coalForestEntity.getTaskAmount() - distance;
     
-    coalBuildEntity
+    coalForestEntity
         .withUtility(utility)
         .withAlgorithm(UtilityAlgorithm.ATV)
         .withStatus(CoalitionForestStatus.UTILIZED);
     
-    coalitionBuildingPersister.save(coalBuildEntity);
+    coalitionForestPersister.save(coalForestEntity);
   }
 }

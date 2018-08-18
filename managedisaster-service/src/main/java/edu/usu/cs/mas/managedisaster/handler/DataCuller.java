@@ -45,13 +45,13 @@ public class DataCuller implements Steppable {
 	@Inject
 	private CoalitionPersister coalitionPersister;
 	@Inject
-	private CoalitionForestPersister coalitionBuildingPersister;
+	private CoalitionForestPersister coalitionForestPersister;
 	@Inject
 	private CoalitionStatPersister coalitionStatPersister;
 	@Inject
-	private ForestPersister buildingPersister;
+	private ForestPersister forestPersister;
 	@Inject
-	private BurningForestStatPersister burningBuildingStatPersister;
+	private BurningForestStatPersister burningForestStatPersister;
 	@Inject
 	private Config config;
 	
@@ -65,32 +65,32 @@ public class DataCuller implements Steppable {
 		LOGGER.info("Saving Agent Statistics: "+currentTime);
 		saveAgentStats(currentTime);
 		saveCoalitionStat(currentTime);
-		saveBurningBuildingStat(currentTime);
+		saveBurningForestStat(currentTime);
 	}
 	
-	private void saveBurningBuildingStat(long currentTime) {
-		List<ForestEntity> buildings = buildingPersister.getAllForests();
-		for(ForestEntity building : buildings) {
-			if(building.getFires() == null || building.getFires().isEmpty()) {
+	private void saveBurningForestStat(long currentTime) {
+		List<ForestEntity> forests = forestPersister.getAllForests();
+		for(ForestEntity forest : forests) {
+			if(forest.getFires() == null || forest.getFires().isEmpty()) {
 				continue;
 			}
-			BurningForestStatEntity burningBuildingStatEntity = getBurningBuildingStatEntity(building);
-			burningBuildingStatEntity.setTime(currentTime);
-			burningBuildingStatPersister.save(burningBuildingStatEntity);
+			BurningForestStatEntity burningForestStatEntity = getBurningForestStatEntity(forest);
+			burningForestStatEntity.setTime(currentTime);
+			burningForestStatPersister.save(burningForestStatEntity);
 		}
 	}
 	
-	private BurningForestStatEntity getBurningBuildingStatEntity(ForestEntity building) {
-		BurningForestStatEntity burningBuildingStatEntity = new BurningForestStatEntity()
-					.withForest(building);
-		List<FireEntity> fires = building.getFires();
+	private BurningForestStatEntity getBurningForestStatEntity(ForestEntity forest) {
+		BurningForestStatEntity burningForestStatEntity = new BurningForestStatEntity()
+					.withForest(forest);
+		List<FireEntity> fires = forest.getFires();
 		for(FireEntity fire : fires) {
-			burningBuildingStatEntity.withFireAmount(burningBuildingStatEntity.getFireAmount() + fire.getCurrentFireValue())
-				.withSmokeAmount(burningBuildingStatEntity.getSmokeAmount() + fire.getCurrentSmokeValue())
-				.withWaterAmount(burningBuildingStatEntity.getWaterAmount() + fire.getCurrentWaterValue());
+			burningForestStatEntity.withFireAmount(burningForestStatEntity.getFireAmount() + fire.getCurrentFireValue())
+				.withSmokeAmount(burningForestStatEntity.getSmokeAmount() + fire.getCurrentSmokeValue())
+				.withWaterAmount(burningForestStatEntity.getWaterAmount() + fire.getCurrentWaterValue());
 			
 		}
-		return burningBuildingStatEntity;
+		return burningForestStatEntity;
 	}
 	
 	private void saveCoalitionStat(long currentTime) {
@@ -105,14 +105,14 @@ public class DataCuller implements Steppable {
 	}
 	
 	private List<CoalitionStatEntity> getCoalitionStatEntity(CoalitionEntity coalition) {
-		List<CoalitionForestEntity> coalBuilds = coalitionBuildingPersister.getCoalitionForests(coalition);
+		List<CoalitionForestEntity> coalForests = coalitionForestPersister.getCoalitionForests(coalition);
 		List<CoalitionStatEntity> coalStats = new ArrayList<>();
-		for(CoalitionForestEntity coalBuild : coalBuilds) {
+		for(CoalitionForestEntity coalForest : coalForests) {
 		  CoalitionStatEntity coalitionStatEntity = new CoalitionStatEntity()
 		      .withCoalition(coalition)
-		      .withResourceAmount(coalBuild.getResourceAmount())
-		      .withTaskAmount(coalBuild.getTaskAmount())
-		      .withForest(coalBuild.getForest());
+		      .withResourceAmount(coalForest.getResourceAmount())
+		      .withTaskAmount(coalForest.getTaskAmount())
+		      .withForest(coalForest.getForest());
 		  coalStats.add(coalitionStatEntity);
 		}
 		return coalStats;  
