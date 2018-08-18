@@ -28,7 +28,7 @@ import edu.usu.cs.mas.managedisaster.csv.FireGridCsvPrinterImpl;
 import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
 import edu.usu.cs.mas.managedisaster.entity.FireEntity;
 import edu.usu.cs.mas.managedisaster.handler.FireDiffuser;
-import edu.usu.cs.mas.managedisaster.persister.BuildingPersister;
+import edu.usu.cs.mas.managedisaster.persister.ForestPersister;
 import edu.usu.cs.mas.managedisaster.persister.FirePersister;
 import edu.usu.cs.mas.managedisaster.service.util.TestUtil;
 
@@ -52,7 +52,7 @@ public class FireDiffuserTest extends TestUtil{
   @Mock
   private FireCanvas fireCanvas;
   @Mock
-  private BuildingPersister buildingPersister;
+  private ForestPersister buildingPersister;
   @Mock
   private MersenneTwisterFast random;
   @Mock
@@ -75,7 +75,7 @@ public class FireDiffuserTest extends TestUtil{
     when(fireCanvas.getCurrentSmokeGrid()).thenReturn(currentSmokeGrid);
     when(fireCanvas.getNewSmokeGrid()).thenReturn(newSmokeGrid);
     when(firePersister.getActiveFires()).thenReturn(Arrays.asList(fire));
-    when(buildingPersister.getBuilding(0L)).thenReturn(getBuilding());
+    when(buildingPersister.getForest(0L)).thenReturn(getBuilding());
   }
   
   @Test

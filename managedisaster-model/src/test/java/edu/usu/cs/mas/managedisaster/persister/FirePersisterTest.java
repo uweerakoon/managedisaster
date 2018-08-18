@@ -27,7 +27,7 @@ public class FirePersisterTest {
   
   private HibernateUtil hibernateUtil;
   private FirePersisterImpl firePersister;
-  private BuildingPersisterImpl buildingPersister;
+  private ForestPersisterImpl buildingPersister;
   
   @Mock
   private SimState simState;
@@ -37,7 +37,7 @@ public class FirePersisterTest {
   public FirePersisterTest() {
     hibernateUtil = new HibernateUtilImpl();
     firePersister = new FirePersisterImpl(hibernateUtil);
-    buildingPersister = new BuildingPersisterImpl(hibernateUtil);
+    buildingPersister = new ForestPersisterImpl(hibernateUtil);
     MockitoAnnotations.initMocks(this);
   }
 
@@ -56,7 +56,7 @@ public class FirePersisterTest {
 
   @Test
   public void testGenerateMildFire() {
-    ForestEntity building = buildingPersister.getBuilding(WALMART);
+    ForestEntity building = buildingPersister.getForest(WALMART);
     Message message = new Message().withForest(building).withMessageType(MessageType.FIRE)
                         .withSeverity(Severity.MILD);
     simState.schedule = schedule;
@@ -68,7 +68,7 @@ public class FirePersisterTest {
   
   @Test
   public void testGenerateNormalFire() {
-    ForestEntity building = buildingPersister.getBuilding(WALMART);
+    ForestEntity building = buildingPersister.getForest(WALMART);
     Message message = new Message().withForest(building).withMessageType(MessageType.FIRE).withSeverity(Severity.NORMAL);
     simState.schedule = schedule;
     firePersister.setSimState(simState);
@@ -79,7 +79,7 @@ public class FirePersisterTest {
   
   @Test
   public void testGenerateSevereFire() {
-    ForestEntity building = buildingPersister.getBuilding(WALMART);
+    ForestEntity building = buildingPersister.getForest(WALMART);
     Message message = new Message().withForest(building).withMessageType(MessageType.FIRE).withSeverity(Severity.SEVERE);
     simState.schedule = schedule;
     firePersister.setSimState(simState);

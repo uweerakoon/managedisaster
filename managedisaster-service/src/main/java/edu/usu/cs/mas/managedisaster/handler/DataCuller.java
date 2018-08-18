@@ -20,9 +20,9 @@ import edu.usu.cs.mas.managedisaster.entity.CoalitionStatEntity;
 import edu.usu.cs.mas.managedisaster.entity.FireEntity;
 import edu.usu.cs.mas.managedisaster.persister.AgentPersister;
 import edu.usu.cs.mas.managedisaster.persister.AgentStatPersister;
-import edu.usu.cs.mas.managedisaster.persister.BuildingPersister;
-import edu.usu.cs.mas.managedisaster.persister.BurningBuildingStatPersister;
-import edu.usu.cs.mas.managedisaster.persister.CoalitionBuildingPersister;
+import edu.usu.cs.mas.managedisaster.persister.ForestPersister;
+import edu.usu.cs.mas.managedisaster.persister.BurningForestStatPersister;
+import edu.usu.cs.mas.managedisaster.persister.CoalitionForestPersister;
 import edu.usu.cs.mas.managedisaster.persister.CoalitionPersister;
 import edu.usu.cs.mas.managedisaster.persister.CoalitionStatPersister;
 import edu.usu.cs.mas.managedisaster.player.AgentPlayer;
@@ -45,13 +45,13 @@ public class DataCuller implements Steppable {
 	@Inject
 	private CoalitionPersister coalitionPersister;
 	@Inject
-	private CoalitionBuildingPersister coalitionBuildingPersister;
+	private CoalitionForestPersister coalitionBuildingPersister;
 	@Inject
 	private CoalitionStatPersister coalitionStatPersister;
 	@Inject
-	private BuildingPersister buildingPersister;
+	private ForestPersister buildingPersister;
 	@Inject
-	private BurningBuildingStatPersister burningBuildingStatPersister;
+	private BurningForestStatPersister burningBuildingStatPersister;
 	@Inject
 	private Config config;
 	
@@ -69,7 +69,7 @@ public class DataCuller implements Steppable {
 	}
 	
 	private void saveBurningBuildingStat(long currentTime) {
-		List<ForestEntity> buildings = buildingPersister.getAllBuildings();
+		List<ForestEntity> buildings = buildingPersister.getAllForests();
 		for(ForestEntity building : buildings) {
 			if(building.getFires() == null || building.getFires().isEmpty()) {
 				continue;
@@ -105,7 +105,7 @@ public class DataCuller implements Steppable {
 	}
 	
 	private List<CoalitionStatEntity> getCoalitionStatEntity(CoalitionEntity coalition) {
-		List<CoalitionForestEntity> coalBuilds = coalitionBuildingPersister.getCoalitionBuildings(coalition);
+		List<CoalitionForestEntity> coalBuilds = coalitionBuildingPersister.getCoalitionForests(coalition);
 		List<CoalitionStatEntity> coalStats = new ArrayList<>();
 		for(CoalitionForestEntity coalBuild : coalBuilds) {
 		  CoalitionStatEntity coalitionStatEntity = new CoalitionStatEntity()

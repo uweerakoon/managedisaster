@@ -17,12 +17,12 @@ import edu.usu.cs.mas.managedisaster.persister.AgentPersister;
 import edu.usu.cs.mas.managedisaster.persister.AgentPersisterImpl;
 import edu.usu.cs.mas.managedisaster.persister.AgentStatPersister;
 import edu.usu.cs.mas.managedisaster.persister.AgentStatPersisterImpl;
-import edu.usu.cs.mas.managedisaster.persister.BuildingPersister;
-import edu.usu.cs.mas.managedisaster.persister.BuildingPersisterImpl;
-import edu.usu.cs.mas.managedisaster.persister.BurningBuildingStatPersister;
-import edu.usu.cs.mas.managedisaster.persister.BurningBuildingStatPersisterImpl;
-import edu.usu.cs.mas.managedisaster.persister.CoalitionBuildingPersister;
-import edu.usu.cs.mas.managedisaster.persister.CoalitionBuildingPersisterImpl;
+import edu.usu.cs.mas.managedisaster.persister.ForestPersister;
+import edu.usu.cs.mas.managedisaster.persister.ForestPersisterImpl;
+import edu.usu.cs.mas.managedisaster.persister.BurningForestStatPersister;
+import edu.usu.cs.mas.managedisaster.persister.BurningForestStatPersisterImpl;
+import edu.usu.cs.mas.managedisaster.persister.CoalitionForestPersister;
+import edu.usu.cs.mas.managedisaster.persister.CoalitionForestPersisterImpl;
 import edu.usu.cs.mas.managedisaster.persister.CoalitionPersister;
 import edu.usu.cs.mas.managedisaster.persister.CoalitionPersisterImpl;
 import edu.usu.cs.mas.managedisaster.persister.CoalitionStatPersister;
@@ -75,8 +75,8 @@ public class ManageDisasterModelSpringConfig {
 
   @Bean
   @Scope(BeanDefinition.SCOPE_SINGLETON)
-  public BuildingPersister buildingPersister(){
-    return new BuildingPersisterImpl();
+  public ForestPersister buildingPersister(){
+    return new ForestPersisterImpl();
   }
 
   @Bean
@@ -135,8 +135,8 @@ public class ManageDisasterModelSpringConfig {
 
   @Bean
   @Scope(BeanDefinition.SCOPE_SINGLETON)
-  public BurningBuildingStatPersister burningBuildingStatPersister() {
-    return new BurningBuildingStatPersisterImpl();
+  public BurningForestStatPersister burningBuildingStatPersister() {
+    return new BurningForestStatPersisterImpl();
   }
 
   @Bean
@@ -147,8 +147,8 @@ public class ManageDisasterModelSpringConfig {
 
   @Bean
   @Scope(BeanDefinition.SCOPE_SINGLETON)
-  public CoalitionBuildingPersister coalitionBuildingPersister() {
-    return new CoalitionBuildingPersisterImpl();
+  public CoalitionForestPersister coalitionBuildingPersister() {
+    return new CoalitionForestPersisterImpl();
   }
 
   @Bean

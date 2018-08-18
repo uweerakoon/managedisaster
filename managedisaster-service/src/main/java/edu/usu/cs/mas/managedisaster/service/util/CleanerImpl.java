@@ -9,8 +9,8 @@ import edu.usu.cs.mas.managedisaster.persister.AgentCoalitionPersister;
 import edu.usu.cs.mas.managedisaster.persister.AgentPersister;
 import edu.usu.cs.mas.managedisaster.persister.AgentStatPersister;
 import edu.usu.cs.mas.managedisaster.persister.AgentUtilityPersister;
-import edu.usu.cs.mas.managedisaster.persister.BurningBuildingStatPersister;
-import edu.usu.cs.mas.managedisaster.persister.CoalitionBuildingPersister;
+import edu.usu.cs.mas.managedisaster.persister.BurningForestStatPersister;
+import edu.usu.cs.mas.managedisaster.persister.CoalitionForestPersister;
 import edu.usu.cs.mas.managedisaster.persister.CoalitionPersister;
 import edu.usu.cs.mas.managedisaster.persister.CoalitionStatPersister;
 import edu.usu.cs.mas.managedisaster.persister.FirePersister;
@@ -34,13 +34,13 @@ public class CleanerImpl implements Cleaner {
   @Inject
   private AgentStatPersister agentStatPersister;
   @Inject
-  private BurningBuildingStatPersister burningBuildingStatPersister;
+  private BurningForestStatPersister burningBuildingStatPersister;
   @Inject
   private CoalitionStatPersister coalitionStatPersister;
   @Inject
   private CoalitionPersister coalitionPersister;
   @Inject
-  private CoalitionBuildingPersister coalitionBuildingPersister;
+  private CoalitionForestPersister coalitionBuildingPersister;
   @Inject
   private AgentUtilityPersister agentUtilityPersister;
   @Inject

@@ -34,7 +34,7 @@ import edu.usu.cs.mas.managedisaster.message.Message;
 import edu.usu.cs.mas.managedisaster.message.MessageType;
 import edu.usu.cs.mas.managedisaster.message.Severity;
 import edu.usu.cs.mas.managedisaster.persister.AgentPersister;
-import edu.usu.cs.mas.managedisaster.persister.BuildingPersister;
+import edu.usu.cs.mas.managedisaster.persister.ForestPersister;
 import edu.usu.cs.mas.managedisaster.persister.TweetPersister;
 import edu.usu.cs.mas.managedisaster.player.AgentPlayer;
 
@@ -52,7 +52,7 @@ public class TwitterHandlerImpl implements TwitterHandler {
   private static long timeReadTweet = 0;
 
   @Inject
-  private BuildingPersister buildingPersister; 
+  private ForestPersister buildingPersister; 
   @Inject
   private TweetPersister tweetPersister;
 
@@ -78,7 +78,7 @@ public class TwitterHandlerImpl implements TwitterHandler {
     }
   }
 
-  public TwitterHandlerImpl(BuildingPersister buildingPersister, TweetPersister tweetPersister, 
+  public TwitterHandlerImpl(ForestPersister buildingPersister, TweetPersister tweetPersister, 
     Twitter twitter, User user, long latestTweetId, Date currentDate) {
     this();
     this.buildingPersister = buildingPersister;
@@ -343,7 +343,7 @@ public class TwitterHandlerImpl implements TwitterHandler {
     }
     message.setSeverity(severity);
 
-    ForestEntity building = buildingPersister.getBuilding(tweetText.split("at ")[1]);
+    ForestEntity building = buildingPersister.getForest(tweetText.split("at ")[1]);
     if(building == null){
       return null;
     }

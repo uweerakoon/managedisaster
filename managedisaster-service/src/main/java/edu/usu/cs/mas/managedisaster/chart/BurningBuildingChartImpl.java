@@ -26,7 +26,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 import ec.util.MersenneTwisterFast;
 import edu.usu.cs.mas.managedisaster.entity.BurningForestStatEntity;
-import edu.usu.cs.mas.managedisaster.persister.BurningBuildingStatPersister;
+import edu.usu.cs.mas.managedisaster.persister.BurningForestStatPersister;
 
 public class BurningBuildingChartImpl extends JFrame implements BurningBuildingChart {
 
@@ -46,7 +46,7 @@ public class BurningBuildingChartImpl extends JFrame implements BurningBuildingC
 	private static final boolean IS_URL = false;
 	
 	@Inject
-	private BurningBuildingStatPersister burningBuildingStatPersister;
+	private BurningForestStatPersister burningBuildingStatPersister;
 	
 	private JFreeChart linePlot;
 	private Map<Long, XYSeries> firePlotMap = new HashMap<>();
@@ -66,7 +66,7 @@ public class BurningBuildingChartImpl extends JFrame implements BurningBuildingC
 	}
 	
 	private boolean addXYSeriesData() {
-		List<BurningForestStatEntity> buildingStats = burningBuildingStatPersister.getAllBurningBuildingStats();
+		List<BurningForestStatEntity> buildingStats = burningBuildingStatPersister.getAllBurningForestStats();
 		if(CollectionUtils.isEmpty(buildingStats)) {
 			return false;
 		}

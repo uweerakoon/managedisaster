@@ -4,16 +4,16 @@ import java.util.List;
 
 import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
 
-public interface BuildingPersister {
+public interface ForestPersister {
   /**
    * Fetch all the buildings
    * @return list of all buildings
    */
-  public List<ForestEntity> getAllBuildings();
+  public List<ForestEntity> getAllForests();
   
-  public ForestEntity getBuilding(String name);
+  public ForestEntity getForest(String name);
   
-  public ForestEntity getBuilding(Long id);
+  public ForestEntity getForest(Long id);
   
-  public void save(ForestEntity building);
+  public void save(ForestEntity forest);
 }

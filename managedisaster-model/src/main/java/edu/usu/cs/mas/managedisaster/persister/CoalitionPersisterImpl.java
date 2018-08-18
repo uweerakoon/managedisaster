@@ -92,7 +92,7 @@ public class CoalitionPersisterImpl implements CoalitionPersister {
   public List<CoalitionEntity> getFeasibleUnallocatedCoalitions() {
     entityManager = hibernateUtil.getEntityManager();
     String strQuery = "select c from CoalitionEntity c where c.feasible = true"
-        + " and c.allocatedBuilding is null and c.status != 'CANCEL'";
+        + " and c.allocatedForest is null and c.status != 'CANCEL'";
     Query query = entityManager.createQuery(strQuery);
     @SuppressWarnings("unchecked")
     List<CoalitionEntity> coalitions = query.getResultList();
@@ -102,7 +102,7 @@ public class CoalitionPersisterImpl implements CoalitionPersister {
   @Override
   public List<CoalitionEntity> getUnallocatedCoalitions(FireStationEntity fireStation) {
     String strQuery = "select c from CoalitionEntity c where c.fireStation.id = "+fireStation.getId()
-        + " and c.allocatedBuilding is null";
+        + " and c.allocatedForest is null";
     Query query = entityManager.createQuery(strQuery);
     @SuppressWarnings("unchecked")
     List<CoalitionEntity> coalitions = query.getResultList();

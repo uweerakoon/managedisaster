@@ -21,7 +21,7 @@ import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
 import edu.usu.cs.mas.managedisaster.entity.FireEntity;
 import edu.usu.cs.mas.managedisaster.handler.ExtinguisherImpl;
 import edu.usu.cs.mas.managedisaster.model.AgentModel;
-import edu.usu.cs.mas.managedisaster.persister.BuildingPersister;
+import edu.usu.cs.mas.managedisaster.persister.ForestPersister;
 import edu.usu.cs.mas.managedisaster.persister.FirePersister;
 import edu.usu.cs.mas.managedisaster.persister.TweetPersister;
 import edu.usu.cs.mas.managedisaster.service.util.TestUtil;
@@ -66,7 +66,7 @@ public class AgentPlayerTest extends TestUtil {
   @Mock
   private FirePersister firePersister;
   @Mock
-  private BuildingPersister buildingPersister;
+  private ForestPersister buildingPersister;
 
   private ExtinguisherImpl extinguisher;
   private AgentModel agentModel;

@@ -15,7 +15,7 @@ import edu.usu.cs.mas.managedisaster.csv.FireGridCsvPrinter;
 import edu.usu.cs.mas.managedisaster.csv.FireGridState;
 import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
 import edu.usu.cs.mas.managedisaster.entity.FireEntity;
-import edu.usu.cs.mas.managedisaster.persister.BuildingPersister;
+import edu.usu.cs.mas.managedisaster.persister.ForestPersister;
 import edu.usu.cs.mas.managedisaster.persister.FirePersister;
 import sim.engine.SimState;
 import sim.engine.Steppable;
@@ -37,7 +37,7 @@ public class FireDiffuser implements Steppable {
   @Inject
   private FirePersister firePersister;
   @Inject
-  private BuildingPersister buildingPersister;
+  private ForestPersister buildingPersister;
   @Inject
   private FireGridCsvPrinter fireGridCsvPrinter;
 
@@ -47,7 +47,7 @@ public class FireDiffuser implements Steppable {
 
   public FireDiffuser(FireGridCsvPrinter fireGridCsvPrinter, 
     FireCanvas fireCanvas, FirePersister firePersister,
-    BuildingPersister buildingPersister, MersenneTwisterFast random,
+    ForestPersister buildingPersister, MersenneTwisterFast random,
     BuildingCanvas buildingCanvas) {
     this();
     this.fireGridCsvPrinter = fireGridCsvPrinter;
@@ -334,7 +334,7 @@ public class FireDiffuser implements Steppable {
 
   private void setupBurningBuilding(FireEntity fire) {
     int buildingId = buildingCanvas.getBuildingId(fire.getX(), fire.getY());
-    ForestEntity burningBuilding = buildingPersister.getBuilding(Long.valueOf(buildingId));
+    ForestEntity burningBuilding = buildingPersister.getForest(Long.valueOf(buildingId));
     fire.setBurningForest(burningBuilding);
     burningBuilding.addFire(fire);
   }

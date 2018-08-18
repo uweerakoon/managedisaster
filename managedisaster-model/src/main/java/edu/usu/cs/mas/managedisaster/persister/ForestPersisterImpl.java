@@ -11,57 +11,57 @@ import org.apache.log4j.Logger;
 import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
 import edu.usu.cs.mas.managedisaster.model.util.HibernateUtil;
 
-public class BuildingPersisterImpl implements BuildingPersister{
+public class ForestPersisterImpl implements ForestPersister{
   
-  private static final Logger LOGGER = Logger.getLogger(BuildingPersisterImpl.class);
+  private static final Logger LOGGER = Logger.getLogger(ForestPersisterImpl.class);
 
   private EntityManager entityManager;
 
   @Inject
   private HibernateUtil hibernateUtil;
 
-  public BuildingPersisterImpl() { }
+  public ForestPersisterImpl() { }
 
-  public BuildingPersisterImpl(HibernateUtil hibernateUtil){
+  public ForestPersisterImpl(HibernateUtil hibernateUtil){
     this.hibernateUtil = hibernateUtil;
   }
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<ForestEntity> getAllBuildings() {
+  public List<ForestEntity> getAllForests() {
     entityManager = hibernateUtil.getEntityManager();
-    String strQuery = "select b from BuildingEntity b";
+    String strQuery = "select f from ForestEntity f";
     Query query = entityManager.createQuery(strQuery);
-    List<ForestEntity> buildings = query.getResultList();
-    return buildings;
+    List<ForestEntity> forests = query.getResultList();
+    return forests;
   }
 
   @Override
-  public ForestEntity getBuilding(String name) {
+  public ForestEntity getForest(String name) {
     entityManager = hibernateUtil.getEntityManager();
-    String strQuery = "select b from BuildingEntity b where lower(b.name) like '%"+name.toLowerCase()+"%'";
+    String strQuery = "select f from ForestEntity f where lower(f.name) like '%"+name.toLowerCase()+"%'";
     Query query = entityManager.createQuery(strQuery);
-    ForestEntity building = null;
+    ForestEntity forest = null;
     try {
-      building = (ForestEntity) query.getSingleResult();
+      forest = (ForestEntity) query.getSingleResult();
     }
     catch(Exception e) {
       LOGGER.error("Problem loading single house with name: "+name, e);
     }
-    return building;
+    return forest;
   }
 
   @Override
-  public ForestEntity getBuilding(Long id) {
+  public ForestEntity getForest(Long id) {
     entityManager = hibernateUtil.getEntityManager();
-    ForestEntity building = entityManager.find(ForestEntity.class, id);
-    return building;
+    ForestEntity forest = entityManager.find(ForestEntity.class, id);
+    return forest;
   }
 
   @Override
-  public void save(ForestEntity building) {
+  public void save(ForestEntity forest) {
     entityManager = hibernateUtil.getEntityManager();
-    entityManager.persist(building);
+    entityManager.persist(forest);
     hibernateUtil.commit();
   }
 

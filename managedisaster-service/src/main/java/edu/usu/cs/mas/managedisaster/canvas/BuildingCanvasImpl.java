@@ -5,7 +5,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
-import edu.usu.cs.mas.managedisaster.persister.BuildingPersister;
+import edu.usu.cs.mas.managedisaster.persister.ForestPersister;
 import edu.usu.cs.mas.managedisaster.portrayal.FastValueLabeledGridPortrayal2D;
 import sim.field.grid.IntGrid2D;
 import sim.util.Int2D;
@@ -23,7 +23,7 @@ public class BuildingCanvasImpl implements BuildingCanvas{
   private List<ForestEntity> buildingEntities;
   
   @Inject
-  private BuildingPersister buildingPersister;
+  private ForestPersister buildingPersister;
   
   public BuildingCanvasImpl(){ }
   
@@ -41,7 +41,7 @@ public class BuildingCanvasImpl implements BuildingCanvas{
   
   private void setupLabels() {
   	if(buildingEntities == null){
-      buildingEntities = buildingPersister.getAllBuildings();
+      buildingEntities = buildingPersister.getAllForests();
     }
   	for(ForestEntity buildingEntity : buildingEntities){
   	  Int2D labelIdCoordinate = new Int2D(buildingEntity.getLabelX(), buildingEntity.getLabelY()-2);
@@ -52,7 +52,7 @@ public class BuildingCanvasImpl implements BuildingCanvas{
   
   private Long getBuildingEntityId(int x, int y){
     if(buildingEntities == null){
-      buildingEntities = buildingPersister.getAllBuildings();
+      buildingEntities = buildingPersister.getAllForests();
     }
     for(ForestEntity buildingEntity : buildingEntities){
       if(buildingEntity.contains(x, y)){

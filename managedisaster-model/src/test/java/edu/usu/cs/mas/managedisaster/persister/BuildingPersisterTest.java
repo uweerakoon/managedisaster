@@ -24,16 +24,16 @@ public class BuildingPersisterTest {
   private static final String WALMART = "books";
   
   @Inject
-  private BuildingPersister buildingPersister;
+  private ForestPersister buildingPersister;
   @Test
   public void testGetAllBuildings() {
-    List<ForestEntity> buildingEntities = buildingPersister.getAllBuildings();
+    List<ForestEntity> buildingEntities = buildingPersister.getAllForests();
     assertTrue(!buildingEntities.isEmpty());
   }
   
   @Test
   public void testGetByName() {
-    ForestEntity building = buildingPersister.getBuilding(WALMART);
+    ForestEntity building = buildingPersister.getForest(WALMART);
     assertEquals(WALMART, building.getName());
   }
 

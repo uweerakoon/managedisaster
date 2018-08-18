@@ -26,7 +26,7 @@ public class FireStationPersisterImpl implements FireStationPersister {
   public FireStationEntity getFireStation(Long id) {
     FireStationEntity fireStationEntity = null;
     entityManager = hibernateUtil.getEntityManager();
-    fireStationEntity = (FireStationEntity) entityManager.find(FireStationEntity.class, id);
+    fireStationEntity = entityManager.find(FireStationEntity.class, id);
     return fireStationEntity;
   }
 

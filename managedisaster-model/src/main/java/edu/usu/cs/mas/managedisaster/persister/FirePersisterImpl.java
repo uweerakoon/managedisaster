@@ -148,10 +148,10 @@ public class FirePersisterImpl implements FirePersister{
 
   @Override
   public FireEntity generateFire(Message message) {
-    ForestEntity building = message.getForest();
-    MutableInt2D fireLocation = building.getRandomCoordinate();
+    ForestEntity forest = message.getForest();
+    MutableInt2D fireLocation = forest.getRandomCoordinate();
 
-    FireEntity fire = new FireEntity().withX(fireLocation.x).withY(fireLocation.y).withBurningForest(building);
+    FireEntity fire = new FireEntity().withX(fireLocation.x).withY(fireLocation.y).withBurningForest(forest);
 
     switch(message.getSeverity()) {
       case MILD:
@@ -164,7 +164,7 @@ public class FirePersisterImpl implements FirePersister{
         fire = getSevereFire(fire);
     }
     fire.withOriginator(Originator.SYSTEM)
-    .withStartingTime(/*(long)simState.schedule.getTime()+FIRE_DELAY*/0l);
+      .withStartingTime((long)simState.schedule.getTime()+FIRE_DELAY);
 
     saveFire(fire);
 

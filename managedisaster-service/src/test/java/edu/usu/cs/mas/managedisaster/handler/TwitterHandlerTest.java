@@ -22,8 +22,8 @@ import edu.usu.cs.mas.managedisaster.message.MessageType;
 import edu.usu.cs.mas.managedisaster.message.Severity;
 import edu.usu.cs.mas.managedisaster.model.AgentModel;
 import edu.usu.cs.mas.managedisaster.model.util.HibernateUtilImpl;
-import edu.usu.cs.mas.managedisaster.persister.BuildingPersister;
-import edu.usu.cs.mas.managedisaster.persister.BuildingPersisterImpl;
+import edu.usu.cs.mas.managedisaster.persister.ForestPersister;
+import edu.usu.cs.mas.managedisaster.persister.ForestPersisterImpl;
 import edu.usu.cs.mas.managedisaster.persister.TweetPersister;
 import edu.usu.cs.mas.managedisaster.player.AgentPlayer;
 import twitter4j.ResponseList;
@@ -40,7 +40,7 @@ public class TwitterHandlerTest {
   private static Twitter twitter;
   private static User user;
   
-  private static BuildingPersister buildingPersister; 
+  private static ForestPersister buildingPersister; 
  
   @Mock
   private TweetPersister tweetPersister;
@@ -59,7 +59,7 @@ public class TwitterHandlerTest {
     catch(Exception e) {
       e.printStackTrace();
     }
-    buildingPersister = new BuildingPersisterImpl(new HibernateUtilImpl());
+    buildingPersister = new ForestPersisterImpl(new HibernateUtilImpl());
   }
   
   @Before

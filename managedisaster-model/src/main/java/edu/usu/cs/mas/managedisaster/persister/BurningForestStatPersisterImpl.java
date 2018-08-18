@@ -12,50 +12,50 @@ import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
 import edu.usu.cs.mas.managedisaster.entity.BurningForestStatEntity;
 import edu.usu.cs.mas.managedisaster.model.util.HibernateUtil;
 
-public class BurningBuildingStatPersisterImpl implements BurningBuildingStatPersister{
+public class BurningForestStatPersisterImpl implements BurningForestStatPersister{
 
-	private static final Logger LOGGER = Logger.getLogger(BurningBuildingStatPersisterImpl.class);
-	private static final String DELETE_ALL = "delete from BurningBuildingStatEntity";
+	private static final Logger LOGGER = Logger.getLogger(BurningForestStatPersisterImpl.class);
+	private static final String DELETE_ALL = "delete from BurningForestStatEntity";
 	
 	private EntityManager entityManager;
   
   @Inject
   private HibernateUtil hibernateUtil;
   
-  public BurningBuildingStatPersisterImpl() { }
+  public BurningForestStatPersisterImpl() { }
   
-  public BurningBuildingStatPersisterImpl(HibernateUtil hibernateUtil){
+  public BurningForestStatPersisterImpl(HibernateUtil hibernateUtil){
     this.hibernateUtil = hibernateUtil;
   }
   
   @SuppressWarnings("unchecked")
   @Override
-  public List<BurningForestStatEntity> getAllBurningBuildingStats() {
+  public List<BurningForestStatEntity> getAllBurningForestStats() {
   	entityManager = hibernateUtil.getEntityManager();
-  	String strQuery = "select bs from BurningBuildingStatEntity bs";
+  	String strQuery = "select fs from BurningForestStatEntity fs";
   	Query query = entityManager.createQuery(strQuery);
-    List<BurningForestStatEntity> burningBuildingStatEntityList 
+    List<BurningForestStatEntity> burningForestStatEntityList 
     																	= query.getResultList();
     
-    return burningBuildingStatEntityList;
+    return burningForestStatEntityList;
     
   }
   
   @SuppressWarnings("unchecked")
   @Override
-  public List<BurningForestStatEntity> getBurningBuildingStat(ForestEntity building) {
+  public List<BurningForestStatEntity> getBurningForestStat(ForestEntity forest) {
   	entityManager = hibernateUtil.getEntityManager();
-  	String strQuery = "select bs from BurningBuildingStatEntity bs where bs.building.id = "+building.getId();
+  	String strQuery = "select bs from BurningForestStatEntity fs where fs.forest.id = "+forest.getId();
   	Query query = entityManager.createQuery(strQuery);
-    List<BurningForestStatEntity> burningBuildingStatEntityList 
+    List<BurningForestStatEntity> burningForestStatEntityList 
     					= query.getResultList();
-    return burningBuildingStatEntityList;
+    return burningForestStatEntityList;
   }
   
   @Override
-  public void save(BurningForestStatEntity burningBuildingStat) {
+  public void save(BurningForestStatEntity burningForestStat) {
   	entityManager = hibernateUtil.getEntityManager();
-  	entityManager.persist(burningBuildingStat);
+  	entityManager.persist(burningForestStat);
   }
   
   @Override
@@ -63,6 +63,6 @@ public class BurningBuildingStatPersisterImpl implements BurningBuildingStatPers
   	entityManager = hibernateUtil.getEntityManager();
     Query qryDeleteAll = entityManager.createQuery(DELETE_ALL);
     int deletedEntities = qryDeleteAll.executeUpdate();
-    LOGGER.info("The number of deleted burning building stat records: "+deletedEntities);
+    LOGGER.info("The number of deleted burning forest stat records: "+deletedEntities);
   }
 }
