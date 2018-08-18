@@ -25,7 +25,7 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 import ec.util.MersenneTwisterFast;
-import edu.usu.cs.mas.managedisaster.entity.BurningBuildingStatEntity;
+import edu.usu.cs.mas.managedisaster.entity.BurningForestStatEntity;
 import edu.usu.cs.mas.managedisaster.persister.BurningBuildingStatPersister;
 
 public class BurningBuildingChartImpl extends JFrame implements BurningBuildingChart {
@@ -66,12 +66,12 @@ public class BurningBuildingChartImpl extends JFrame implements BurningBuildingC
 	}
 	
 	private boolean addXYSeriesData() {
-		List<BurningBuildingStatEntity> buildingStats = burningBuildingStatPersister.getAllBurningBuildingStats();
+		List<BurningForestStatEntity> buildingStats = burningBuildingStatPersister.getAllBurningBuildingStats();
 		if(CollectionUtils.isEmpty(buildingStats)) {
 			return false;
 		}
-		for(BurningBuildingStatEntity buildingStat : buildingStats) {
-			long buildingId = buildingStat.getBuilding().getId();
+		for(BurningForestStatEntity buildingStat : buildingStats) {
+			long buildingId = buildingStat.getForest().getId();
 			XYSeries firePlot = null, smokePlot = null, waterPlot = null;
 			if(firePlotMap.containsKey(buildingId)) {
 				firePlot = firePlotMap.get(buildingId);

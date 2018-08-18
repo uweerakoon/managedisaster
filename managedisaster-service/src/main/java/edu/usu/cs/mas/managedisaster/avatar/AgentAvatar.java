@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 import edu.usu.cs.mas.managedisaster.common.AgentRole;
 import edu.usu.cs.mas.managedisaster.common.AgentStatus;
 import edu.usu.cs.mas.managedisaster.common.Chemical;
-import edu.usu.cs.mas.managedisaster.entity.BuildingEntity;
+import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
 import edu.usu.cs.mas.managedisaster.entity.FireEntity;
 import edu.usu.cs.mas.managedisaster.entity.IntersectionEntity;
 import edu.usu.cs.mas.managedisaster.player.AgentPlayer;
@@ -132,9 +132,9 @@ public class AgentAvatar extends OvalPortrayal2D{
 		return agentPlayer.getAgentModel().getFire();
 	}
 	
-	public BuildingEntity getBuilding() {
+	public ForestEntity getBuilding() {
 		FireEntity fire = agentPlayer.getAgentModel().getFire();
-		return fire == null ? null : fire.getBurningBuilding();
+		return fire == null ? null : fire.getBurningForest();
 	}
 	
 	public MutableInt2D getTgtLoc() {

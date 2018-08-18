@@ -13,7 +13,7 @@ import edu.usu.cs.mas.managedisaster.canvas.BuildingCanvas;
 import edu.usu.cs.mas.managedisaster.canvas.FireCanvas;
 import edu.usu.cs.mas.managedisaster.csv.FireGridCsvPrinter;
 import edu.usu.cs.mas.managedisaster.csv.FireGridState;
-import edu.usu.cs.mas.managedisaster.entity.BuildingEntity;
+import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
 import edu.usu.cs.mas.managedisaster.entity.FireEntity;
 import edu.usu.cs.mas.managedisaster.persister.BuildingPersister;
 import edu.usu.cs.mas.managedisaster.persister.FirePersister;
@@ -78,7 +78,7 @@ public class FireDiffuser implements Steppable {
       // Current value is helping for statistics
       fire.setCurrentFireValue(0.0);
       fire.setCurrentSmokeValue(0.0);
-      if(fire.getBurningBuilding() == null) {
+      if(fire.getBurningForest() == null) {
         setupBurningBuilding(fire);
       }
 
@@ -100,7 +100,7 @@ public class FireDiffuser implements Steppable {
   }
 
   private void smokeBuilding(FireEntity fire) {
-    BuildingEntity burningBuilding = fire.getBurningBuilding();
+    ForestEntity burningBuilding = fire.getBurningForest();
     int minX = burningBuilding.getMinX();
     int maxX = burningBuilding.getMaxX();
     int minY = burningBuilding.getMinY();
@@ -189,7 +189,7 @@ public class FireDiffuser implements Steppable {
   }
 
   private void burnBuilding(FireEntity fire) {
-    BuildingEntity burningBuilding = fire.getBurningBuilding();
+    ForestEntity burningBuilding = fire.getBurningForest();
     int minX = burningBuilding.getMinX();
     int maxX = burningBuilding.getMaxX();
     int minY = burningBuilding.getMinY();
@@ -334,8 +334,8 @@ public class FireDiffuser implements Steppable {
 
   private void setupBurningBuilding(FireEntity fire) {
     int buildingId = buildingCanvas.getBuildingId(fire.getX(), fire.getY());
-    BuildingEntity burningBuilding = buildingPersister.getBuilding(Long.valueOf(buildingId));
-    fire.setBurningBuilding(burningBuilding);
+    ForestEntity burningBuilding = buildingPersister.getBuilding(Long.valueOf(buildingId));
+    fire.setBurningForest(burningBuilding);
     burningBuilding.addFire(fire);
   }
 

@@ -8,7 +8,7 @@ import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.util.GeometricShapeFactory;
 
 import edu.usu.cs.mas.managedisaster.common.Chemical;
-import edu.usu.cs.mas.managedisaster.entity.BuildingEntity;
+import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
 import edu.usu.cs.mas.managedisaster.entity.FireEntity;
 import edu.usu.cs.mas.managedisaster.model.AgentModel;
 import edu.usu.cs.mas.managedisaster.player.AgentPlayer;
@@ -36,14 +36,14 @@ public class TestUtil {
         .withIncrementProbability(0.1);
   }
   
-  public BuildingEntity getBuilding() {
+  public ForestEntity getBuilding() {
     GeometricShapeFactory gsf = new GeometricShapeFactory();
     gsf.setSize(6);
     gsf.setNumPoints(6);
     gsf.setBase(new Coordinate(0,0));
     Polygon rectangle = gsf.createRectangle();
     
-    return new BuildingEntity().withShape(rectangle);
+    return new ForestEntity().withShape(rectangle);
   }
   
   public AgentPlayer getAgent(AgentPlayer agentPlayer) {
@@ -56,7 +56,7 @@ public class TestUtil {
   }
   
   public FireEntity createFire(int size, int numPoints, int baseX, int baseY) {
-    BuildingEntity building = getBuilding();
+    ForestEntity building = getBuilding();
     GeometricShapeFactory gsf = new GeometricShapeFactory();
     gsf.setSize(size);
     gsf.setNumPoints(numPoints);
@@ -65,7 +65,7 @@ public class TestUtil {
     building.withShape(rectangle);
 
     FireEntity fire = getFire();
-    fire.setBurningBuilding(building);
+    fire.setBurningForest(building);
     
     return fire;
   }

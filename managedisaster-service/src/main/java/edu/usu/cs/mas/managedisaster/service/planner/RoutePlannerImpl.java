@@ -22,7 +22,7 @@ import edu.usu.cs.mas.managedisaster.canvas.BuildingCanvas;
 import edu.usu.cs.mas.managedisaster.canvas.RoadCanvas;
 import edu.usu.cs.mas.managedisaster.common.AgentMove;
 import edu.usu.cs.mas.managedisaster.common.RoadOrientation;
-import edu.usu.cs.mas.managedisaster.entity.BuildingEntity;
+import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
 import edu.usu.cs.mas.managedisaster.entity.IntersectionEntity;
 import edu.usu.cs.mas.managedisaster.entity.RoadEntity;
 import edu.usu.cs.mas.managedisaster.entity.RoadIntersectionEntity;
@@ -98,7 +98,7 @@ public class RoutePlannerImpl implements RoutePlanner{
     Route route = null;
     setup();
     MutableInt2D targetLocation = agent.getTargetLocation(); // fire location
-    MutableInt2D targetRoadLocation = findClosestRoadCoordinate(targetLocation,agent.getAgentModel().getFire().getBurningBuilding());
+    MutableInt2D targetRoadLocation = findClosestRoadCoordinate(targetLocation,agent.getAgentModel().getFire().getBurningForest());
     agent.setTargetLocation(targetRoadLocation); // once target location figured out, it lays on the road
     double distance = agent.getCurrentLocation().distance(targetRoadLocation);
     if(distance == 0) {
@@ -129,7 +129,7 @@ public class RoutePlannerImpl implements RoutePlanner{
   }
 
   @Override
-  public MutableInt2D findClosestRoadCoordinate(MutableInt2D fireHotSpot, BuildingEntity fireBuilding){
+  public MutableInt2D findClosestRoadCoordinate(MutableInt2D fireHotSpot, ForestEntity fireBuilding){
     int targetX = fireHotSpot.x;
     int targetY = fireHotSpot.y;
     if(roadCanvas.isRoadCoordinate(targetX, targetY)){
@@ -595,7 +595,7 @@ public class RoutePlannerImpl implements RoutePlanner{
   }
 
 
-  private boolean isTargetCovered(MutableInt2D targetLocation, MutableInt2D selectedLocation, BuildingEntity fireBuilding) {
+  private boolean isTargetCovered(MutableInt2D targetLocation, MutableInt2D selectedLocation, ForestEntity fireBuilding) {
     boolean isXConstant = targetLocation.x == selectedLocation.x;
     boolean isYTargetFar = targetLocation.y > selectedLocation.y;
     boolean isXTargetFar = targetLocation.x > selectedLocation.x;

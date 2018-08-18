@@ -1,6 +1,6 @@
 package edu.usu.cs.mas.managedisaster.canvas;
 
-import edu.usu.cs.mas.managedisaster.entity.BuildingEntity;
+import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
 import sim.field.grid.DoubleGrid2D;
 import sim.portrayal.grid.FastValueGridPortrayal2D;
 
@@ -28,5 +28,5 @@ public interface FireCanvas {
   
   public void setNewSmokeGrid(DoubleGrid2D newSmokeGrid);
   
-  public boolean isBuildingBurning(BuildingEntity building);
+  public boolean isBuildingBurning(ForestEntity building);
 }

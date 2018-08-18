@@ -20,13 +20,13 @@ import org.pojomatic.annotations.AutoProperty;
 import org.pojomatic.annotations.PojomaticPolicy;
 import org.pojomatic.annotations.Property;
 
-import edu.usu.cs.mas.managedisaster.common.CoalitionBuildingStatus;
+import edu.usu.cs.mas.managedisaster.common.CoalitionForestStatus;
 import edu.usu.cs.mas.managedisaster.common.UtilityAlgorithm;
 
 @AutoProperty
 @Entity
-@Table (name = "COALITION_BUILDING")
-public class CoalitionBuildingEntity {
+@Table (name = "COALITION_FOREST")
+public class CoalitionForestEntity {
 
   @Id
   @GeneratedValue(generator="increment")
@@ -40,8 +40,8 @@ public class CoalitionBuildingEntity {
   
   @Property(policy=PojomaticPolicy.NONE)
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "BUILDING_ID")
-  private BuildingEntity building;
+  @JoinColumn(name = "FOREST_ID")
+  private ForestEntity forest;
   
   @Column(name = "RESOURCE_AMOUNT")
   private Double resourceAmount;
@@ -58,7 +58,7 @@ public class CoalitionBuildingEntity {
   
   @Enumerated(EnumType.STRING)
   @Column(name = "STATUS")
-  private CoalitionBuildingStatus status;
+  private CoalitionForestStatus status;
 
   public Long getId() {
     return id;
@@ -68,7 +68,7 @@ public class CoalitionBuildingEntity {
     this.id = id;
   }
   
-  public CoalitionBuildingEntity withId(Long id) {
+  public CoalitionForestEntity withId(Long id) {
     setId(id);
     return this;
   }
@@ -81,21 +81,21 @@ public class CoalitionBuildingEntity {
     this.coalition = coalition;
   }
   
-  public CoalitionBuildingEntity withCoalition(CoalitionEntity coalition) {
+  public CoalitionForestEntity withCoalition(CoalitionEntity coalition) {
     setCoalition(coalition);
     return this;
   }
 
-  public BuildingEntity getBuilding() {
-    return building;
+  public ForestEntity getForest() {
+    return forest;
   }
 
-  public void setBuilding(BuildingEntity building) {
-    this.building = building;
+  public void setForest(ForestEntity forest) {
+    this.forest = forest;
   }
   
-  public CoalitionBuildingEntity withBuilding(BuildingEntity building) {
-    setBuilding(building);
+  public CoalitionForestEntity withForest(ForestEntity forest) {
+    setForest(forest);
     return this;
   }
 
@@ -110,7 +110,7 @@ public class CoalitionBuildingEntity {
     this.resourceAmount = bigDecimal.doubleValue();
   }
   
-  public CoalitionBuildingEntity withResourceAmount(Double resourceAmount) {
+  public CoalitionForestEntity withResourceAmount(Double resourceAmount) {
     setResourceAmount(resourceAmount);
     return this;
   }
@@ -126,7 +126,7 @@ public class CoalitionBuildingEntity {
     this.taskAmount = bigDecimal.doubleValue();
   }
   
-  public CoalitionBuildingEntity withTaskAmount(Double taskAmount) {
+  public CoalitionForestEntity withTaskAmount(Double taskAmount) {
     withTaskAmount(taskAmount);
     return this;
   }
@@ -142,7 +142,7 @@ public class CoalitionBuildingEntity {
     this.utility = bigDecimal.doubleValue();
   }
   
-  public CoalitionBuildingEntity withUtility(Double utility) {
+  public CoalitionForestEntity withUtility(Double utility) {
     setUtility(utility);
     return this;
   }
@@ -155,20 +155,20 @@ public class CoalitionBuildingEntity {
     this.algorithm = algorithm;
   }
   
-  public CoalitionBuildingEntity withAlgorithm(UtilityAlgorithm algorithm) {
+  public CoalitionForestEntity withAlgorithm(UtilityAlgorithm algorithm) {
     setAlgorithm(algorithm);
     return this;
   }
 
-  public CoalitionBuildingStatus getStatus() {
+  public CoalitionForestStatus getStatus() {
     return status;
   }
 
-  public void setStatus(CoalitionBuildingStatus status) {
+  public void setStatus(CoalitionForestStatus status) {
     this.status = status;
   }
 
-  public CoalitionBuildingEntity withStatus(CoalitionBuildingStatus status) {
+  public CoalitionForestEntity withStatus(CoalitionForestStatus status) {
     setStatus(status);
     return this;
   }

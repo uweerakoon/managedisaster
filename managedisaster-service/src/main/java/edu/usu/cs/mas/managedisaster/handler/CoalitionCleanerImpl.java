@@ -13,7 +13,7 @@ import org.apache.commons.collections.CollectionUtils;
 import edu.usu.cs.mas.managedisaster.collection.AgentSociety;
 import edu.usu.cs.mas.managedisaster.entity.AgentCoalitionEntity;
 import edu.usu.cs.mas.managedisaster.entity.AgentEntity;
-import edu.usu.cs.mas.managedisaster.entity.CoalitionBuildingEntity;
+import edu.usu.cs.mas.managedisaster.entity.CoalitionForestEntity;
 import edu.usu.cs.mas.managedisaster.entity.CoalitionEntity;
 import edu.usu.cs.mas.managedisaster.entity.FireStationEntity;
 import edu.usu.cs.mas.managedisaster.persister.AgentCoalitionPersister;
@@ -33,23 +33,23 @@ public class CoalitionCleanerImpl implements CoalitionCleaner {
   private AgentCoalitionPersister agentCoalitionPersister;
   
   @Override
-  public void cancelUnwantedCoalBuildForBuildings(List<CoalitionBuildingEntity> allocatedCoalBuilds) {
+  public void cancelUnwantedCoalBuildForBuildings(List<CoalitionForestEntity> allocatedCoalBuilds) {
     List<Long> allocatedBuildingIds = allocatedCoalBuilds.stream()
-                                    .map(acb -> acb.getBuilding().getId())
+                                    .map(acb -> acb.getForest().getId())
                                     .collect(Collectors.toList());
-    List<CoalitionBuildingEntity> coalBuildEntities = coalitionBuildingPersister.getUnallocatedCoalBuildByBuildIds(allocatedBuildingIds);
-    for(CoalitionBuildingEntity coalBuildEntity : coalBuildEntities) {
+    List<CoalitionForestEntity> coalBuildEntities = coalitionBuildingPersister.getUnallocatedCoalBuildByBuildIds(allocatedBuildingIds);
+    for(CoalitionForestEntity coalBuildEntity : coalBuildEntities) {
       coalitionBuildingPersister.cancel(coalBuildEntity);
     }
   }
   
   @Override
-  public void cancelUnwantedCoalBuildForCoalitions(List<CoalitionBuildingEntity> allocatedCoalBuilds) {
+  public void cancelUnwantedCoalBuildForCoalitions(List<CoalitionForestEntity> allocatedCoalBuilds) {
     List<Long> allocatedCoalIds = allocatedCoalBuilds.stream()
                                     .map(acb -> acb.getCoalition().getId())
                                     .collect(Collectors.toList());
-    List<CoalitionBuildingEntity> coalBuildEntities = coalitionBuildingPersister.getUnallocatedCoalBuildByCoalIds(allocatedCoalIds);
-    for(CoalitionBuildingEntity coalBuildEntity : coalBuildEntities) {
+    List<CoalitionForestEntity> coalBuildEntities = coalitionBuildingPersister.getUnallocatedCoalBuildByCoalIds(allocatedCoalIds);
+    for(CoalitionForestEntity coalBuildEntity : coalBuildEntities) {
       coalitionBuildingPersister.cancel(coalBuildEntity);
     }
   }
@@ -74,8 +74,8 @@ public class CoalitionCleanerImpl implements CoalitionCleaner {
   }
   
   @Override
-  public void cancelSingleBuildingOtherCoalitions(List<CoalitionBuildingEntity> allocatedCoalBuilds) {
-    for(CoalitionBuildingEntity allocatedCoalBuild : allocatedCoalBuilds) {
+  public void cancelSingleBuildingOtherCoalitions(List<CoalitionForestEntity> allocatedCoalBuilds) {
+    for(CoalitionForestEntity allocatedCoalBuild : allocatedCoalBuilds) {
       // 1. collect allocated information
       CoalitionEntity allocatedCoal = allocatedCoalBuild.getCoalition();
       FireStationEntity allocatedFireStation = allocatedCoal.getFireStation();
@@ -94,8 +94,8 @@ public class CoalitionCleanerImpl implements CoalitionCleaner {
         // 5. cancel the coalition
         coalitionPersister.cancel(unallocatedFireStationCoal);
         // 6. cancel all its coal_build pairs
-        List<CoalitionBuildingEntity> unallocatedCoalBuilds = coalitionBuildingPersister.getCoalitionBuildings(unallocatedFireStationCoal);
-        for(CoalitionBuildingEntity unallocatedCoalBuild : unallocatedCoalBuilds) {
+        List<CoalitionForestEntity> unallocatedCoalBuilds = coalitionBuildingPersister.getCoalitionBuildings(unallocatedFireStationCoal);
+        for(CoalitionForestEntity unallocatedCoalBuild : unallocatedCoalBuilds) {
           coalitionBuildingPersister.cancel(unallocatedCoalBuild);
         }
       }

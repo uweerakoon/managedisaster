@@ -17,8 +17,8 @@ import org.pojomatic.annotations.Property;
 
 @AutoProperty
 @Entity
-@Table (name = "BURNING_BUILDING_STAT")
-public class BurningBuildingStatEntity {
+@Table (name = "BURNING_FOREST_STAT")
+public class BurningForestStatEntity {
 
 	@Id
 	@GeneratedValue(generator="increment")
@@ -27,8 +27,8 @@ public class BurningBuildingStatEntity {
 	
 	@Property(policy=PojomaticPolicy.NONE)
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "BUILDING_ID")
-	private BuildingEntity building;
+	@JoinColumn(name = "FOREST_ID")
+	private ForestEntity forest;
 	
 	@Column(name = "TIME_STAMP")
 	private long time;
@@ -50,21 +50,21 @@ public class BurningBuildingStatEntity {
 		this.id = id;
 	}
 	
-	public BurningBuildingStatEntity withId(Long id) {
+	public BurningForestStatEntity withId(Long id) {
 		setId(id);
 		return this;
 	}
 
-	public BuildingEntity getBuilding() {
-		return building;
+	public ForestEntity getForest() {
+		return forest;
 	}
 
-	public void setBuilding(BuildingEntity building) {
-		this.building = building;
+	public void setForest(ForestEntity forest) {
+		this.forest = forest;
 	}
 
-	public BurningBuildingStatEntity withBuilding(BuildingEntity building) {
-		setBuilding(building);
+	public BurningForestStatEntity withForest(ForestEntity forest) {
+		setForest(forest);
 		return this;
 	}
 
@@ -76,7 +76,7 @@ public class BurningBuildingStatEntity {
 		this.time = time;
 	}
 
-	public BurningBuildingStatEntity withTime(long time) {
+	public BurningForestStatEntity withTime(long time) {
 		setTime(time);
 		return this;
 	}
@@ -89,7 +89,7 @@ public class BurningBuildingStatEntity {
 		this.fireAmount = fireAmount;
 	}
 
-	public BurningBuildingStatEntity withFireAmount(double fireAmount) {
+	public BurningForestStatEntity withFireAmount(double fireAmount) {
 		setFireAmount(fireAmount);
 		return this;
 	}
@@ -102,7 +102,7 @@ public class BurningBuildingStatEntity {
 		this.smokeAmount = smokeAmount;
 	}
 
-	public BurningBuildingStatEntity withSmokeAmount(double smokeAmount) {
+	public BurningForestStatEntity withSmokeAmount(double smokeAmount) {
 		setSmokeAmount(smokeAmount);
 		return this;
 	}
@@ -115,7 +115,7 @@ public class BurningBuildingStatEntity {
 		this.waterAmount = waterAmount;
 	}
 
-	public BurningBuildingStatEntity withWaterAmount(double waterAmount) {
+	public BurningForestStatEntity withWaterAmount(double waterAmount) {
 		setWaterAmount(waterAmount);
 		return this;
 	}

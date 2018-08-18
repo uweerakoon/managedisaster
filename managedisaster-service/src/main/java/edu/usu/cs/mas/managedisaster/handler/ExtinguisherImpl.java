@@ -14,7 +14,7 @@ import edu.usu.cs.mas.managedisaster.Simulator;
 import edu.usu.cs.mas.managedisaster.canvas.BuildingCanvas;
 import edu.usu.cs.mas.managedisaster.canvas.FireCanvas;
 import edu.usu.cs.mas.managedisaster.common.Chemical;
-import edu.usu.cs.mas.managedisaster.entity.BuildingEntity;
+import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
 import edu.usu.cs.mas.managedisaster.entity.FireEntity;
 import edu.usu.cs.mas.managedisaster.exception.ManageDisasterServiceException;
 import edu.usu.cs.mas.managedisaster.player.AgentPlayer;
@@ -47,7 +47,7 @@ public class ExtinguisherImpl implements Extinguisher {
   
   @Override
   public void extinguish(FireEntity fire, AgentPlayer agent) {
-    BuildingEntity building = fire.getBurningBuilding();
+    ForestEntity building = fire.getBurningForest();
     
     checkInitValues(agent, building);
     
@@ -87,7 +87,7 @@ public class ExtinguisherImpl implements Extinguisher {
     if(fire.isExtinguished()) {
       return true;
     }
-    BuildingEntity building = fire.getBurningBuilding();
+    ForestEntity building = fire.getBurningForest();
     boolean isBuildingBurning = fireCanvas.isBuildingBurning(building);
     if(!isBuildingBurning) {
       fire.setExtinguished(true);
@@ -106,7 +106,7 @@ public class ExtinguisherImpl implements Extinguisher {
     agent.setFire(null);
   }
 
-  private void checkInitValues(AgentPlayer agent, BuildingEntity building) {
+  private void checkInitValues(AgentPlayer agent, ForestEntity building) {
     Preconditions.checkNotNull(building, "Buring building cannot be null");
     Preconditions.checkNotNull(agent.getChemical(), "Agent has not chemical type to use");
     Preconditions.checkArgument(agent.getChemicalAmount() > 0, "Agent has not chemical amount to use");
@@ -124,7 +124,7 @@ public class ExtinguisherImpl implements Extinguisher {
     currentWaterGrid.setTo(newWaterGrid);
   }
   
-  private void fight(BuildingEntity building, AgentPlayer agent, FireEntity fire) {
+  private void fight(ForestEntity building, AgentPlayer agent, FireEntity fire) {
     int minX = building.getMinX(), maxX = building.getMaxX();
     int minY = building.getMinY(), maxY = building.getMaxY();
     

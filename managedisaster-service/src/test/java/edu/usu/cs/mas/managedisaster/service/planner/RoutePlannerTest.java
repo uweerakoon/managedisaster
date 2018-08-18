@@ -14,7 +14,7 @@ import sim.util.MutableInt2D;
 import edu.usu.cs.mas.managedisaster.canvas.BuildingCanvas;
 import edu.usu.cs.mas.managedisaster.canvas.RoadCanvas;
 import edu.usu.cs.mas.managedisaster.canvas.RoadCanvasImpl;
-import edu.usu.cs.mas.managedisaster.entity.BuildingEntity;
+import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
 import edu.usu.cs.mas.managedisaster.entity.FireEntity;
 import edu.usu.cs.mas.managedisaster.model.util.HibernateUtil;
 import edu.usu.cs.mas.managedisaster.model.util.HibernateUtilImpl;
@@ -62,8 +62,8 @@ public class RoutePlannerTest extends TestUtil{
   public void testCreateRoute() {
     AgentPlayer agent = getAgent(null);
     FireEntity fire = getFire();
-    BuildingEntity building = getBuilding();
-    fire.setBurningBuilding(building);
+    ForestEntity building = getBuilding();
+    fire.setBurningForest(building);
     agent.getAgentModel().setFire(fire);
     roadGrid.field[50][50] = 1;
     Route route = routePlanner.createRoute(agent);

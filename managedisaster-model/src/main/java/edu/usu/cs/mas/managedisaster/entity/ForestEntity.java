@@ -27,14 +27,14 @@ import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 
 import ec.util.MersenneTwisterFast;
-import edu.usu.cs.mas.managedisaster.common.CoalitionBuildingStatus;
+import edu.usu.cs.mas.managedisaster.common.CoalitionForestStatus;
 import sim.util.Int2D;
 import sim.util.MutableInt2D;
 
 @AutoProperty
 @Entity
-@Table (name = "BUILDING")
-public class BuildingEntity {
+@Table (name = "FOREST")
+public class ForestEntity {
   
   private static final GeometryFactory geometryFactory = new GeometryFactory();
   
@@ -57,12 +57,12 @@ public class BuildingEntity {
   private Integer labelY;
   
   @Property(policy=PojomaticPolicy.NONE)
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "burningBuilding")
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "burningForest")
   private List<FireEntity> fires;
   
   @Property(policy=PojomaticPolicy.NONE)
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "building")
-  private List<CoalitionBuildingEntity> coalitionBuildings;
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "forest")
+  private List<CoalitionForestEntity> coalitionForests;
   
   @Transient
   private Int2D labelCoordinate;
@@ -99,7 +99,7 @@ public class BuildingEntity {
     this.id = id;
   }
 
-  public BuildingEntity withId(Long id){
+  public ForestEntity withId(Long id){
     this.setId(id);
     return this;
   }
@@ -116,7 +116,7 @@ public class BuildingEntity {
     this.name = name;
   }
 
-  public BuildingEntity withName(String name) {
+  public ForestEntity withName(String name) {
     setName(name);
     return this;
   }
@@ -125,7 +125,7 @@ public class BuildingEntity {
     this.shape = shape;
   }
   
-  public BuildingEntity withShape(Polygon shape){
+  public ForestEntity withShape(Polygon shape){
     this.setShape(shape);
     return this;
   }
@@ -272,26 +272,26 @@ public class BuildingEntity {
 		this.currentWater = currentWater;
 	}
 
-	public List<CoalitionBuildingEntity> getCoalitionBuildings() {
-    return coalitionBuildings;
+	public List<CoalitionForestEntity> getCoalitionForests() {
+    return coalitionForests;
   }
 	
-	public List<CoalitionBuildingEntity> getUtilizedCoalitionBuildings() {
-    return coalitionBuildings
+	public List<CoalitionForestEntity> getUtilizedCoalitionForests() {
+    return coalitionForests
             .stream()
-            .filter(cb -> cb.getStatus() == CoalitionBuildingStatus.UTILIZED)
+            .filter(cb -> cb.getStatus() == CoalitionForestStatus.UTILIZED)
             .collect(Collectors.toList());
   }
 
-  public void setCoalitionBuildings(List<CoalitionBuildingEntity> coalitionBuildings) {
-    this.coalitionBuildings = coalitionBuildings;
+  public void setCoalitionForests(List<CoalitionForestEntity> coalitionForests) {
+    this.coalitionForests = coalitionForests;
   }
 
-  public void addCoalitionBuilding(CoalitionBuildingEntity coalitionBuilding) {
-    if(this.coalitionBuildings == null) {
-      this.coalitionBuildings = new ArrayList<>();
+  public void addCoalitionForests(CoalitionForestEntity coalitionForests) {
+    if(this.coalitionForests == null) {
+      this.coalitionForests = new ArrayList<>();
     }
-    this.coalitionBuildings.add(coalitionBuilding);
+    this.coalitionForests.add(coalitionForests);
   }
   
   @Override

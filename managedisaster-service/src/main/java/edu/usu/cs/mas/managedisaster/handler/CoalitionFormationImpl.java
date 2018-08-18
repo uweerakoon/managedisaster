@@ -14,13 +14,13 @@ import com.google.common.annotations.VisibleForTesting;
 
 import ec.util.MersenneTwisterFast;
 import edu.usu.cs.mas.managedisaster.collection.AgentSociety;
-import edu.usu.cs.mas.managedisaster.common.CoalitionBuildingStatus;
+import edu.usu.cs.mas.managedisaster.common.CoalitionForestStatus;
 import edu.usu.cs.mas.managedisaster.common.CoalitionStatus;
 import edu.usu.cs.mas.managedisaster.entity.AgentCoalitionEntity;
 import edu.usu.cs.mas.managedisaster.entity.AgentEntity;
 import edu.usu.cs.mas.managedisaster.entity.AgentUtilityEntity;
-import edu.usu.cs.mas.managedisaster.entity.BuildingEntity;
-import edu.usu.cs.mas.managedisaster.entity.CoalitionBuildingEntity;
+import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
+import edu.usu.cs.mas.managedisaster.entity.CoalitionForestEntity;
 import edu.usu.cs.mas.managedisaster.entity.CoalitionEntity;
 import edu.usu.cs.mas.managedisaster.entity.FireEntity;
 import edu.usu.cs.mas.managedisaster.entity.FireStationEntity;
@@ -105,13 +105,13 @@ public class CoalitionFormationImpl implements CoalitionFormation {
 	  }
 	  coalitionEntity = coalitionPersister.getCoalition(agentPlayer.getAgentModel().getCoalition().getId());
 	  if(coalitionEntity.getStatus() != CoalitionStatus.TERMINATE) {
-	    CoalitionBuildingEntity coalBuildEntity = coalitionBuildingPersister.getExecutingCoalBuild(coalitionEntity);
+	    CoalitionForestEntity coalBuildEntity = coalitionBuildingPersister.getExecutingCoalBuild(coalitionEntity);
 	    shareUtility(coalitionEntity, coalBuildEntity);
 	    coalitionEntity.setAgents(null);
   	  coalitionEntity.setStatus(CoalitionStatus.TERMINATE);
   	  coalitionPersister.save(coalitionEntity);
-  	  if(coalBuildEntity != null && coalBuildEntity.getStatus() != CoalitionBuildingStatus.TERMINATE) {
-  	    coalBuildEntity.setStatus(CoalitionBuildingStatus.TERMINATE);
+  	  if(coalBuildEntity != null && coalBuildEntity.getStatus() != CoalitionForestStatus.TERMINATE) {
+  	    coalBuildEntity.setStatus(CoalitionForestStatus.TERMINATE);
   	    coalitionBuildingPersister.save(coalBuildEntity);
   	  }
   	  else {
@@ -122,7 +122,7 @@ public class CoalitionFormationImpl implements CoalitionFormation {
 	  agentPlayer.setCoalition(agentEntity, null);
 	}
 	
-	private void shareUtility(CoalitionEntity coalitionEntity, CoalitionBuildingEntity coalBuildEntity) {
+	private void shareUtility(CoalitionEntity coalitionEntity, CoalitionForestEntity coalBuildEntity) {
 	  List<AgentEntity> agents = coalitionEntity.getAgents();
 	  double coalUtility = coalBuildEntity.getUtility();
 	  double agentUtility = coalUtility / agents.size();
@@ -174,17 +174,17 @@ public class CoalitionFormationImpl implements CoalitionFormation {
 		List<FireEntity> closeFires = player.getAgentModel().getCloseFires();
 		List<AgentCoalitionEntity> agentCoalitions = new ArrayList<>();
 		for(FireEntity closeFire : closeFires) {
-		  BuildingEntity burningBuilding = closeFire.getBurningBuilding();
+		  ForestEntity burningBuilding = closeFire.getBurningForest();
 		  // get the agent entity for the player
 		  AgentEntity agent = agentPersister.getAgent(player.getId());
 		  
 		  CoalitionEntity coalition = getCoalition(fireStation);
 		  
-		  CoalitionBuildingEntity coalBuildEntity = new CoalitionBuildingEntity()
-		      .withBuilding(burningBuilding)
+		  CoalitionForestEntity coalBuildEntity = new CoalitionForestEntity()
+		      .withForest(burningBuilding)
 		      .withCoalition(coalition);
-		  coalition.addCoalitionBuilding(coalBuildEntity);
-		  burningBuilding.addCoalitionBuilding(coalBuildEntity);
+		  coalition.addCoalitionForest(coalBuildEntity);
+		  burningBuilding.addCoalitionForests(coalBuildEntity);
 		  
 		  // add himself to the coalition
 		  coalition.addAgent(agent);
@@ -230,10 +230,10 @@ public class CoalitionFormationImpl implements CoalitionFormation {
 			else {
 				coalition.setFeasible(true);
 			}
-			List<CoalitionBuildingEntity> coalBuilds = coalitionBuildingPersister.getCoalitionBuildings(coalition);
-	    for(CoalitionBuildingEntity coalBuild : coalBuilds) {
+			List<CoalitionForestEntity> coalBuilds = coalitionBuildingPersister.getCoalitionBuildings(coalition);
+	    for(CoalitionForestEntity coalBuild : coalBuilds) {
 	      if(coalBuild.getResourceAmount() >= coalBuild.getTaskAmount()) {
-	        coalBuild.setStatus(CoalitionBuildingStatus.FEASIBLE);
+	        coalBuild.setStatus(CoalitionForestStatus.FEASIBLE);
 	        coalitionBuildingPersister.save(coalBuild);
 	      }
 	    }
@@ -243,9 +243,9 @@ public class CoalitionFormationImpl implements CoalitionFormation {
 	}
 	
 	private void enabledBestCoalitionToExecute() {
-	  List<CoalitionBuildingEntity> allocatedCoalBuilds = null;
+	  List<CoalitionForestEntity> allocatedCoalBuilds = null;
 	  // 1. Find burning buildings that has only one coalition
-	  List<BuildingEntity> oneCoalitionBuildings = coalitionBuildingPersister.getOneCoalitionBuildings();
+	  List<ForestEntity> oneCoalitionBuildings = coalitionBuildingPersister.getOneCoalitionBuildings();
 	  while(!oneCoalitionBuildings.isEmpty()) {
   	  // 2. Allocate single coalition to a single building
   	  allocatedCoalBuilds = allocateSingleCoalitions(oneCoalitionBuildings);
@@ -270,24 +270,24 @@ public class CoalitionFormationImpl implements CoalitionFormation {
 	  unwantedAgentPlayers.addAll(unwantedPlayers);
 	}
 	
-	private List<CoalitionBuildingEntity> allocateSingleCoalitions(List<BuildingEntity> oneCoalitionBuildings) {
-	  List<CoalitionBuildingEntity> allocatedCoalBuilds = new ArrayList<>();
-	  for(BuildingEntity oneCoalitionBuilding : oneCoalitionBuildings) {
+	private List<CoalitionForestEntity> allocateSingleCoalitions(List<ForestEntity> oneCoalitionBuildings) {
+	  List<CoalitionForestEntity> allocatedCoalBuilds = new ArrayList<>();
+	  for(ForestEntity oneCoalitionBuilding : oneCoalitionBuildings) {
 	    // 1. If the buildings has multiple coal_build pairs, then ignore
-	    List<CoalitionBuildingEntity> coalBuilds = oneCoalitionBuilding.getUtilizedCoalitionBuildings();
+	    List<CoalitionForestEntity> coalBuilds = oneCoalitionBuilding.getUtilizedCoalitionForests();
 	    if(coalBuilds.size() > 1) {
 	      continue;
 	    }
-	    CoalitionBuildingEntity coalBuild = coalBuilds.get(0);
+	    CoalitionForestEntity coalBuild = coalBuilds.get(0);
 	    // 2. If the coalition is not feasible, then ignore
 	    CoalitionEntity bestCoalition = coalBuild.getCoalition();
 	    if(bestCoalition.getFeasible() == null || bestCoalition.getFeasible() == false) {
 	      continue;
 	    }
 	    // 3. Assign the building to the coalition
-	    bestCoalition.setAllocatedBuilding(coalBuild.getBuilding());
+	    bestCoalition.setAllocatedForest(coalBuild.getForest());
 	    coalitionPersister.save(bestCoalition);
-	    coalBuild.setStatus(CoalitionBuildingStatus.ALLOCATED);
+	    coalBuild.setStatus(CoalitionForestStatus.ALLOCATED);
 	    coalitionBuildingPersister.save(coalBuild);
 	    // 4. Confirm the agents about the best coalition
 	    for(AgentEntity agent : bestCoalition.getAgents()) {
@@ -301,10 +301,10 @@ public class CoalitionFormationImpl implements CoalitionFormation {
 	  return allocatedCoalBuilds;
 	}
 
-  private List<CoalitionBuildingEntity> allocateBestCoalitionToTask(List<CoalitionEntity> feasibleUnallocatedCoalitions) {
-    List<CoalitionBuildingEntity> bestCoalBuilds = new ArrayList<>();
+  private List<CoalitionForestEntity> allocateBestCoalitionToTask(List<CoalitionEntity> feasibleUnallocatedCoalitions) {
+    List<CoalitionForestEntity> bestCoalBuilds = new ArrayList<>();
 	  for(CoalitionEntity feasibleCoalition : feasibleUnallocatedCoalitions) {
-	    CoalitionBuildingEntity bestUtilCoalBuild = setupBestCoalition(feasibleCoalition);
+	    CoalitionForestEntity bestUtilCoalBuild = setupBestCoalition(feasibleCoalition);
 	    if(bestUtilCoalBuild == null) {
 	      continue;
 	    }
@@ -313,25 +313,25 @@ public class CoalitionFormationImpl implements CoalitionFormation {
     return bestCoalBuilds;
   }
 	
-	private CoalitionBuildingEntity setupBestCoalition(CoalitionEntity feasibleCoalition) {
-	  CoalitionBuildingEntity bestCoalBuild = null;
+	private CoalitionForestEntity setupBestCoalition(CoalitionEntity feasibleCoalition) {
+	  CoalitionForestEntity bestCoalBuild = null;
 	  CoalitionEntity bestUtilityCoalition = null;
 	  // 1. get the buildings that the coalition has find it interesting
-	  List<BuildingEntity> burningBuilds = coalitionBuildingPersister.getBuildings(feasibleCoalition);
-    for(BuildingEntity burningBuild : burningBuilds) {
+	  List<ForestEntity> burningBuilds = coalitionBuildingPersister.getBuildings(feasibleCoalition);
+    for(ForestEntity burningBuild : burningBuilds) {
       // 2. The building has only one coalition assigned, then there is no further investigation
-      List<CoalitionBuildingEntity> coalBluildings = coalitionBuildingPersister.getCoalitionBuildings(burningBuild);
+      List<CoalitionForestEntity> coalBluildings = coalitionBuildingPersister.getCoalitionBuildings(burningBuild);
       if(coalBluildings.size() == 1) {
         bestCoalBuild = coalBluildings.get(0);
         continue;
       }
       // 3. if burning build already has a coalition allocated; continue
-      CoalitionBuildingEntity allocatedCoalBuild = coalitionBuildingPersister.getAllocatedCoalBuild(burningBuild);
+      CoalitionForestEntity allocatedCoalBuild = coalitionBuildingPersister.getAllocatedCoalBuild(burningBuild);
       if(allocatedCoalBuild != null) {
         continue;
       }
       // 4. Find the highest utility coalition
-      List<CoalitionBuildingEntity> coalBuilds = coalitionBuildingPersister.findBestUtilityCoalitionBuildings(burningBuild);
+      List<CoalitionForestEntity> coalBuilds = coalitionBuildingPersister.findBestUtilityCoalitionBuildings(burningBuild);
       // 4.1. Only one highest coal-building relation
       if(coalBuilds.size() == 1) { 
         bestCoalBuild = coalBuilds.get(0);
@@ -350,9 +350,9 @@ public class CoalitionFormationImpl implements CoalitionFormation {
     }
     bestUtilityCoalition = bestCoalBuild.getCoalition();
     // 5. Assign the selected building to the coalition
-    bestUtilityCoalition.setAllocatedBuilding(bestCoalBuild.getBuilding());
+    bestUtilityCoalition.setAllocatedForest(bestCoalBuild.getForest());
     coalitionPersister.save(bestUtilityCoalition);
-    bestCoalBuild.setStatus(CoalitionBuildingStatus.ALLOCATED);
+    bestCoalBuild.setStatus(CoalitionForestStatus.ALLOCATED);
     coalitionBuildingPersister.save(bestCoalBuild);
     // 6. Agents are assigned the best utility coalition
     for(AgentEntity agent : bestUtilityCoalition.getAgents()) {
@@ -365,15 +365,15 @@ public class CoalitionFormationImpl implements CoalitionFormation {
 	}
 	
 	private void setCoalitionOptimizingToExecuting(CoalitionEntity coalition) {
-	  FireEntity fire = coalition.getAllocatedBuilding().getFires().get(0);
+	  FireEntity fire = coalition.getAllocatedForest().getFires().get(0);
 	  fire.setCoalition(coalition);
 	  firePersister.saveFire(fire);
 	  
 	  coalition.setStatus(CoalitionStatus.EXECUTING);
 	  coalitionPersister.save(coalition);
 	  
-	  CoalitionBuildingEntity allocatedCoalBuild = coalitionBuildingPersister.getAllocatedCoalBuild(coalition);
-	  allocatedCoalBuild.setStatus(CoalitionBuildingStatus.EXECUTING);
+	  CoalitionForestEntity allocatedCoalBuild = coalitionBuildingPersister.getAllocatedCoalBuild(coalition);
+	  allocatedCoalBuild.setStatus(CoalitionForestStatus.EXECUTING);
 	  coalitionBuildingPersister.save(allocatedCoalBuild);
 	  
 	  // Need to set agent players to execute the task

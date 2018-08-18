@@ -32,8 +32,8 @@ public class CoalitionStatEntity {
 	
 	@Property(policy=PojomaticPolicy.NONE)
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "BUILDING_ID")
-  private BuildingEntity building;
+  @JoinColumn(name = "FOREST_ID")
+  private ForestEntity forest;
 	
 	@Column(name = "TIME_STAMP")
 	private long time;
@@ -65,16 +65,16 @@ public class CoalitionStatEntity {
 		return this;
 	}
 
-	public BuildingEntity getBuilding() {
-    return building;
+	public ForestEntity getForest() {
+    return forest;
   }
 
-  public void setBuilding(BuildingEntity building) {
-    this.building = building;
+  public void setForest(ForestEntity forest) {
+    this.forest = forest;
   }
 
-  public CoalitionStatEntity withBuilding(BuildingEntity building) {
-    setBuilding(building);
+  public CoalitionStatEntity withForest(ForestEntity forest) {
+    setForest(forest);
     return this;
   }
   

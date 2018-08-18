@@ -2,47 +2,47 @@ package edu.usu.cs.mas.managedisaster.persister;
 
 import java.util.List;
 
-import edu.usu.cs.mas.managedisaster.entity.BuildingEntity;
-import edu.usu.cs.mas.managedisaster.entity.CoalitionBuildingEntity;
+import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
+import edu.usu.cs.mas.managedisaster.entity.CoalitionForestEntity;
 import edu.usu.cs.mas.managedisaster.entity.CoalitionEntity;
 
 public interface CoalitionBuildingPersister {
 
-  public List<CoalitionBuildingEntity> getFeasibleCoalBuilds();
+  public List<CoalitionForestEntity> getFeasibleCoalBuilds();
   
-  public List<CoalitionBuildingEntity> getCoalitionBuildings(CoalitionEntity coalition);
+  public List<CoalitionForestEntity> getCoalitionBuildings(CoalitionEntity coalition);
   
-  public List<CoalitionBuildingEntity> getUnallocatedCoalBuildByCoalIds(List<Long> coalitionIds);
+  public List<CoalitionForestEntity> getUnallocatedCoalBuildByCoalIds(List<Long> coalitionIds);
   
-  public List<CoalitionBuildingEntity> getUnallocatedCoalBuildByBuildIds(List<Long> buildIds);
+  public List<CoalitionForestEntity> getUnallocatedCoalBuildByBuildIds(List<Long> buildIds);
   
   public List<Integer> getCancelledCoalitionIds();
   
-  public List<CoalitionBuildingEntity> getCoalitionBuildings(BuildingEntity building);
+  public List<CoalitionForestEntity> getCoalitionBuildings(ForestEntity building);
   
-  public CoalitionBuildingEntity getAllocatedCoalBuild(BuildingEntity building);
+  public CoalitionForestEntity getAllocatedCoalBuild(ForestEntity building);
   
-  public CoalitionBuildingEntity getAllocatedCoalBuild(CoalitionEntity coalition);
+  public CoalitionForestEntity getAllocatedCoalBuild(CoalitionEntity coalition);
   
-  public CoalitionBuildingEntity getExecutingCoalBuild(CoalitionEntity coalition);
+  public CoalitionForestEntity getExecutingCoalBuild(CoalitionEntity coalition);
   
-  public List<CoalitionBuildingEntity> findBestUtilityCoalitionBuildings(BuildingEntity building);
+  public List<CoalitionForestEntity> findBestUtilityCoalitionBuildings(ForestEntity building);
   
-  public CoalitionBuildingEntity getCoalitionBuilding(CoalitionEntity coalition, BuildingEntity building);
+  public CoalitionForestEntity getCoalitionBuilding(CoalitionEntity coalition, ForestEntity building);
   
-  public CoalitionBuildingEntity getFeasibleCoalBuilds(CoalitionEntity coalition, BuildingEntity building);
+  public CoalitionForestEntity getFeasibleCoalBuilds(CoalitionEntity coalition, ForestEntity building);
   
-  public List<BuildingEntity> getBuildings(CoalitionEntity coalition);
+  public List<ForestEntity> getBuildings(CoalitionEntity coalition);
   
-  public List<CoalitionEntity> getCoalitions(BuildingEntity building);
+  public List<CoalitionEntity> getCoalitions(ForestEntity building);
   
-  public List<BuildingEntity> getOneCoalitionBuildings();
+  public List<ForestEntity> getOneCoalitionBuildings();
   
-  public void save(CoalitionBuildingEntity CoalitionBuilding);
+  public void save(CoalitionForestEntity CoalitionBuilding);
   
-  public void cancel(CoalitionBuildingEntity coalitionBuilding);
+  public void cancel(CoalitionForestEntity coalitionBuilding);
   
-  public void delete(CoalitionBuildingEntity CoalitionBuilding);
+  public void delete(CoalitionForestEntity CoalitionBuilding);
   
   public void cleanup();
 }

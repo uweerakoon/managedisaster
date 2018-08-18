@@ -17,7 +17,7 @@ import edu.usu.cs.mas.managedisaster.common.AgentMove;
 import edu.usu.cs.mas.managedisaster.common.AgentStatus;
 import edu.usu.cs.mas.managedisaster.common.Chemical;
 import edu.usu.cs.mas.managedisaster.entity.AgentEntity;
-import edu.usu.cs.mas.managedisaster.entity.BuildingEntity;
+import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
 import edu.usu.cs.mas.managedisaster.entity.CoalitionEntity;
 import edu.usu.cs.mas.managedisaster.entity.FireEntity;
 import edu.usu.cs.mas.managedisaster.entity.FireStationEntity;
@@ -249,7 +249,7 @@ public class AgentPlayer implements Steppable {
 
   private void lookCloseFires(List<FireEntity> fires) {
     for(FireEntity fire : fires) {
-      if(fire.getBurningBuilding() == null) {
+      if(fire.getBurningForest() == null) {
         burn(fire);
       }
     }
@@ -263,8 +263,8 @@ public class AgentPlayer implements Steppable {
     if(buildingId == 0) {
       LOGGER.error("Cannot find the building id for a given fire. Agent: "+this+" fire: "+fire);
     }
-    BuildingEntity burningBuilding = buildingPersister.getBuilding(Long.valueOf(buildingId));
-    fire.setBurningBuilding(burningBuilding);
+    ForestEntity burningBuilding = buildingPersister.getBuilding(Long.valueOf(buildingId));
+    fire.setBurningForest(burningBuilding);
     burningBuilding.addFire(fire);
   }
 

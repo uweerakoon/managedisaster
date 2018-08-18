@@ -12,7 +12,7 @@ import org.mockito.MockitoAnnotations;
 
 import sim.engine.Schedule;
 import sim.engine.SimState;
-import edu.usu.cs.mas.managedisaster.entity.BuildingEntity;
+import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
 import edu.usu.cs.mas.managedisaster.entity.FireEntity;
 import edu.usu.cs.mas.managedisaster.message.Message;
 import edu.usu.cs.mas.managedisaster.message.MessageType;
@@ -56,8 +56,8 @@ public class FirePersisterTest {
 
   @Test
   public void testGenerateMildFire() {
-    BuildingEntity building = buildingPersister.getBuilding(WALMART);
-    Message message = new Message().withBuilding(building).withMessageType(MessageType.FIRE)
+    ForestEntity building = buildingPersister.getBuilding(WALMART);
+    Message message = new Message().withForest(building).withMessageType(MessageType.FIRE)
                         .withSeverity(Severity.MILD);
     simState.schedule = schedule;
     firePersister.setSimState(simState);
@@ -68,8 +68,8 @@ public class FirePersisterTest {
   
   @Test
   public void testGenerateNormalFire() {
-    BuildingEntity building = buildingPersister.getBuilding(WALMART);
-    Message message = new Message().withBuilding(building).withMessageType(MessageType.FIRE).withSeverity(Severity.NORMAL);
+    ForestEntity building = buildingPersister.getBuilding(WALMART);
+    Message message = new Message().withForest(building).withMessageType(MessageType.FIRE).withSeverity(Severity.NORMAL);
     simState.schedule = schedule;
     firePersister.setSimState(simState);
     FireEntity fire = firePersister.generateFire(message);
@@ -79,8 +79,8 @@ public class FirePersisterTest {
   
   @Test
   public void testGenerateSevereFire() {
-    BuildingEntity building = buildingPersister.getBuilding(WALMART);
-    Message message = new Message().withBuilding(building).withMessageType(MessageType.FIRE).withSeverity(Severity.SEVERE);
+    ForestEntity building = buildingPersister.getBuilding(WALMART);
+    Message message = new Message().withForest(building).withMessageType(MessageType.FIRE).withSeverity(Severity.SEVERE);
     simState.schedule = schedule;
     firePersister.setSimState(simState);
     FireEntity fire = firePersister.generateFire(message);

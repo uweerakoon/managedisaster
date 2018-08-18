@@ -25,7 +25,7 @@ import edu.usu.cs.mas.managedisaster.canvas.BuildingCanvas;
 import edu.usu.cs.mas.managedisaster.canvas.FireCanvas;
 import edu.usu.cs.mas.managedisaster.csv.FireGridCsvPrinter;
 import edu.usu.cs.mas.managedisaster.csv.FireGridCsvPrinterImpl;
-import edu.usu.cs.mas.managedisaster.entity.BuildingEntity;
+import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
 import edu.usu.cs.mas.managedisaster.entity.FireEntity;
 import edu.usu.cs.mas.managedisaster.handler.FireDiffuser;
 import edu.usu.cs.mas.managedisaster.persister.BuildingPersister;
@@ -86,7 +86,7 @@ public class FireDiffuserTest extends TestUtil{
     
     fireDiffuser.diffuseFire();
     
-    assertNotNull(fire.getBurningBuilding());
+    assertNotNull(fire.getBurningForest());
     assertNotEquals(0.0, newFireGrid.field[HOTSPOTX][HOTSPOTY]);
     assertThat((double)MIN_HEAT, lessThanOrEqualTo(newFireGrid.field[HOTSPOTX][HOTSPOTY]));
     assertThat((double)MAX_HEAT, greaterThanOrEqualTo(newFireGrid.field[HOTSPOTX][HOTSPOTY]));
@@ -94,9 +94,9 @@ public class FireDiffuserTest extends TestUtil{
   
   @Test
   public void testDiffuseFireNonZeroRadius() {
-    BuildingEntity building = getBuilding();
+    ForestEntity building = getBuilding();
     buildingGrid = new IntGrid2D(WIDTH, LENGTH, 0);
-    fire.setBurningBuilding(building);
+    fire.setBurningForest(building);
     fire.setFireRadius(1);
     when(buildingCanvas.getBuildingsGrid()).thenReturn(buildingGrid);
     when(random.nextBoolean(anyDouble())).thenReturn(true);
@@ -108,7 +108,7 @@ public class FireDiffuserTest extends TestUtil{
     
     fireDiffuser.diffuseFire();
     
-    assertNotNull(fire.getBurningBuilding());
+    assertNotNull(fire.getBurningForest());
     assertNotEquals(0.0, newFireGrid.field[HOTSPOTX][HOTSPOTY]);
     assertThat(0.0, lessThanOrEqualTo(newFireGrid.field[HOTSPOTX][HOTSPOTY]));
     assertThat((double)MAX_HEAT, greaterThanOrEqualTo(newFireGrid.field[HOTSPOTX][HOTSPOTY]));
@@ -117,8 +117,8 @@ public class FireDiffuserTest extends TestUtil{
   
   @Test
   public void testDiffuseSmokeBuildingBurning() {
-    BuildingEntity building = getBuilding();
-    fire.setBurningBuilding(building);
+    ForestEntity building = getBuilding();
+    fire.setBurningForest(building);
     currentFireGrid.field[HOTSPOTX][HOTSPOTY] = 2.5;
     when(random.nextBoolean(anyDouble())).thenReturn(true);
     fireDiffuser.diffuseFire();
@@ -128,8 +128,8 @@ public class FireDiffuserTest extends TestUtil{
 
 //  @Test
   public void testCsvHeadersFireBuildingBurning() {
-    BuildingEntity building = getBuilding();
-    fire.setBurningBuilding(building);
+    ForestEntity building = getBuilding();
+    fire.setBurningForest(building);
     fireDiffuser.setStoreData(true);
     fireDiffuser.diffuseFire();
     fireGridCsvPrinter.closeFile();
@@ -143,8 +143,8 @@ public class FireDiffuserTest extends TestUtil{
   
 //  @Test
   public void testCsvRecordsFireBuildingBurning() {
-    BuildingEntity building = getBuilding();
-    fire.setBurningBuilding(building);
+    ForestEntity building = getBuilding();
+    fire.setBurningForest(building);
     fireDiffuser.setStoreData(true);
     fireGridCsvPrinter.printRemaining();
     currentFireGrid.field[HOTSPOTX][HOTSPOTY] = 2.5;

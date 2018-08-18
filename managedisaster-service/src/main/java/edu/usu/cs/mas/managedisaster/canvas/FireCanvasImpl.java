@@ -1,7 +1,7 @@
 package edu.usu.cs.mas.managedisaster.canvas;
 
 import ec.util.MersenneTwisterFast;
-import edu.usu.cs.mas.managedisaster.entity.BuildingEntity;
+import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
 import sim.field.grid.DoubleGrid2D;
 import sim.portrayal.grid.FastValueGridPortrayal2D;
 
@@ -82,7 +82,7 @@ public class FireCanvasImpl implements FireCanvas {
   }
   
   @Override
-  public boolean isBuildingBurning(BuildingEntity building) {
+  public boolean isBuildingBurning(ForestEntity building) {
     int minX = building.getMinX(), maxX = building.getMaxX();
     int minY = building.getMinY(), maxY = building.getMaxY();
     

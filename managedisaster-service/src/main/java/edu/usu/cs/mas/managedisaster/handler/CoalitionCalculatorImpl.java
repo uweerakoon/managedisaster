@@ -11,11 +11,11 @@ import edu.usu.cs.mas.managedisaster.canvas.BuildingCanvas;
 import edu.usu.cs.mas.managedisaster.canvas.FireCanvas;
 import edu.usu.cs.mas.managedisaster.collection.AgentSociety;
 import edu.usu.cs.mas.managedisaster.common.Chemical;
-import edu.usu.cs.mas.managedisaster.common.CoalitionBuildingStatus;
+import edu.usu.cs.mas.managedisaster.common.CoalitionForestStatus;
 import edu.usu.cs.mas.managedisaster.common.UtilityAlgorithm;
 import edu.usu.cs.mas.managedisaster.entity.AgentEntity;
-import edu.usu.cs.mas.managedisaster.entity.BuildingEntity;
-import edu.usu.cs.mas.managedisaster.entity.CoalitionBuildingEntity;
+import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
+import edu.usu.cs.mas.managedisaster.entity.CoalitionForestEntity;
 import edu.usu.cs.mas.managedisaster.entity.CoalitionEntity;
 import edu.usu.cs.mas.managedisaster.entity.FireStationEntity;
 import edu.usu.cs.mas.managedisaster.persister.CoalitionBuildingPersister;
@@ -48,11 +48,11 @@ public class CoalitionCalculatorImpl implements CoalitionCalculator {
   @Override
   public double getFireAndSmokeAmount(CoalitionEntity coalition) {
     double fireAmount = 0.0;
-    List<BuildingEntity> buildings = coalitionBuildingPersister.getBuildings(coalition);
+    List<ForestEntity> buildings = coalitionBuildingPersister.getBuildings(coalition);
     if(CollectionUtils.isEmpty(buildings)) {
       return 0.0;
     }
-    for(BuildingEntity building : buildings) {
+    for(ForestEntity building : buildings) {
       int minX = building.getMinX();
       int maxX = building.getMaxX();
       int minY = building.getMinY();
@@ -68,7 +68,7 @@ public class CoalitionCalculatorImpl implements CoalitionCalculator {
           fireAmount += smoke[i][j];
         }
       }
-      CoalitionBuildingEntity coalBuild = coalitionBuildingPersister.getCoalitionBuilding(coalition, building);
+      CoalitionForestEntity coalBuild = coalitionBuildingPersister.getCoalitionBuilding(coalition, building);
       coalBuild.setTaskAmount(fireAmount);
       coalitionBuildingPersister.save(coalBuild);
     }
@@ -89,8 +89,8 @@ public class CoalitionCalculatorImpl implements CoalitionCalculator {
       double chemicalAmount = player.getChemicalAmount();
       waterAmount += (chemicalAmount * chemicalCoefficient);
     }
-    List<CoalitionBuildingEntity> coalBuilds = coalitionBuildingPersister.getCoalitionBuildings(coalition);
-    for(CoalitionBuildingEntity coalBuild : coalBuilds) {
+    List<CoalitionForestEntity> coalBuilds = coalitionBuildingPersister.getCoalitionBuildings(coalition);
+    for(CoalitionForestEntity coalBuild : coalBuilds) {
       coalBuild.setResourceAmount(waterAmount);
       coalitionBuildingPersister.save(coalBuild);
     }
@@ -105,8 +105,8 @@ public class CoalitionCalculatorImpl implements CoalitionCalculator {
       calculateUtility(enabledCoalition);
     }
     // 2. Calculate utility for all feasible coal-build pairs
-    List<CoalitionBuildingEntity> feabileCoalBuilds = coalitionBuildingPersister.getFeasibleCoalBuilds();
-    for(CoalitionBuildingEntity feabileCoalBuild : feabileCoalBuilds) {
+    List<CoalitionForestEntity> feabileCoalBuilds = coalitionBuildingPersister.getFeasibleCoalBuilds();
+    for(CoalitionForestEntity feabileCoalBuild : feabileCoalBuilds) {
       calculateUtility(feabileCoalBuild);
     }
   }
@@ -128,7 +128,7 @@ public class CoalitionCalculatorImpl implements CoalitionCalculator {
     return utility;
   }
   
-  private void calculateUtility(CoalitionBuildingEntity coalBuildEntity) {
+  private void calculateUtility(CoalitionForestEntity coalBuildEntity) {
     String algorithm = config.getString(UTILITY_ALGORITHM);
     UtilityAlgorithm utilityAlgorithm = UtilityAlgorithm.valueOf(algorithm);
     switch(utilityAlgorithm) {
@@ -150,9 +150,9 @@ public class CoalitionCalculatorImpl implements CoalitionCalculator {
 
   private void setupATVUtility(CoalitionEntity coalition) {
     // Calculate utility for feasible coalition's feasible coal-build pairs
-    List<BuildingEntity> buildings = coalitionBuildingPersister.getBuildings(coalition);
-    for(BuildingEntity building : buildings) {
-      CoalitionBuildingEntity coalBuildEntity = coalitionBuildingPersister.getFeasibleCoalBuilds(coalition, building);
+    List<ForestEntity> buildings = coalitionBuildingPersister.getBuildings(coalition);
+    for(ForestEntity building : buildings) {
+      CoalitionForestEntity coalBuildEntity = coalitionBuildingPersister.getFeasibleCoalBuilds(coalition, building);
       if(coalBuildEntity == null) {
         LOGGER.error("Not feasible coal-build pair for feasible coalition: "+coalition.getId());
         continue;
@@ -165,14 +165,14 @@ public class CoalitionCalculatorImpl implements CoalitionCalculator {
       coalBuildEntity
           .withUtility(utility)
           .withAlgorithm(UtilityAlgorithm.ATV)
-          .withStatus(CoalitionBuildingStatus.UTILIZED);
+          .withStatus(CoalitionForestStatus.UTILIZED);
       coalitionBuildingPersister.save(coalBuildEntity);
     }
   }
   
-  private void setupATVUtility(CoalitionBuildingEntity coalBuildEntity) {
+  private void setupATVUtility(CoalitionForestEntity coalBuildEntity) {
     CoalitionEntity coalition = coalBuildEntity.getCoalition();
-    BuildingEntity building = coalBuildEntity.getBuilding();
+    ForestEntity building = coalBuildEntity.getForest();
     FireStationEntity fireStation = coalition.getFireStation();
     
     int fsX = fireStation.getRoadX();
@@ -187,7 +187,7 @@ public class CoalitionCalculatorImpl implements CoalitionCalculator {
     coalBuildEntity
         .withUtility(utility)
         .withAlgorithm(UtilityAlgorithm.ATV)
-        .withStatus(CoalitionBuildingStatus.UTILIZED);
+        .withStatus(CoalitionForestStatus.UTILIZED);
     
     coalitionBuildingPersister.save(coalBuildEntity);
   }

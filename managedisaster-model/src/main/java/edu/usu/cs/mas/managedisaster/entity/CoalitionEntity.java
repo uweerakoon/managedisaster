@@ -60,12 +60,12 @@ public class CoalitionEntity {
 
   @Property(policy=PojomaticPolicy.NONE)
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "coalition")
-  private List<CoalitionBuildingEntity> coalitionBuildings;
+  private List<CoalitionForestEntity> coalitionForests;
 
   @Property(policy=PojomaticPolicy.NONE)
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "ALLOCATED_BUILDING_ID")
-  private BuildingEntity allocatedBuilding;
+  @JoinColumn(name = "ALLOCATED_FOREST_ID")
+  private ForestEntity allocatedForest;
   
   @Property(policy=PojomaticPolicy.NONE)
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "coalition")
@@ -169,36 +169,36 @@ public class CoalitionEntity {
     this.agents.add(agent);
   }
 
-  public List<CoalitionBuildingEntity> getCoalitionBuildings() {
-    return coalitionBuildings;
+  public List<CoalitionForestEntity> getCoalitionForests() {
+    return coalitionForests;
   }
 
-  public void setCoalitionBuildings(List<CoalitionBuildingEntity> coalitionBuildings) {
-    this.coalitionBuildings = coalitionBuildings;
+  public void setCoalitionForests(List<CoalitionForestEntity> coalitionForests) {
+    this.coalitionForests = coalitionForests;
   }
 
-  public CoalitionEntity withCoalitionBuildings(List<CoalitionBuildingEntity> coalitionBuildings) {
-    setCoalitionBuildings(coalitionBuildings);
+  public CoalitionEntity withCoalitionForests(List<CoalitionForestEntity> coalitionForests) {
+    setCoalitionForests(coalitionForests);
     return this;
   }
 
-  public void addCoalitionBuilding(CoalitionBuildingEntity coalitionBuilding) {
-    if(this.coalitionBuildings == null) {
-      this.coalitionBuildings = new ArrayList<>();
+  public void addCoalitionForest(CoalitionForestEntity coalitionForest) {
+    if(this.coalitionForests == null) {
+      this.coalitionForests = new ArrayList<>();
     }
-    this.coalitionBuildings.add(coalitionBuilding);
+    this.coalitionForests.add(coalitionForest);
   }
 
-  public BuildingEntity getAllocatedBuilding() {
-    return allocatedBuilding;
+  public ForestEntity getAllocatedForest() {
+    return allocatedForest;
   }
 
-  public void setAllocatedBuilding(BuildingEntity allocatedBuilding) {
-    this.allocatedBuilding = allocatedBuilding;
+  public void setAllocatedForest(ForestEntity allocatedForest) {
+    this.allocatedForest = allocatedForest;
   }
 
-  public CoalitionEntity withAllocatedBuilding(BuildingEntity allocatedBuilding) {
-    setAllocatedBuilding(allocatedBuilding);
+  public CoalitionEntity withAllocatedForest(ForestEntity allocatedForest) {
+    setAllocatedForest(allocatedForest);
     return this;
   }
   

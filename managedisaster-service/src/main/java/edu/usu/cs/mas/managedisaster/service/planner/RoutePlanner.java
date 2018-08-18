@@ -1,6 +1,6 @@
 package edu.usu.cs.mas.managedisaster.service.planner;
 
-import edu.usu.cs.mas.managedisaster.entity.BuildingEntity;
+import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
 import edu.usu.cs.mas.managedisaster.player.AgentPlayer;
 import edu.usu.cs.mas.managedisaster.service.planner.util.Route;
 import sim.util.MutableInt2D;
@@ -20,5 +20,5 @@ public interface RoutePlanner {
   
   public Route createRouteToReachFireStation(AgentPlayer agent);
   
-  public MutableInt2D findClosestRoadCoordinate(MutableInt2D fireHotSpot, BuildingEntity fireBuilding);
+  public MutableInt2D findClosestRoadCoordinate(MutableInt2D fireHotSpot, ForestEntity fireBuilding);
 }

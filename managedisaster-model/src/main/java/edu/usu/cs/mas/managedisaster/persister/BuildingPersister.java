@@ -2,18 +2,18 @@ package edu.usu.cs.mas.managedisaster.persister;
 
 import java.util.List;
 
-import edu.usu.cs.mas.managedisaster.entity.BuildingEntity;
+import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
 
 public interface BuildingPersister {
   /**
    * Fetch all the buildings
    * @return list of all buildings
    */
-  public List<BuildingEntity> getAllBuildings();
+  public List<ForestEntity> getAllBuildings();
   
-  public BuildingEntity getBuilding(String name);
+  public ForestEntity getBuilding(String name);
   
-  public BuildingEntity getBuilding(Long id);
+  public ForestEntity getBuilding(Long id);
   
-  public void save(BuildingEntity building);
+  public void save(ForestEntity building);
 }

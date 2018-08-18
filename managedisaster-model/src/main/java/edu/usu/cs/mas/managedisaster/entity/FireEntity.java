@@ -120,8 +120,8 @@ public class FireEntity {
   
   @Property(policy=PojomaticPolicy.NONE)
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "BUILDING_ID", nullable = false)
-  private BuildingEntity burningBuilding;
+  @JoinColumn(name = "FOREST_ID", nullable = false)
+  private ForestEntity burningForest;
   
   @Transient
   private int fireRadius;
@@ -427,16 +427,16 @@ public class FireEntity {
     return this;
   }
 
-  public BuildingEntity getBurningBuilding() {
-    return burningBuilding;
+  public ForestEntity getBurningForest() {
+    return burningForest;
   }
 
-  public void setBurningBuilding(BuildingEntity burningBuilding) {
-    this.burningBuilding = burningBuilding;
+  public void setBurningForest(ForestEntity burningForest) {
+    this.burningForest = burningForest;
   }
   
-  public FireEntity withBurningBuilding(BuildingEntity burningBuilding) {
-  	setBurningBuilding(burningBuilding);
+  public FireEntity withBurningForest(ForestEntity burningForest) {
+  	setBurningForest(burningForest);
   	return this;
   }
 

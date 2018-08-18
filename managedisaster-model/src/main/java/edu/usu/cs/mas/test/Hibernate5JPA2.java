@@ -19,8 +19,8 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 import edu.usu.cs.mas.managedisaster.common.CoalitionStatus;
 import edu.usu.cs.mas.managedisaster.entity.AgentCoalitionEntity;
-import edu.usu.cs.mas.managedisaster.entity.BuildingEntity;
-import edu.usu.cs.mas.managedisaster.entity.CoalitionBuildingEntity;
+import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
+import edu.usu.cs.mas.managedisaster.entity.CoalitionForestEntity;
 import edu.usu.cs.mas.managedisaster.entity.CoalitionEntity;
 import edu.usu.cs.mas.managedisaster.entity.FireEntity;
 import edu.usu.cs.mas.managedisaster.entity.FireStationEntity;
@@ -179,8 +179,8 @@ public class Hibernate5JPA2 {
         "having count(cb.building) = 1"; 
     Query query = entityManager.createQuery(strQuery);
     @SuppressWarnings("unchecked")
-    List<BuildingEntity> buildings = query.getResultList();
-    for(BuildingEntity building : buildings) {
+    List<ForestEntity> buildings = query.getResultList();
+    for(ForestEntity building : buildings) {
       System.out.println("Buildings: "+building);
     }
   }
@@ -193,8 +193,8 @@ public class Hibernate5JPA2 {
       Query query = entityManager.createQuery(strQuery);
       query.setParameter("buildIds", buildIds);
       @SuppressWarnings("unchecked")
-      List<CoalitionBuildingEntity> coalitionBuildingEntityList = query.getResultList();
-      for(CoalitionBuildingEntity coalitionBuildingEntity: coalitionBuildingEntityList) {
+      List<CoalitionForestEntity> coalitionBuildingEntityList = query.getResultList();
+      for(CoalitionForestEntity coalitionBuildingEntity: coalitionBuildingEntityList) {
         System.out.println(" coal build: "+coalitionBuildingEntity);
       }
         
@@ -211,7 +211,7 @@ public class Hibernate5JPA2 {
     name = name.split("at ")[1];
     String strQuery = "select b from BuildingEntity b where lower(b.name) like '%"+name.toLowerCase()+"%'";
     Query query = entityManager.createQuery(strQuery);
-    BuildingEntity building = (BuildingEntity) query.getSingleResult();
+    ForestEntity building = (ForestEntity) query.getSingleResult();
     System.out.println("building is : "+building);
   }
 
@@ -251,10 +251,10 @@ public class Hibernate5JPA2 {
     ApplicationContext applicationContext = new AnnotationConfigApplicationContext(ManageDisasterModelSpringConfig.class);
     FirePersister firePersister = applicationContext.getBean(FirePersister.class);
     BuildingPersister buildingPersister = applicationContext.getBean(BuildingPersister.class);
-    BuildingEntity building = buildingPersister.getBuilding(8L);
+    ForestEntity building = buildingPersister.getBuilding(8L);
     Message message = new Message();
     message.setMessageType(MessageType.FIRE);
-    message.setBuilding(building);
+    message.setForest(building);
     message.setTweetId(1L);
     for(int i = 0; i < 396; i++) {
       message.setSeverity(Severity.SEVERE);

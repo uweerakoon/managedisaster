@@ -8,8 +8,8 @@ import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
 
-import edu.usu.cs.mas.managedisaster.entity.BuildingEntity;
-import edu.usu.cs.mas.managedisaster.entity.BurningBuildingStatEntity;
+import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
+import edu.usu.cs.mas.managedisaster.entity.BurningForestStatEntity;
 import edu.usu.cs.mas.managedisaster.model.util.HibernateUtil;
 
 public class BurningBuildingStatPersisterImpl implements BurningBuildingStatPersister{
@@ -30,11 +30,11 @@ public class BurningBuildingStatPersisterImpl implements BurningBuildingStatPers
   
   @SuppressWarnings("unchecked")
   @Override
-  public List<BurningBuildingStatEntity> getAllBurningBuildingStats() {
+  public List<BurningForestStatEntity> getAllBurningBuildingStats() {
   	entityManager = hibernateUtil.getEntityManager();
   	String strQuery = "select bs from BurningBuildingStatEntity bs";
   	Query query = entityManager.createQuery(strQuery);
-    List<BurningBuildingStatEntity> burningBuildingStatEntityList 
+    List<BurningForestStatEntity> burningBuildingStatEntityList 
     																	= query.getResultList();
     
     return burningBuildingStatEntityList;
@@ -43,17 +43,17 @@ public class BurningBuildingStatPersisterImpl implements BurningBuildingStatPers
   
   @SuppressWarnings("unchecked")
   @Override
-  public List<BurningBuildingStatEntity> getBurningBuildingStat(BuildingEntity building) {
+  public List<BurningForestStatEntity> getBurningBuildingStat(ForestEntity building) {
   	entityManager = hibernateUtil.getEntityManager();
   	String strQuery = "select bs from BurningBuildingStatEntity bs where bs.building.id = "+building.getId();
   	Query query = entityManager.createQuery(strQuery);
-    List<BurningBuildingStatEntity> burningBuildingStatEntityList 
+    List<BurningForestStatEntity> burningBuildingStatEntityList 
     					= query.getResultList();
     return burningBuildingStatEntityList;
   }
   
   @Override
-  public void save(BurningBuildingStatEntity burningBuildingStat) {
+  public void save(BurningForestStatEntity burningBuildingStat) {
   	entityManager = hibernateUtil.getEntityManager();
   	entityManager.persist(burningBuildingStat);
   }

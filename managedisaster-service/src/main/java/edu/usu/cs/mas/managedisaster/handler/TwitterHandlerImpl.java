@@ -27,7 +27,7 @@ import twitter4j.User;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 
-import edu.usu.cs.mas.managedisaster.entity.BuildingEntity;
+import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
 import edu.usu.cs.mas.managedisaster.entity.TweetEntity;
 import edu.usu.cs.mas.managedisaster.exception.ManageDisasterServiceException;
 import edu.usu.cs.mas.managedisaster.message.Message;
@@ -290,7 +290,7 @@ public class TwitterHandlerImpl implements TwitterHandler {
         .append(" ")
         .append(tweet.getMessageType().toString())
         .append(" at ")
-        .append(tweet.getBuilding().getName());
+        .append(tweet.getForest().getName());
     return sb.toString();
   }
 
@@ -298,8 +298,8 @@ public class TwitterHandlerImpl implements TwitterHandler {
     Preconditions.checkNotNull(tweet,"Tweeting message is null");
     Preconditions.checkNotNull(tweet.getMessageType(), "Message type is null");
     Preconditions.checkNotNull(tweet.getSeverity(), "Severity is null");
-    Preconditions.checkNotNull(tweet.getBuilding(), "Building is null");
-    if(StringUtils.isEmpty(tweet.getBuilding().getName())) {
+    Preconditions.checkNotNull(tweet.getForest(), "Building is null");
+    if(StringUtils.isEmpty(tweet.getForest().getName())) {
       throw new ManageDisasterServiceException("The building has no name");
     }
   }
@@ -343,11 +343,11 @@ public class TwitterHandlerImpl implements TwitterHandler {
     }
     message.setSeverity(severity);
 
-    BuildingEntity building = buildingPersister.getBuilding(tweetText.split("at ")[1]);
+    ForestEntity building = buildingPersister.getBuilding(tweetText.split("at ")[1]);
     if(building == null){
       return null;
     }
-    message.setBuilding(building);
+    message.setForest(building);
 
     Long tweetId = getTweetId(tweetText);
     if(tweetId != null) {

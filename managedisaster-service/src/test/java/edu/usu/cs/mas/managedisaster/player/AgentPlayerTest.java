@@ -17,7 +17,7 @@ import edu.usu.cs.mas.managedisaster.canvas.BuildingCanvas;
 import edu.usu.cs.mas.managedisaster.canvas.FireCanvas;
 import edu.usu.cs.mas.managedisaster.common.AgentStatus;
 import edu.usu.cs.mas.managedisaster.common.Chemical;
-import edu.usu.cs.mas.managedisaster.entity.BuildingEntity;
+import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
 import edu.usu.cs.mas.managedisaster.entity.FireEntity;
 import edu.usu.cs.mas.managedisaster.handler.ExtinguisherImpl;
 import edu.usu.cs.mas.managedisaster.model.AgentModel;
@@ -82,7 +82,7 @@ public class AgentPlayerTest extends TestUtil {
     when(fireCanvas.getCurrentSmokeGrid()).thenReturn(currentSmokeGrid);
     when(fireCanvas.getNewSmokeGrid()).thenReturn(newSmokeGrid);
     when(buildingCanvas.getBuildingsGrid()).thenReturn(buildingGrid);
-    when(fireCanvas.isBuildingBurning(any(BuildingEntity.class))).thenReturn(true);
+    when(fireCanvas.isBuildingBurning(any(ForestEntity.class))).thenReturn(true);
   }
 
   @Ignore // Need to set this up once agent player is coded correctly
@@ -109,7 +109,7 @@ public class AgentPlayerTest extends TestUtil {
     assertTrue(agentPlayer.getChemicalAmount() < initChemicalAmt);
     
     // done working with fire
-    when(fireCanvas.isBuildingBurning(any(BuildingEntity.class))).thenReturn(false);
+    when(fireCanvas.isBuildingBurning(any(ForestEntity.class))).thenReturn(false);
     agentPlayer.step(simulator);
     
     assertNull(agentModel.getFire());

@@ -8,7 +8,7 @@ import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
 
-import edu.usu.cs.mas.managedisaster.entity.BuildingEntity;
+import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
 import edu.usu.cs.mas.managedisaster.model.util.HibernateUtil;
 
 public class BuildingPersisterImpl implements BuildingPersister{
@@ -28,22 +28,22 @@ public class BuildingPersisterImpl implements BuildingPersister{
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<BuildingEntity> getAllBuildings() {
+  public List<ForestEntity> getAllBuildings() {
     entityManager = hibernateUtil.getEntityManager();
     String strQuery = "select b from BuildingEntity b";
     Query query = entityManager.createQuery(strQuery);
-    List<BuildingEntity> buildings = query.getResultList();
+    List<ForestEntity> buildings = query.getResultList();
     return buildings;
   }
 
   @Override
-  public BuildingEntity getBuilding(String name) {
+  public ForestEntity getBuilding(String name) {
     entityManager = hibernateUtil.getEntityManager();
     String strQuery = "select b from BuildingEntity b where lower(b.name) like '%"+name.toLowerCase()+"%'";
     Query query = entityManager.createQuery(strQuery);
-    BuildingEntity building = null;
+    ForestEntity building = null;
     try {
-      building = (BuildingEntity) query.getSingleResult();
+      building = (ForestEntity) query.getSingleResult();
     }
     catch(Exception e) {
       LOGGER.error("Problem loading single house with name: "+name, e);
@@ -52,14 +52,14 @@ public class BuildingPersisterImpl implements BuildingPersister{
   }
 
   @Override
-  public BuildingEntity getBuilding(Long id) {
+  public ForestEntity getBuilding(Long id) {
     entityManager = hibernateUtil.getEntityManager();
-    BuildingEntity building = entityManager.find(BuildingEntity.class, id);
+    ForestEntity building = entityManager.find(ForestEntity.class, id);
     return building;
   }
 
   @Override
-  public void save(BuildingEntity building) {
+  public void save(ForestEntity building) {
     entityManager = hibernateUtil.getEntityManager();
     entityManager.persist(building);
     hibernateUtil.commit();

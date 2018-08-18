@@ -50,8 +50,8 @@ public class TweetEntity {
   private Long readTime;
   
   @ManyToOne
-  @JoinColumn(name = "BUILDING_ID")
-  private BuildingEntity building;
+  @JoinColumn(name = "FOREST_ID")
+  private ForestEntity forest;
   
   /**
    * Determine whether the record is active to participate in the simulation 
@@ -125,16 +125,16 @@ public class TweetEntity {
     return this;
   }
   
-  public BuildingEntity getBuilding() {
-    return building;
+  public ForestEntity getForest() {
+    return forest;
   }
 
-  public void setBuilding(BuildingEntity building) {
-    this.building = building;
+  public void setForest(ForestEntity forest) {
+    this.forest = forest;
   }
 
-  public TweetEntity withBuilding(BuildingEntity building) {
-    setBuilding(building);
+  public TweetEntity withForest(ForestEntity forest) {
+    setForest(forest);
     return this;
   }
   

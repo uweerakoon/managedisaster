@@ -13,7 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
-import edu.usu.cs.mas.managedisaster.entity.BuildingEntity;
+import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
 import edu.usu.cs.mas.managedisaster.service.ManageDisasterModelSpringConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -27,13 +27,13 @@ public class BuildingPersisterTest {
   private BuildingPersister buildingPersister;
   @Test
   public void testGetAllBuildings() {
-    List<BuildingEntity> buildingEntities = buildingPersister.getAllBuildings();
+    List<ForestEntity> buildingEntities = buildingPersister.getAllBuildings();
     assertTrue(!buildingEntities.isEmpty());
   }
   
   @Test
   public void testGetByName() {
-    BuildingEntity building = buildingPersister.getBuilding(WALMART);
+    ForestEntity building = buildingPersister.getBuilding(WALMART);
     assertEquals(WALMART, building.getName());
   }
 

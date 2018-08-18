@@ -10,7 +10,7 @@ import javax.persistence.Query;
 import org.apache.log4j.Logger;
 
 import edu.usu.cs.mas.managedisaster.common.Originator;
-import edu.usu.cs.mas.managedisaster.entity.BuildingEntity;
+import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
 import edu.usu.cs.mas.managedisaster.entity.FireEntity;
 import edu.usu.cs.mas.managedisaster.message.Message;
 import edu.usu.cs.mas.managedisaster.message.Severity;
@@ -148,10 +148,10 @@ public class FirePersisterImpl implements FirePersister{
 
   @Override
   public FireEntity generateFire(Message message) {
-    BuildingEntity building = message.getBuilding();
+    ForestEntity building = message.getForest();
     MutableInt2D fireLocation = building.getRandomCoordinate();
 
-    FireEntity fire = new FireEntity().withX(fireLocation.x).withY(fireLocation.y).withBurningBuilding(building);
+    FireEntity fire = new FireEntity().withX(fireLocation.x).withY(fireLocation.y).withBurningForest(building);
 
     switch(message.getSeverity()) {
       case MILD:

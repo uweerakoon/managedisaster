@@ -15,7 +15,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import edu.usu.cs.mas.managedisaster.entity.BuildingEntity;
+import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
 import edu.usu.cs.mas.managedisaster.entity.TweetEntity;
 import edu.usu.cs.mas.managedisaster.message.Message;
 import edu.usu.cs.mas.managedisaster.message.MessageType;
@@ -71,7 +71,7 @@ public class TwitterHandlerTest {
   // https://support.twitter.com/articles/15364-about-twitter-limits-update-api-dm-and-following
   @Test
   public void testPostAndReadTweet() throws Exception{
-    Message message = new Message().withMessageType(MessageType.FIRE).withSeverity(Severity.MILD).withBuilding(new BuildingEntity().withName(WALMART));
+    Message message = new Message().withMessageType(MessageType.FIRE).withSeverity(Severity.MILD).withForest(new ForestEntity().withName(WALMART));
     twitterHandler = new TwitterHandlerImpl(buildingPersister, tweetPersister, twitter, user, latestTweetId, currentDate);
     AgentModel agentModel = new AgentModel().withId(1L);
     AgentPlayer agent = new AgentPlayer().withAgentModel(agentModel);
@@ -96,23 +96,23 @@ public class TwitterHandlerTest {
     
     twitter.destroyStatus(status.getId());
     message = messages.get(0);
-    assertEquals(WALMART, message.getBuilding().getName());
+    assertEquals(WALMART, message.getForest().getName());
     assertEquals(MessageType.FIRE, message.getMessageType());
     assertEquals(Severity.MILD, message.getSeverity());
   }
   
   private TweetEntity getTweetEntity() {
-    BuildingEntity building = getBuildingEntity();
+    ForestEntity building = getBuildingEntity();
     TweetEntity entity = new TweetEntity()
                           .withId(1L)
                           .withMessageType(MessageType.FIRE)
                           .withSeverity(Severity.MILD)
-                          .withBuilding(building);
+                          .withForest(building);
     return entity;
   }
   
-  private BuildingEntity getBuildingEntity() {
-    BuildingEntity entity = new BuildingEntity().withName(WALMART);
+  private ForestEntity getBuildingEntity() {
+    ForestEntity entity = new ForestEntity().withName(WALMART);
     return entity;
   }
 

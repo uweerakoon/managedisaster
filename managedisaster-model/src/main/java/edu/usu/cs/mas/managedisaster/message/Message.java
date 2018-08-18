@@ -3,7 +3,7 @@ package edu.usu.cs.mas.managedisaster.message;
 import org.pojomatic.Pojomatic;
 import org.pojomatic.annotations.AutoProperty;
 
-import edu.usu.cs.mas.managedisaster.entity.BuildingEntity;
+import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
 import edu.usu.cs.mas.managedisaster.entity.TweetEntity;
 
 @AutoProperty
@@ -11,7 +11,7 @@ public class Message {
 
   private MessageType messageType;
   private Severity severity;
-  private BuildingEntity building;
+  private ForestEntity forest;
   private Long tweetId;
   
   public Message() { }
@@ -19,7 +19,7 @@ public class Message {
   public Message(TweetEntity tweet) {
     this.messageType = tweet.getMessageType();
     this.severity = tweet.getSeverity();
-    this.building = tweet.getBuilding();
+    this.forest = tweet.getForest();
   }
   
   public MessageType getMessageType() {
@@ -42,14 +42,14 @@ public class Message {
     setSeverity(severity);
     return this;
   }
-  public BuildingEntity getBuilding() {
-    return building;
+  public ForestEntity getForest() {
+    return forest;
   }
-  public void setBuilding(BuildingEntity building) {
-    this.building = building;
+  public void setForest(ForestEntity forest) {
+    this.forest = forest;
   }
-  public Message withBuilding(BuildingEntity building) {
-    setBuilding(building);
+  public Message withForest(ForestEntity forest) {
+    setForest(forest);
     return this;
   }
   

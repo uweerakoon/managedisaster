@@ -2,16 +2,16 @@ package edu.usu.cs.mas.managedisaster.persister;
 
 import java.util.List;
 
-import edu.usu.cs.mas.managedisaster.entity.BuildingEntity;
-import edu.usu.cs.mas.managedisaster.entity.BurningBuildingStatEntity;
+import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
+import edu.usu.cs.mas.managedisaster.entity.BurningForestStatEntity;
 
 public interface BurningBuildingStatPersister {
   
-  public List<BurningBuildingStatEntity> getAllBurningBuildingStats();
+  public List<BurningForestStatEntity> getAllBurningBuildingStats();
   
-  public List<BurningBuildingStatEntity> getBurningBuildingStat(BuildingEntity building);
+  public List<BurningForestStatEntity> getBurningBuildingStat(ForestEntity building);
   
-  public void save(BurningBuildingStatEntity burningBuildingStat);
+  public void save(BurningForestStatEntity burningBuildingStat);
   
   public void cleanup();
 }

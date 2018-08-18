@@ -12,9 +12,9 @@ import edu.usu.cs.mas.managedisaster.Simulator;
 import edu.usu.cs.mas.managedisaster.collection.AgentSociety;
 import edu.usu.cs.mas.managedisaster.entity.AgentEntity;
 import edu.usu.cs.mas.managedisaster.entity.AgentStatEntity;
-import edu.usu.cs.mas.managedisaster.entity.BuildingEntity;
-import edu.usu.cs.mas.managedisaster.entity.BurningBuildingStatEntity;
-import edu.usu.cs.mas.managedisaster.entity.CoalitionBuildingEntity;
+import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
+import edu.usu.cs.mas.managedisaster.entity.BurningForestStatEntity;
+import edu.usu.cs.mas.managedisaster.entity.CoalitionForestEntity;
 import edu.usu.cs.mas.managedisaster.entity.CoalitionEntity;
 import edu.usu.cs.mas.managedisaster.entity.CoalitionStatEntity;
 import edu.usu.cs.mas.managedisaster.entity.FireEntity;
@@ -69,20 +69,20 @@ public class DataCuller implements Steppable {
 	}
 	
 	private void saveBurningBuildingStat(long currentTime) {
-		List<BuildingEntity> buildings = buildingPersister.getAllBuildings();
-		for(BuildingEntity building : buildings) {
+		List<ForestEntity> buildings = buildingPersister.getAllBuildings();
+		for(ForestEntity building : buildings) {
 			if(building.getFires() == null || building.getFires().isEmpty()) {
 				continue;
 			}
-			BurningBuildingStatEntity burningBuildingStatEntity = getBurningBuildingStatEntity(building);
+			BurningForestStatEntity burningBuildingStatEntity = getBurningBuildingStatEntity(building);
 			burningBuildingStatEntity.setTime(currentTime);
 			burningBuildingStatPersister.save(burningBuildingStatEntity);
 		}
 	}
 	
-	private BurningBuildingStatEntity getBurningBuildingStatEntity(BuildingEntity building) {
-		BurningBuildingStatEntity burningBuildingStatEntity = new BurningBuildingStatEntity()
-					.withBuilding(building);
+	private BurningForestStatEntity getBurningBuildingStatEntity(ForestEntity building) {
+		BurningForestStatEntity burningBuildingStatEntity = new BurningForestStatEntity()
+					.withForest(building);
 		List<FireEntity> fires = building.getFires();
 		for(FireEntity fire : fires) {
 			burningBuildingStatEntity.withFireAmount(burningBuildingStatEntity.getFireAmount() + fire.getCurrentFireValue())
@@ -105,14 +105,14 @@ public class DataCuller implements Steppable {
 	}
 	
 	private List<CoalitionStatEntity> getCoalitionStatEntity(CoalitionEntity coalition) {
-		List<CoalitionBuildingEntity> coalBuilds = coalitionBuildingPersister.getCoalitionBuildings(coalition);
+		List<CoalitionForestEntity> coalBuilds = coalitionBuildingPersister.getCoalitionBuildings(coalition);
 		List<CoalitionStatEntity> coalStats = new ArrayList<>();
-		for(CoalitionBuildingEntity coalBuild : coalBuilds) {
+		for(CoalitionForestEntity coalBuild : coalBuilds) {
 		  CoalitionStatEntity coalitionStatEntity = new CoalitionStatEntity()
 		      .withCoalition(coalition)
 		      .withResourceAmount(coalBuild.getResourceAmount())
 		      .withTaskAmount(coalBuild.getTaskAmount())
-		      .withBuilding(coalBuild.getBuilding());
+		      .withForest(coalBuild.getForest());
 		  coalStats.add(coalitionStatEntity);
 		}
 		return coalStats;  

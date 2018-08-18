@@ -10,9 +10,9 @@ import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
 
-import edu.usu.cs.mas.managedisaster.common.CoalitionBuildingStatus;
-import edu.usu.cs.mas.managedisaster.entity.BuildingEntity;
-import edu.usu.cs.mas.managedisaster.entity.CoalitionBuildingEntity;
+import edu.usu.cs.mas.managedisaster.common.CoalitionForestStatus;
+import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
+import edu.usu.cs.mas.managedisaster.entity.CoalitionForestEntity;
 import edu.usu.cs.mas.managedisaster.entity.CoalitionEntity;
 import edu.usu.cs.mas.managedisaster.exception.ManageDisasterServiceException;
 import edu.usu.cs.mas.managedisaster.model.util.HibernateUtil;
@@ -33,18 +33,18 @@ public class CoalitionBuildingPersisterImpl implements CoalitionBuildingPersiste
   }
   
   @Override
-  public List<CoalitionBuildingEntity> getFeasibleCoalBuilds() {
+  public List<CoalitionForestEntity> getFeasibleCoalBuilds() {
     entityManager = hibernateUtil.getEntityManager();
     String strQuery = "select cb from CoalitionBuildingEntity cb "
                     + "where cb.status = 'FEASIBLE'";
     Query query = entityManager.createQuery(strQuery);
     @SuppressWarnings("unchecked")
-    List<CoalitionBuildingEntity> coalitionBuildingEntityList  = query.getResultList();
+    List<CoalitionForestEntity> coalitionBuildingEntityList  = query.getResultList();
     return coalitionBuildingEntityList;
   }
   
   @Override
-  public List<CoalitionBuildingEntity> getUnallocatedCoalBuildByCoalIds(List<Long> coalitionIds) {
+  public List<CoalitionForestEntity> getUnallocatedCoalBuildByCoalIds(List<Long> coalitionIds) {
     entityManager = hibernateUtil.getEntityManager();
     String strQuery = "select cb from CoalitionBuildingEntity cb "
       + "where cb.coalition.id in (:coalitionIds)"
@@ -52,7 +52,7 @@ public class CoalitionBuildingPersisterImpl implements CoalitionBuildingPersiste
     Query query = entityManager.createQuery(strQuery);
     query.setParameter("coalitionIds", coalitionIds);
     @SuppressWarnings("unchecked")
-    List<CoalitionBuildingEntity> coalitionBuildingEntityList = query.getResultList();
+    List<CoalitionForestEntity> coalitionBuildingEntityList = query.getResultList();
     return coalitionBuildingEntityList;
   }
   
@@ -72,7 +72,7 @@ public class CoalitionBuildingPersisterImpl implements CoalitionBuildingPersiste
   }
   
   @Override
-  public List<CoalitionBuildingEntity> getUnallocatedCoalBuildByBuildIds(List<Long> buildIds) {
+  public List<CoalitionForestEntity> getUnallocatedCoalBuildByBuildIds(List<Long> buildIds) {
     if(buildIds.isEmpty()) {
       LOGGER.error("Empty builidng id is not expected");
       throw new ManageDisasterServiceException("Empty builidng id is not expected");
@@ -84,53 +84,53 @@ public class CoalitionBuildingPersisterImpl implements CoalitionBuildingPersiste
     Query query = entityManager.createQuery(strQuery);
     query.setParameter("buildIds", buildIds);
     @SuppressWarnings("unchecked")
-    List<CoalitionBuildingEntity> coalitionBuildingEntityList = query.getResultList();
+    List<CoalitionForestEntity> coalitionBuildingEntityList = query.getResultList();
     return coalitionBuildingEntityList;
   }
   
   @Override
-  public List<CoalitionBuildingEntity> getCoalitionBuildings(CoalitionEntity coalition) {
+  public List<CoalitionForestEntity> getCoalitionBuildings(CoalitionEntity coalition) {
     entityManager = hibernateUtil.getEntityManager();
     String strQuery = "select cb from CoalitionBuildingEntity cb "
       + "where cb.coalition.id = "+coalition.getId()
       +" and (cb.status is null or cb.status != 'CANCEL')";
     Query query = entityManager.createQuery(strQuery);
     @SuppressWarnings("unchecked")
-    List<CoalitionBuildingEntity> coalitionBuildingEntityList = query.getResultList();
+    List<CoalitionForestEntity> coalitionBuildingEntityList = query.getResultList();
     return coalitionBuildingEntityList;
   }
   
   @Override
-  public List<BuildingEntity> getBuildings(CoalitionEntity coalition) {
-    List<CoalitionBuildingEntity> coalitionBuildingEntityList = getCoalitionBuildings(coalition);
-    List<BuildingEntity> buildings = coalitionBuildingEntityList.stream()
-                                      .map(cs -> cs.getBuilding())
+  public List<ForestEntity> getBuildings(CoalitionEntity coalition) {
+    List<CoalitionForestEntity> coalitionBuildingEntityList = getCoalitionBuildings(coalition);
+    List<ForestEntity> buildings = coalitionBuildingEntityList.stream()
+                                      .map(cs -> cs.getForest())
                                       .collect(Collectors.toList());
     return buildings;
   }
   
   @Override
-  public List<CoalitionBuildingEntity> getCoalitionBuildings(BuildingEntity building) {
+  public List<CoalitionForestEntity> getCoalitionBuildings(ForestEntity building) {
     entityManager = hibernateUtil.getEntityManager();
     String strQuery = "select cb from CoalitionBuildingEntity cb "
       + "where cb.building.id = "+building.getId()
       +" and (cb.status is null or cb.status != 'CANCEL')";
     Query query = entityManager.createQuery(strQuery);
     @SuppressWarnings("unchecked")
-    List<CoalitionBuildingEntity> coalitionBuildingEntityList  = query.getResultList();
+    List<CoalitionForestEntity> coalitionBuildingEntityList  = query.getResultList();
     return coalitionBuildingEntityList;
   }
   
   @Override
-  public CoalitionBuildingEntity getAllocatedCoalBuild(BuildingEntity building) {
+  public CoalitionForestEntity getAllocatedCoalBuild(ForestEntity building) {
     entityManager = hibernateUtil.getEntityManager();
     String strQuery = "select cb from CoalitionBuildingEntity cb "
         + "where cb.building.id = "+building.getId()
         +" and cb.status = 'ALLOCATED'";
     Query query = entityManager.createQuery(strQuery);
-    CoalitionBuildingEntity coalitionBuildingEntity  = null;
+    CoalitionForestEntity coalitionBuildingEntity  = null;
     try {
-      coalitionBuildingEntity = (CoalitionBuildingEntity) query.getSingleResult();
+      coalitionBuildingEntity = (CoalitionForestEntity) query.getSingleResult();
     }
     catch(NoResultException nre) {
       LOGGER.info("No allocated coalition-build pair found for build: "+building.getId());
@@ -139,15 +139,15 @@ public class CoalitionBuildingPersisterImpl implements CoalitionBuildingPersiste
   }
   
   @Override
-  public CoalitionBuildingEntity getExecutingCoalBuild(CoalitionEntity coalition) {
+  public CoalitionForestEntity getExecutingCoalBuild(CoalitionEntity coalition) {
     entityManager = hibernateUtil.getEntityManager();
     String strQuery = "select cb from CoalitionBuildingEntity cb "
         + "where cb.coalition.id = "+coalition.getId()
         +" and cb.status = 'EXECUTING'";
     Query query = entityManager.createQuery(strQuery);
-    CoalitionBuildingEntity coalitionBuildingEntity  = null;
+    CoalitionForestEntity coalitionBuildingEntity  = null;
     try {
-      coalitionBuildingEntity = (CoalitionBuildingEntity) query.getSingleResult();
+      coalitionBuildingEntity = (CoalitionForestEntity) query.getSingleResult();
     }
     catch(NoResultException nre) {
       return null;
@@ -156,15 +156,15 @@ public class CoalitionBuildingPersisterImpl implements CoalitionBuildingPersiste
   }
   
   @Override
-  public CoalitionBuildingEntity getAllocatedCoalBuild(CoalitionEntity coalition) {
+  public CoalitionForestEntity getAllocatedCoalBuild(CoalitionEntity coalition) {
     entityManager = hibernateUtil.getEntityManager();
     String strQuery = "select cb from CoalitionBuildingEntity cb "
         + "where cb.coalition.id = "+coalition.getId()
         +" and cb.status = 'ALLOCATED'";
     Query query = entityManager.createQuery(strQuery);
-    CoalitionBuildingEntity coalitionBuildingEntity  = null;
+    CoalitionForestEntity coalitionBuildingEntity  = null;
     try {
-      coalitionBuildingEntity = (CoalitionBuildingEntity) query.getSingleResult();
+      coalitionBuildingEntity = (CoalitionForestEntity) query.getSingleResult();
     }
     catch(NoResultException nre) {
       throw nre;
@@ -173,8 +173,8 @@ public class CoalitionBuildingPersisterImpl implements CoalitionBuildingPersiste
   }
   
   @Override
-  public List<CoalitionEntity> getCoalitions(BuildingEntity building) {
-    List<CoalitionBuildingEntity> coalitionBuildingEntityList = getCoalitionBuildings(building);
+  public List<CoalitionEntity> getCoalitions(ForestEntity building) {
+    List<CoalitionForestEntity> coalitionBuildingEntityList = getCoalitionBuildings(building);
     List<CoalitionEntity> coalitions = coalitionBuildingEntityList.stream()
                                         .map(cs -> cs.getCoalition())
                                         .collect(Collectors.toList());
@@ -182,7 +182,7 @@ public class CoalitionBuildingPersisterImpl implements CoalitionBuildingPersiste
   }
   
   @Override
-  public List<CoalitionBuildingEntity> findBestUtilityCoalitionBuildings(BuildingEntity building) {
+  public List<CoalitionForestEntity> findBestUtilityCoalitionBuildings(ForestEntity building) {
     entityManager = hibernateUtil.getEntityManager();
     String strQuery = "select cb from CoalitionBuildingEntity cb where cb.utility = "
                     + "(select max(utility) from CoalitionBuildingEntity "
@@ -191,33 +191,33 @@ public class CoalitionBuildingPersisterImpl implements CoalitionBuildingPersiste
                     + " and (status is null or status != 'CANCEL'))";
     Query query = entityManager.createQuery(strQuery);
     @SuppressWarnings("unchecked")
-    List<CoalitionBuildingEntity> coalitionBuildingEntityList  = query.getResultList();
+    List<CoalitionForestEntity> coalitionBuildingEntityList  = query.getResultList();
     return coalitionBuildingEntityList;
   }
   
   @Override
-  public CoalitionBuildingEntity getCoalitionBuilding(CoalitionEntity coalition, BuildingEntity building) {
+  public CoalitionForestEntity getCoalitionBuilding(CoalitionEntity coalition, ForestEntity building) {
     entityManager = hibernateUtil.getEntityManager();
     String strQuery = "select cb from CoalitionBuildingEntity cb "
       + "where cb.building.id = "+building.getId()
       + " and cb.coalition.id = "+coalition.getId()
       + " and (cb.status is null or cb.status != 'CANCEL')";
     Query query = entityManager.createQuery(strQuery);
-    CoalitionBuildingEntity coalitionBuildingEntity = (CoalitionBuildingEntity) query.getSingleResult();
+    CoalitionForestEntity coalitionBuildingEntity = (CoalitionForestEntity) query.getSingleResult();
     return coalitionBuildingEntity;
   }
   
   @Override
-  public CoalitionBuildingEntity getFeasibleCoalBuilds(CoalitionEntity coalition, BuildingEntity building) {
+  public CoalitionForestEntity getFeasibleCoalBuilds(CoalitionEntity coalition, ForestEntity building) {
     entityManager = hibernateUtil.getEntityManager();
     String strQuery = "select cb from CoalitionBuildingEntity cb "
       + "where cb.building.id = "+building.getId()
       + " and cb.coalition.id = "+coalition.getId()
       + " and cb.status = 'FEASIBLE'";
     Query query = entityManager.createQuery(strQuery);
-    CoalitionBuildingEntity coalitionBuildingEntity = null;
+    CoalitionForestEntity coalitionBuildingEntity = null;
     try {
-      coalitionBuildingEntity = (CoalitionBuildingEntity) query.getSingleResult();
+      coalitionBuildingEntity = (CoalitionForestEntity) query.getSingleResult();
     }
     catch(Exception e) {
       LOGGER.error("cannot find feasible coal-build pairs for coal Id: "+coalition.getId()+" build id: "+building.getId(), e);
@@ -226,33 +226,33 @@ public class CoalitionBuildingPersisterImpl implements CoalitionBuildingPersiste
   }
   
   @Override
-  public List<BuildingEntity> getOneCoalitionBuildings() {
+  public List<ForestEntity> getOneCoalitionBuildings() {
     String strQuery = "select cb.building " + 
         "from CoalitionBuildingEntity cb " + 
         "group by cb.building, cb.status " + 
-        "having count(cb.building) = 1 and cb.status = '"+CoalitionBuildingStatus.UTILIZED+"'"; 
+        "having count(cb.building) = 1 and cb.status = '"+CoalitionForestStatus.UTILIZED+"'"; 
     Query query = entityManager.createQuery(strQuery);
     @SuppressWarnings("unchecked")
-    List<BuildingEntity> buildings = query.getResultList();
+    List<ForestEntity> buildings = query.getResultList();
     return buildings;
   }
   
   
   @Override
-  public void save(CoalitionBuildingEntity coalitionBuilding) {
+  public void save(CoalitionForestEntity coalitionBuilding) {
     entityManager = hibernateUtil.getEntityManager();
     entityManager.persist(coalitionBuilding);
     hibernateUtil.commit();
   }
   
   @Override
-  public void cancel(CoalitionBuildingEntity coalitionBuilding) {
-    coalitionBuilding.setStatus(CoalitionBuildingStatus.CANCEL);
+  public void cancel(CoalitionForestEntity coalitionBuilding) {
+    coalitionBuilding.setStatus(CoalitionForestStatus.CANCEL);
     save(coalitionBuilding);
   }
   
   @Override
-  public void delete(CoalitionBuildingEntity coalitionBuilding) {
+  public void delete(CoalitionForestEntity coalitionBuilding) {
     entityManager = hibernateUtil.getEntityManager();
     entityManager.remove(coalitionBuilding);
     hibernateUtil.commit();
