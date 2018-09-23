@@ -138,6 +138,7 @@
     <!-- <mason.version>14.0</mason.version> -->
     <!-- <mason.version>18.0</mason.version> -->
     <mason.version>2.0-SNAPSHOT</mason.version>
+    <geomason.version>1.0-SNAPSHOT</geomason.version>
     <commons-collections4.version>4.1</commons-collections4.version>
     <commons-csv.version>1.5</commons-csv.version> <!-- 1.1 -->
     <dozer.version>5.5.1</dozer.version>
@@ -179,6 +180,12 @@
       <artifactId>managedisaster-common</artifactId>
       <version>${project.version}</version>
     </dependency> -->
+    
+    <dependency>
+      <groupId>edu.gmu.cs</groupId>
+      <artifactId>geomason</artifactId>
+      <version>${geomason.version}</version>
+    </dependency>
     
     <dependency>
 	    <groupId>org.jdom</groupId>

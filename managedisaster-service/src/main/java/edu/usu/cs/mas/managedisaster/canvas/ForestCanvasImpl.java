@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import ec.util.MersenneTwisterFast;
 import edu.usu.cs.mas.managedisaster.entity.ForestEntity;
 import edu.usu.cs.mas.managedisaster.persister.ForestPersister;
 import edu.usu.cs.mas.managedisaster.portrayal.FastValueLabeledGridPortrayal2D;
@@ -15,8 +16,8 @@ public class ForestCanvasImpl implements ForestCanvas{
   private static final int GRID_WIDTH = 100;
   private static final int GRID_HEIGHT = 100;
   
-  
   private final String name = "Forests";
+  private MersenneTwisterFast random = new MersenneTwisterFast(System.currentTimeMillis());
 
   private FastValueLabeledGridPortrayal2D forestsPortrayal;
   private IntGrid2D forestsGrid;
@@ -31,9 +32,9 @@ public class ForestCanvasImpl implements ForestCanvas{
   public void drawForests(){
     for( int x = 0 ; x < GRID_WIDTH ; x++ ) {
       for( int y = 0 ; y < GRID_HEIGHT ; y++ ) {
-    	Long forestId = getForestEntityId(x,y);  
-        if(forestId != null){
-          forestsGrid.field[x][y] = forestId.intValue();
+    	boolean isForest = isForestEntity(x,y);  
+        if(isForest){
+          forestsGrid.field[x][y] = 1; // random.nextInt(6);
         }
       }
     }
@@ -50,16 +51,16 @@ public class ForestCanvasImpl implements ForestCanvas{
   	}
   }
   
-  private Long getForestEntityId(int x, int y){
+  private boolean isForestEntity(int x, int y){
     if(forestEntities == null){
       forestEntities = forestPersister.getAllForests();
     }
     for(ForestEntity forestEntity : forestEntities){
       if(forestEntity.contains(x, y)){
-        return forestEntity.getId();
+        return true;
       }
     }
-    return null;
+    return false;
   }
   
   @Override

@@ -113,13 +113,13 @@ public class SimulatorGUI extends GUIState{
     transportationLayout.setPositioningCanvas(simulator.getPositioningCanvas().getPositions());
     
     forestsPortrayal.setField(simulator.forestsGrid);
-    forestsPortrayal.setMap(new SimpleColorMap(0, 1, white, brown));
+    forestsPortrayal.setMap(new SimpleColorMap(0, 1, white, Color.green.darker()));
     
     roadPortrayal.setField(simulator.roadGrid);
     roadPortrayal.setMap(new SimpleColorMap(0, 1, white, ash));
     
     fireStationPortrayal.setField(simulator.fireStationGrid);
-    fireStationPortrayal.setMap(new SimpleColorMap(0, 1, white, Color.green.darker()));
+    fireStationPortrayal.setMap(new SimpleColorMap(0, 1, white, brown));
     
     firePortrayal.setField(simulator.currentFireGrid);
     firePortrayal.setMap(new SimpleColorMap(0, MAX_HEAT, new Color(255, 255, 255, 0), red));

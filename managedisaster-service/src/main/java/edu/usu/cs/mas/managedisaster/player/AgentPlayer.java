@@ -75,7 +75,6 @@ public class AgentPlayer implements Steppable {
   private ForestPersister forestPersister;
   private FireStationPersister fireStationPersister;
   private FireStationCanvas fireStationCanvas;
-  private ForestCanvas forestCanvas;
   private RoutePlanner routePlanner;
   private Extinguisher extinguisher;
   private Config config;
@@ -90,7 +89,7 @@ public class AgentPlayer implements Steppable {
   }
 
   public AgentPlayer(AgentModel agentModel, MovementHandler movementHandler, PositioningCanvas positioningCanvas, FirePersister firePersister,
-    RoutePlanner routePlanner, Extinguisher extinguisher, ForestPersister forestPersister, ForestCanvas forestCanvas) {
+    RoutePlanner routePlanner, Extinguisher extinguisher, ForestPersister forestPersister) {
     setupAgent(agentModel);
     this.movementHandler = movementHandler;
     this.positioningCanvas = positioningCanvas;
@@ -98,7 +97,6 @@ public class AgentPlayer implements Steppable {
     this.routePlanner = routePlanner;
     this.extinguisher = extinguisher;
     this.forestPersister = forestPersister;
-    this.forestCanvas = forestCanvas;
   }
 
   private void setupAgent(AgentModel agentModel) {
@@ -116,7 +114,6 @@ public class AgentPlayer implements Steppable {
     routePlanner = applicationContext.getBean(RoutePlanner.class);
     extinguisher = applicationContext.getBean(Extinguisher.class);
     forestPersister = applicationContext.getBean(ForestPersister.class);
-    forestCanvas = applicationContext.getBean(ForestCanvas.class);
     fireStationPersister = applicationContext.getBean(FireStationPersister.class);
     fireStationCanvas = applicationContext.getBean(FireStationCanvas.class);
     config = applicationContext.getBean(Config.class);
@@ -259,11 +256,10 @@ public class AgentPlayer implements Steppable {
   }
   
   private void burn(FireEntity fire) {
-    int forestId = forestCanvas.getForestId(fire.getX(), fire.getY());
-    if(forestId == 0) {
+    ForestEntity burningForest = forestPersister.getForest(fire.getX(), fire.getY());
+    if(burningForest == null) {
       LOGGER.error("Cannot find the forest id for a given fire. Agent: "+this+" fire: "+fire);
     }
-    ForestEntity burningForest = forestPersister.getForest(Long.valueOf(forestId));
     fire.setBurningForest(burningForest);
     burningForest.addFire(fire);
   }

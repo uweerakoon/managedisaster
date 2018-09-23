@@ -35,6 +35,17 @@ public class ForestPersisterImpl implements ForestPersister{
     List<ForestEntity> forests = query.getResultList();
     return forests;
   }
+  
+  @Override
+  public ForestEntity getForest(int x, int y) {
+    List<ForestEntity> forests = getAllForests();
+    for(ForestEntity forest : forests) {
+      if(forest.contains(x, y)) {
+        return forest;
+      }
+    }
+    return null;
+  }
 
   @Override
   public ForestEntity getForest(String name) {

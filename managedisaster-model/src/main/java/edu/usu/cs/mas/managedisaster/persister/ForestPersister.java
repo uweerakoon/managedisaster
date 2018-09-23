@@ -11,6 +11,8 @@ public interface ForestPersister {
    */
   public List<ForestEntity> getAllForests();
   
+  public ForestEntity getForest(int x, int y);
+  
   public ForestEntity getForest(String name);
   
   public ForestEntity getForest(Long id);

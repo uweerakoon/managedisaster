@@ -67,16 +67,16 @@ public class ForestEntity {
   @Transient
   private Int2D labelCoordinate;
   
-  @Transient
+  @Column(name = "MIN_X")
   private Integer minX;
   
-  @Transient
+  @Column(name = "MIN_Y")
   private Integer minY;
   
-  @Transient
+  @Column(name = "MAX_X")
   private Integer maxX;
   
-  @Transient
+  @Column(name = "MAX_Y")
   private Integer maxY;
   
   @Transient

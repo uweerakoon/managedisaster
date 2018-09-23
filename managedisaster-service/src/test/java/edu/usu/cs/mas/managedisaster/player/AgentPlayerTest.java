@@ -92,7 +92,7 @@ public class AgentPlayerTest extends TestUtil {
     fire = createFire(INIT_FOREST_SIZE, INIT_FOREST_NO_POINTS, INIT_FOREST_X, INIT_FOREST_Y).withX(FIRE_COORDINATE.x).withY(FIRE_COORDINATE.y);
     agentModel.withFire(fire);
     agentPlayer = new AgentPlayer(agentModel, null/*movementHandler*/, null/*positioningCanvas*/, null/*firePersister*/, 
-                    null/*routePlanner*/, extinguisher, forestPersister, forestCanvas);
+                    null/*routePlanner*/, extinguisher, forestPersister);
     agentPlayer.withX(AGENT_COORDINATE.x).withY(AGENT_COORDINATE.y).withSquirtPressure(SQUIRT_PRESSURE);
     agentPlayer = getAgent(agentPlayer);
     double initChemicalAmt = agentPlayer.getChemicalAmount();
@@ -126,7 +126,7 @@ public class AgentPlayerTest extends TestUtil {
     fire = createFire(INIT_FOREST_SIZE, INIT_FOREST_NO_POINTS, INIT_FOREST_X, INIT_FOREST_Y).withX(FIRE_COORDINATE.x).withY(FIRE_COORDINATE.y);
     agentModel.withFire(fire);
     agentPlayer = new AgentPlayer(agentModel, null/*movementHandler*/, null/*positioningCanvas*/, null/*firePersister*/, 
-                    null/*routePlanner*/, extinguisher, forestPersister, forestCanvas);
+                    null/*routePlanner*/, extinguisher, forestPersister);
     agentPlayer.withX(AGENT_COORDINATE.x).withY(AGENT_COORDINATE.y).withSquirtPressure(SQUIRT_PRESSURE);
     agentPlayer = getAgent(agentPlayer);
     agentPlayer.setChemicalAmount((double)INIT_VALUE);
